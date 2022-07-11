@@ -1,3 +1,3 @@
 # Table of contents
 
-* [Page 1](README.md)
+* [CITS3006 Penetration Testing](README.md)
