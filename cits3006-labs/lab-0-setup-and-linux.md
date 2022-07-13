@@ -29,16 +29,18 @@ The process for installing Docker Desktop is straightforward and involves using 
 
 {% embed url="https://www.docker.com/get-started" %}
 
+It is recommended to use Docker within your VM if needed when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
+
 ## 0.2 Linux refresher
 
 This lab is to provide a refresher on your Linux knowledge. You may skim/skip through this lab if you feel confident, but if you haven't don't much in Linux for a while (a semester or two), you are strongly advised to complete this lab before moving on to other labs to improve your workflow efficiency. For each example, you should try it yourself before moving on to the next section.
 
 ### 0.2.1. Distributions
 
-The base system of Linux comes in many different distributions which contain different packages and features written by different groups. These are referred to as distros for short, and they have a wide variety of different uses, purposes, systems, features, and fan-bases. This guide will attempt to be distro-independent, however, a few of the more popular distros are listed:
+The base system of Linux comes in many different distributions which contain different packages and features written by different groups. These are referred to as distros for short, and they have a wide variety of different uses, purposes, systems, features, and fan bases. This guide will attempt to be distro-independent, however, a few of the more popular distros are listed:
 
-| <p>·         Ubuntu</p><p>·         Debian</p><p>·         Fedora</p><p>·         Linux Mint</p><p> </p> | <p>·         Red Hat</p><p>·         CentOS</p><p>·         Arch Linux</p><p>·         Gentoo</p> |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| <p>· Ubuntu</p><p>· Debian</p><p>· Fedora</p><p>· Linux Mint</p> | <p>· Red Hat</p><p>· CentOS</p><p>· Arch Linux</p><p>· Gentoo</p> |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
 
 ### 0.2.2. Package manager and repositories
 
@@ -53,12 +55,12 @@ to install the Mozilla Firefox web browser. It will search the remote repositori
 
 `yum install firefox`
 
-will install Firefox on a Fedora machine. You can also install multiple package managers on any one distro, but as they say_: too many cooks spoil the broth_.
+will install Firefox on a Fedora machine. You can also install multiple package managers on any one distro, but as they say\_: too many cooks spoil the broth\_.
 {% endhint %}
 
 ### 0.2.3. The Terminal
 
-&#x20;**0.2.3.1. Commands**
+**0.2.3.1. Commands**
 
 Firstly you should get familiar with the man pages, which are essentially the manual, and will display help pages on almost all commands.
 
@@ -98,19 +100,19 @@ These are some extra commands which aren't totally essential but are certainly h
 `su ------ # Switch user`\
 `tty ----- # Display which tty you are on`
 
-#### ****
+####
 
 #### **0.2.3.2. Shortcuts**
 
 Every key pressed ends a character to the terminal, and you can send different characters by holding down keys like \[Ctrl] or \[Alt]. This is how the shell can tell what key is pressed, and thus, allow shortcuts to be defined. Some of the more useful keyboard shortcuts are defined:
 
 * `Up or Down arrows :` Scroll through typed commands
-* `Home or End       :` Move to the start or end of a line, respectively
-* `Tab               :` Autocomplete a file name, directory name or command name.
-* `Ctrl + C          :` End a running process
-* `Ctrl + D          :` End an End-Of-File (EOF) character (usually ends a process or signifies the end of input data)
-* `Ctrl + Z          :` Send the currently running process to the background
-* `Ctrl + L          :` Clear the screen, same as running the clear command
+* `Home or End :` Move to the start or end of a line, respectively
+* `Tab :` Autocomplete a file name, directory name or command name.
+* `Ctrl + C :` End a running process
+* `Ctrl + D :` End an End-Of-File (EOF) character (usually ends a process or signifies the end of input data)
+* `Ctrl + Z :` Send the currently running process to the background
+* `Ctrl + L :` Clear the screen, same as running the clear command
 
 ####
 
@@ -125,85 +127,76 @@ Redirection directs data in and out of files, i.e.
 
 `# Redirect stdout to file`\
 `echo "Hello world" > helloworld.txt`\
-``\
-`# Redirect stdout to the end of a file`\
-`echo "world." >> hello.txt`\
-``\
+``\ `# Redirect stdout to the end of a file`\ `echo "world." >> hello.txt`\``\
 `# Redirect a file to stdin`\
 `more < helloworld.txt`
 
-#### ****
+####
 
 #### **0.2.3.4. Wildcards**
 
 The shell uses a number of special characters called wildcards, similar to regular expressions or regex, which can be used to manipulate what is being dealt with on the command line. The standard wildcards are thus:
 
-&#x20;`*` Match 0 or more characters. For example, `rm *.txt` will delete all files that end in .txt, and `cp somedirectory/* .` will copy all files from \`somedirectory' to the current directory.
+`*` Match 0 or more characters. For example, `rm *.txt` will delete all files that end in .txt, and `cp somedirectory/* .` will copy all files from \`somedirectory' to the current directory.
 
-&#x20;`?` Match any single character. For example, `cp example.?`  somedir will copy all files named \`example' with a single character extension, into the directory \`somedir'
+`?` Match any single character. For example, `cp example.?` somedir will copy all files named \`example' with a single character extension, into the directory \`somedir'
 
 `[]` Match any single character in the square brackets. You can even specify a range, i.e. `rm m[a-e]m` will delete any files starting and ending with `m`, and with any letter between \`a' and \`e' in between. `rm m[abc]m` will delete files \`mam', \`mbm', \`mcm'.
 
-&#x20;`{}` Match any item in the braces. For example, `cp {*.doc,*.pdf} ~` copies any files with the extension \`.doc' or \`.pdf' to the home directory.
-
-&#x20;
+`{}` Match any item in the braces. For example, `cp {*.doc,*.pdf} ~` copies any files with the extension \`.doc' or \`.pdf' to the home directory.
 
 **0.2.3.5. Conditional execution**
 
 You can chain commands together on one line by separating them with a semicolon \`;'.
 
-&#x20;`cmd1; cmd2; cmd3`
+`cmd1; cmd2; cmd3`
 
-&#x20;However, every program returns a number back to the OS once it has finished running to tell if it wascompleted successfully or not, and we can use this to chain execute commands conditionally.
+However, every program returns a number back to the OS once it has finished running to tell if it was completed successfully or not, and we can use this to chain execute commands conditionally.
 
-&#x20;To run a command if and only if the last command completed successfully, we use `&&`:
+To run a command if and only if the last command completed successfully, we use `&&`:
 
 `user@MY-PC:~$ mkdir foo && cd foo && echo "hooray" > somefile`\
 `user@MY-PC:~/foo$ cat somefile`\
 `hooray`\
 `user@MY-PC:~/foo$`
 
-&#x20;To run a command if and only if the last command failed, we use `||`:
+To run a command if and only if the last command failed, we use `||`:
 
 `user@MY-PC:~$ ls foo || cd foo || mkdir foo && ls -ld foo`\
 `ls: cannot access foo: No such file or directory`\
 `bash: cd: foo: No such file or directory`\
 `drwxrwxr-x 2 user user 4096 May 24 00:57 foo`
 
-&#x20;
-
 #### **0.2.3.6. Processes**
 
 Every program that runs, runs in virtual memory as a process, even the shell. You can list the currently running processes with the command `top`. When you run a command, the terminal session runs it on its process, waits for it to complete, then regains control once the command is finished. So, if you were to close the terminal window while a command was running, that would stop the command. Since this can be inconvenient, we can \`fork' the command into its own process to run in the background, and still use the shell while it runs (which is useful for commands that take a long time). To do this, we end the command with a single ampersand `&`. For example:
 
-&#x20;`user@MY-PC:~$ (sleep 15; date) & date`\
+`user@MY-PC:~$ (sleep 15; date) & date`\
 `[1] 12186`\
 `Thu May 24 02:06:14 AWST 2022`\
 `user@MY-PC:~$`\
 `user@MY-PC:~$ Thu May 24 02:06:29 AWST 2022`\
-&#x20;`` \
-`[1]+ Done           ( sleep 15; date )`\
+\`\`\
+`[1]+ Done ( sleep 15; date )`\
 `user@MY-PC:~$`
 
 `(sleep 15; date)` is sent to the background and returns the process ID (PID), then the next date is run and the shell is returned. After sleeping for 15 seconds, the date sent to the background outputs and the shell reports that the command completed.
 
-&#x20;There is a command, `nohup` (no hangup), which prevents a program from being forcefully terminated under normal circumstances. We can combine this with `&` to run programs that need to run uninterrupted for long periods of time.
+There is a command, `nohup` (no hangup), which prevents a program from being forcefully terminated under normal circumstances. We can combine this with `&` to run programs that need to run uninterrupted for long periods of time.
 
-&#x20;Another way to list the processes running is with `ps`, and then end them with `killall` (kill by process name), or with `pkill` (kill by process ID), or even with the keyboard shortcut \[Ctrl] + \[C] as mentioned above. Check the man page, as well as \[8] for more options.
+Another way to list the processes running is with `ps`, and then end them with `killall` (kill by process name), or with `pkill` (kill by process ID), or even with the keyboard shortcut \[Ctrl] + \[C] as mentioned above. Check the man page, as well as \[8] for more options.
 
-&#x20;You can also check what is running in the background and foreground with `bg` and `fg`, respectively.
-
-&#x20;
+You can also check what is running in the background and foreground with `bg` and `fg`, respectively.
 
 ### 0.2.4. File system structure
 
 The file system is structured as a tree that flows down from the root directory, which is simply represented as /. Below shows an example listing of a system’s root directory using the ls command:
 
 `user@MY-PC:~$ ls /`\
-`bin   etc         initrd.img.old  lost+found   proc  selinux   usr`\
-`boot  fixdm       lib             media        root  srv       var`\
-`cdrom home        lib32           mnt          run   sys       vmlinuz`\
-`dev   initrd.img  lib64           opt          sbin  tmp       vmlinuz.old`
+`bin   etc        initrd.img.old lost+found proc selinux usr`\
+`boot  fixdm      lib            media      root srv     var`\
+`cdrom home       lib32          mnt        run  sys     vmlinuz`\
+`dev   initrd.img lib64          opt        sbin tmp     vmlinuz.old`
 
 The standard path is listed as all the directories to a file, separated by the `/` character. You can also use `..` to represent the folder that the current folder is in, `.` to represent the current directory, and `~` to represent your home directory. For example
 
@@ -214,9 +207,9 @@ The standard path is listed as all the directories to a file, separated by the `
 `# Change into your home directory`\
 `cd ~`
 
-&#x20;Linux will automatically complete a command or filename if you are part-way through typing it; all you have to do is hit the \[Tab] key. Press \[Tab] enough times and it will list possible suggestions based on what you currently have typed in the terminal.
+Linux will automatically complete a command or filename if you are part-way through typing it; all you have to do is hit the \[Tab] key. Press \[Tab] enough times and it will list possible suggestions based on what you currently have typed in the terminal.
 
-#### &#x20;
+#### ****
 
 #### **0.2.4.1. File operations**
 
@@ -228,8 +221,6 @@ There are a number of useful programs that allow us to do file manipulation. To 
 |   `rm` | Delete a file. Note that you can also delete empty directories this way, and you can delete a directory and its subdirectories by using `rm -r`. However, be **VERY** careful: if you were to run `rm -rf /`, you would erase every file on your whole computer, because it would delete the root directory and then every file and subdirectory below it and it wouldn't stop because the \`f' in \`-rf' means \`force'. Use `rm -rf` with extreme caution, or even use `rmdir`, which removes a directory. |
 | `grep` | grep stands for Global Regular Expressions Parser, and can search through text for a match. For example, `grep foo bar` searches the file bar for the string foo, and you can also use `ls -l \| grep "foo"`, which searches the file listing for a file called foo. When combined with `sed` and `awk`, you can do almost anything string related.                                                                                                                                                          |
 
-
-
 #### **0.2.4.2. $PATH and the environment**
 
 Variables in the shell are defined using the export command, and when variables are used, they start with a `$`.\
@@ -240,7 +231,7 @@ Variables in the shell are defined using the export command, and when variables 
 
 You can see a list of the set environment variables by typing `set` by itself into the terminal.
 
-&#x20;Linux uses a global terminal variable to find programs. This is the $PATH variable and it consists of a list of file paths to search in for a specified program, in order, separated by the colon (:). For example, a listing of my path:
+Linux uses a global terminal variable to find programs. This is the $PATH variable and it consists of a list of file paths to search in for a specified program, in order, separated by the colon (:). For example, a listing of my path:
 
 `user@MY-PC:~$ echo $PATH`\
 `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games`
@@ -249,8 +240,6 @@ This would mean that if I were to use the command `ls`, it would search for a bi
 
 This is sometimes used as an exploit by modifying the user's `$PATH` variable so that a path containing malicious binaries with the same names as common commands is on the front. When the user goes to run these commands, then the malicious binaries are run instead.
 
-
-
 ### 0.2.5. Users and Permissions
 
 Every user has a user ID (uid) and a group ID (gid). Each user also has a list of groups they are a part of which give them the permissions that are assigned to those groups. You can see this by using the 'id' command:\
@@ -258,7 +247,7 @@ Every user has a user ID (uid) and a group ID (gid). Each user also has a list o
 `user@MY-PC:~$ id`\
 `uid=1000(user)gid=1000(user)groups=1000(user),4(adm),24(cdrom),27(sudo),29(audio),30(dip),44(video),46(plugdev),109(lpadmin),119(pulse),124(sambashare)`
 
-&#x20;****&#x20;
+#### ****
 
 #### **0.2.5.1. sudo and root**
 
@@ -273,11 +262,11 @@ This is where the `sudo` command comes in (a.k.a "super-user do"). You can use `
 
 Say you want to edit the hostname file, which contains the name of your computer, but, by default, you need elevated privileges to edit it. You would type:
 
-&#x20;`sudo nano /etc/hostname`
+`sudo nano /etc/hostname`
 
 to which it asks you for your password, and then opens nano with the extra privileges provided by `sudo`. There is a `sudoers` file which contains a list of users who can use `sudo`, and what privileges they get from using it.
 
-&#x20;****&#x20;
+
 
 #### **0.2.5.2. File permissions**
 
@@ -298,24 +287,24 @@ Let's take the file, `junk1`, as our example. The first character is the file ty
 
 where the first set, `u`, refers to the permissions for the user who owns the file. The next set, `g`, refers to the permissions for the group that the file belongs to. The final set, `o`, refers to the permissions for any other user. Each set uses \`rwx' to specify the permission to (r)ead, (w)rite or e(x)ecute, or `-` if that permission is not set. Let’s take a look at the folder `other_junk`.
 
-&#x20;`drwxrwxr-x`
+`drwxrwxr-x`
 
-&#x20;This is a directory, the user has read/write/execute access, users belonging to the group of the file have read/write/execute access, and everyone else has read/execute access, but not write access.
+This is a directory, the user has read/write/execute access, users belonging to the group of the file have read/write/execute access, and everyone else has read/execute access, but not write access.
 
-&#x20; **** &#x20;
+
 
 #### **0.2.5.3. Changing permissions**
 
 If you want to change a file's permissions, you can use `chmod`, meaning "change mode". There are two ways to do this: using u/g/o and +/- r/w/x:\
 \
-`chmod o+x junk1    # Add execute permission to others`\
-`chmod og+wx junk1  # Add execute and write permissions to other and group`\
-`chmod +x junk1     # Make junk1 executable for the user`\
-`chmod g-w junk1    # Remove write permissions from junk1 for group`
+`chmod o+x junk1 # Add execute permission to others`\
+`chmod og+wx junk1 # Add execute and write permissions to other and group`\
+`chmod +x junk1 # Make junk1 executable for the user`\
+`chmod g-w junk1 # Remove write permissions from junk1 for group`
 
 etc...
 
-&#x20;or with a number that represents permissions, called a bitmask. This will set all the permissions at once for you.
+or with a number that represents permissions, called a bitmask. This will set all the permissions at once for you.
 
 `user@MY-PC:~/junk$ chmod 755 junk1`\
 `user@MY-PC:~/junk$ ls -l`\
@@ -323,7 +312,7 @@ etc...
 `-rwxr-xr-x 1 user user 9 Apr 25 21:28 junk1`\
 `drwxrwxr-x 2 user user 4096 Apr 25 21:29 other_junk`
 
-&#x20;The bit mask is three digits (sometimes four digits) between the numbers 0 and 7. Each digit represents what the read/write/execute permissions would be in binary. Take a look:
+The bit mask is three digits (sometimes four digits) between the numbers 0 and 7. Each digit represents what the read/write/execute permissions would be in binary. Take a look:
 
 `0 = 000 = ---`\
 `1 = 001 = --x`\
@@ -334,7 +323,7 @@ etc...
 `6 = 110 = rw-`\
 `7 = 111 = rwx`
 
-&#x20;So, as a few examples,
+So, as a few examples,
 
 `777 = rwxrwxrwx`\
 `755 = rwxr-xr-x`\
@@ -344,14 +333,12 @@ etc...
 
 etc...
 
-&#x20;So when we set our file junk1 to 755 earlier, we set it to rwxr-xr-x, which is a pretty good permission set on your average file. Realistically, you will usually always have your own user permissions set to rwx or rw-, otherwise you are just inconveniencing yourself. You can also use `chown` to change ownership of a file.
-
-
+So when we set our file junk1 to 755 earlier, we set it to rwxr-xr-x, which is a pretty good permission set on your average file. Realistically, you will usually always have your own user permissions set to rwx or rw-, otherwise you are just inconveniencing yourself. You can also use `chown` to change ownership of a file.
 
 ### Need more practice?
 
 Please have a look at the below links for more UNIX tutorials.
 
-* [http://www.ee.surrey.ac.uk/Teaching/Unix/ ](http://www.ee.surrey.ac.uk/Teaching/Unix/)
+* [http://www.ee.surrey.ac.uk/Teaching/Unix/](http://www.ee.surrey.ac.uk/Teaching/Unix/)
 * [https://www.sporcle.com/games/sporcilicious/common\_linux\_commands](https://www.sporcle.com/games/sporcilicious/common\_linux\_commands)
 * [https://0xax.gitbooks.io/linux-insides/?fbclid=IwAR1UOzoLvB-OKfCpLcxB0JMy-6GBkKVRZnSdgxydoW8jJLgjAX9BiKHKzf8](https://0xax.gitbooks.io/linux-insides/?fbclid=IwAR1UOzoLvB-OKfCpLcxB0JMy-6GBkKVRZnSdgxydoW8jJLgjAX9BiKHKzf8)
