@@ -11,3 +11,4 @@
 * [Introduction to Labs](cits3006-labs/introduction-to-labs.md)
 * [Lab 0: Setup and Linux](cits3006-labs/lab-0-setup-and-linux.md)
 * [Lab 1: Security tools](cits3006-labs/lab-1-security-tools.md)
+* [Lab 3: Reverse Engineering](cits3006-labs/lab-3-reverse-engineering.md)
