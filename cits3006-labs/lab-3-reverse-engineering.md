@@ -1,4 +1,4 @@
-# Lab X: Malware Analysis and Reverse Engineering - DearCry Ransomware
+# Lab 3: Reverse Engineering
 
 # TODO:
 * update instructions for kali linux: capa tool, IDA, 
