@@ -127,7 +127,9 @@ Now we can run it, let's run it against the metasploitable VM:
 ./portscan.sh [target IP]
 ```
 
-Note that this is quite slow, but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
+Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
+
+We just created our own port scanner!
 
 ## 1.2. Metasploit
 
