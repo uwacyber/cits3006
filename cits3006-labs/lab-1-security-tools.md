@@ -1,5 +1,9 @@
 # Lab 1: Security tools 1 (NOT READY)
 
+{% hint style="danger" %}
+READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without a proper consent/permission, and even then, you must check and comply with any regulatory restrictions and law.&#x20;
+{% endhint %}
+
 The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context.
 
 The tools we will cover are: `nmap` and `metasploit`, the tools that are often used to gather information and gain the first step into the target host(s). Those tools are already installed on your Kali Linux. Of course, we will cover more useful and interesting tools later on as well.
@@ -29,13 +33,11 @@ If your machine uses an Apple Silicon ARM64, you must do the following tasks to 
 
 Please note, that the VMs used in the lab should be able to reach each other (test using `ping`).
 
-## 1.1. nmap
+## 1.1. Nmap
 
-Nmap is blah blah
+Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring etc.), but of course, it is also useful for malicious purposes.&#x20;
 
-
-
-Nmap can be used to scan the network to find vulnerable host(s). This can be done by scanning the IP range.&#x20;
+The first intuitive use of Nmap is to scan the network to find (potentially vulnerable) host(s). This can be done by scanning the IP range.&#x20;
 
 `$ nmap -sn [target IP range]`
 
@@ -61,7 +63,7 @@ Now we have discovered our target machine, we can scan to see which ports are op
 nmap -sV -O -T4 192.168.64.5
 ```
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Find out what those flags mean.
 {% endhint %}
 
@@ -69,7 +71,63 @@ Then we should be able to see something like:
 
 ![](<../.gitbook/assets/image (6) (1).png>)
 
+Before we move along, let's create our own port scanner using bash script.
 
+{% hint style="warning" %}
+This only works on new versions of Bash (which is the case on Kali). If you are not using Kali, you can test by following the steps below:
+
+1. start a netcat listener on terminal 1: `nc -vnlp 4444`
+2. On a different terminal (terminal 2), start a bash session: `bash`
+3. Still on terminal 2, send a message using  the cat command:\
+   `cat >/dev/tcp/localhost/4444`
+4. From terminal 1, you should see a connection message
+5. You can press `ctrl + C` to end
+
+If the above did not work, then you need to upgrade your Bash version (or use Kali for simplicity). If you attempt to connect to a closed port, you will simply receive a "Connection refused" message.
+{% endhint %}
+
+So we have a basic understanding of using Bash and open ports, we can create our own port scanner Bash script. Open an editor with the file named `portscan.sh` and input the following script:
+
+```bash
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo "Usage: `basename $0` {IP address or hostname}"
+    exit 1
+fi
+
+# define a variable and set it to the value passed as the first argument ($1)
+ip_address=$1
+# write the current date to the output file
+echo `date` >> $ip_address.open_ports
+
+# for loop, where “i” starts at 1 and each time increments up to 65535
+for port in {1..65535}
+do
+    # use a short timeout, and write to the port on the IP address
+    timeout 1 echo >/dev/tcp/$ip_address/$port
+    # if that succeeded (checks the return value stored in $?)
+    if [ $? -eq 0 ]
+    then
+        # append results to a file named after the date and host
+        echo "port $port is open" >> "$ip_address.open_ports"
+    fi
+done
+```
+
+And then add executable permission
+
+```
+chmod +x portscan.sh
+```
+
+Now we can run it, let's run it against the metasploitable VM:
+
+```
+./portscan.sh [target IP]
+```
+
+Note that this is quite slow, but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
 ## 1.2. Metasploit
 
@@ -266,7 +324,7 @@ python -c "[copy and paste payload here]"
 Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
 {% endhint %}
 
-&#x20;Like the examples above, you can now search for other possible vulnerabilities and/or attacks and explore more about Metasploit!
+The above example would be considered as a _malware_.
 
 
 
