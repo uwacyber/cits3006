@@ -1,7 +1,7 @@
-# Lab 1: Security tools 1 (NOT READY)
+# Lab 1: Security tools 1
 
 {% hint style="danger" %}
-READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without a proper consent/permission, and even then, you must check and comply with any regulatory restrictions and law.&#x20;
+READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
 The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context.
@@ -21,7 +21,7 @@ If your machine uses an Intel chip AMD64, you can move on to the next tasks.
 If your machine uses an Apple Silicon ARM64, you must do the following tasks to run metasploitable on UTM:
 
 1. Install [brew](https://brew.sh/) if not done already
-2. Install qemu from the terminal: `brew install qemu`
+2. Install qemu if not done already: `brew install qemu`
 3. Navigate to the directory containing the metasploitable image file you downloaded
 4. Convert image: \
    `qemu-img convert -p -O qcow2 Metasploitable.vmdk Metasploitable.qcow2`
