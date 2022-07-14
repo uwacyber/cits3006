@@ -4,7 +4,7 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context.
+The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles and explain a bit about their underlying mechanisms, as well as practice Linux commands from Lab 0 in the context.
 
 The tools we will cover are: `nmap` and `metasploit`, the tools that are often used to gather information and gain the first step into the target host(s). Those tools are already installed on your Kali Linux. Of course, we will cover more useful and interesting tools later on as well.
 
@@ -33,48 +33,11 @@ If your machine uses an Apple Silicon ARM64, you must do the following tasks to 
 
 Please note, that the VMs used in the lab should be able to reach each other (test using `ping`).
 
-## 1.1. Nmap
+## 1.1. Port Scanner using Bash
 
-Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring etc.), but of course, it is also useful for malicious purposes.&#x20;
+Before we jump into learning tools, let's create our own port scanner using a bash script to understand how a script may be created and be used.
 
-The first intuitive use of Nmap is to scan the network to find (potentially vulnerable) host(s). This can be done by scanning the IP range.&#x20;
-
-`$ nmap -sn [target IP range]`
-
-e.g.,
-
-```
-nmap -sn 192.168.64.0/24
-```
-
-![](<../.gitbook/assets/image (3) (1) (1).png>)
-
-Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So if the host does not respond to pings, it won't be listed here. There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
-
-One of the listed addresses should be your victim machine (metasploitable VM).&#x20;
-
-{% hint style="warning" %}
-If you don't see your metasploitable VM in the list, please check your network settings.
-{% endhint %}
-
-Now we have discovered our target machine, we can scan to see which ports are open (i.e., what services are running).
-
-```
-nmap -sV -O -T4 192.168.64.5
-```
-
-{% hint style="warning" %}
-Find out what those flags mean.
-{% endhint %}
-
-Then we should be able to see something like:
-
-![](<../.gitbook/assets/image (6) (1).png>)
-
-Before we move along, let's create our own port scanner using bash script.
-
-{% hint style="warning" %}
-This only works on new versions of Bash (which is the case on Kali). If you are not using Kali, you can test by following the steps below:
+This only works on new versions of Bash (which is the case with Kali). If you are not using Kali, you can test by following the steps below:
 
 1. start a netcat listener on terminal 1: `nc -vnlp 4444`
 2. On a different terminal (terminal 2), start a bash session: `bash`
@@ -83,10 +46,9 @@ This only works on new versions of Bash (which is the case on Kali). If you are 
 4. From terminal 1, you should see a connection message
 5. You can press `ctrl + C` to end
 
-If the above did not work, then you need to upgrade your Bash version (or use Kali for simplicity). If you attempt to connect to a closed port, you will simply receive a "Connection refused" message.
-{% endhint %}
+If you do not see the connection message at step 4, then you need to upgrade your Bash version (or use Kali for simplicity). If you attempt to connect to a closed port, you will simply receive a "Connection refused" message.
 
-So we have a basic understanding of using Bash and open ports, we can create our own port scanner Bash script. Open an editor with the file named `portscan.sh` and input the following script:
+So we have a basic understanding of using Bash and open ports from the above example, so now we can create our own port scanner Bash script! Open an editor with the file named `portscan.sh` and input the following script:
 
 ```bash
 #!/bin/bash
@@ -115,13 +77,17 @@ do
 done
 ```
 
-And then add executable permission
+{% hint style="info" %}
+If the above code is hard to follow, please revise the scripting (e.g., CITS2003).
+{% endhint %}
+
+And then add executable permission:
 
 ```
 chmod +x portscan.sh
 ```
 
-Now we can run it, let's run it against the metasploitable VM:
+Now we can run it, let's run it against the metasploitable VM (check its IP address by running `ifconfig`):
 
 ```
 ./portscan.sh [target IP]
@@ -129,9 +95,53 @@ Now we can run it, let's run it against the metasploitable VM:
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-We just created our own port scanner!
+![](<../.gitbook/assets/image (6).png>)
 
-## 1.2. Metasploit
+We just created our own port scanner using Bash!
+
+The underlying principle is the same, the tools we will cover will have some scripts that carry out the specified tasks, and is automated through the tool commands.
+
+## 1.2. Nmap
+
+Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls, and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring, etc.), but of course, it is also useful for malicious purposes.&#x20;
+
+The first intuitive use of Nmap is to scan the network to find (a potentially vulnerable) host(s). This can be done by scanning the IP range.&#x20;
+
+`$ nmap -sn [target IP range]`
+
+e.g.,
+
+```
+nmap -sn 192.168.64.0/24
+```
+
+![](<../.gitbook/assets/image (3) (1) (1).png>)
+
+Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So this is basically a script that runs a ping command to the given network address(es)! There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
+
+One of the listed addresses should be your victim machine (metasploitable VM).&#x20;
+
+{% hint style="warning" %}
+If you don't see your metasploitable VM in the list, please check your network settings.
+{% endhint %}
+
+Now we have discovered our target machine, we can scan to see which ports are open (i.e., what services are running).
+
+```
+nmap -sV -O -T4 192.168.64.5
+```
+
+{% hint style="warning" %}
+Find out what those flags mean.
+{% endhint %}
+
+Then we should be able to see something like:
+
+![](<../.gitbook/assets/image (6) (1) (1).png>)
+
+So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Now we will move on to gaining access by exploiting some of the vulnerabilities associated with the services we found.
+
+## 1.3. Metasploit
 
 For this part of the lab, we will carry out a few exploits using the Metasploit framework. The Metasploit framework is essentially a collection of scripts that performs the described exploit, and most scripts are targeting vulnerabilities on networks and servers. The Metasploit framework is open-source, so it can also be customised to various needs. So let's have a look at a few exploit examples in this lab.
 
@@ -141,9 +151,9 @@ First, you may need to update it to the latest version.
 sudo apt update -y; sudo apt install Metasploit-framework -y
 ```
 
-From the nmap scan above, we have discovered the IP address of our target (metasploitable VM) machine and the services running. The first one we will exploit is the one at the top at port 21 - the ftp service.
+From the nmap scan above, we have discovered the IP address of our target (metasploitable VM) machine and the services running. The first one we will exploit is the one at the top at port 21 - the FTP service.
 
-### 1.2.1. Exploit FTP
+### 1.3.1. Exploit FTP
 
 The Nmap scan revealed the version of the FTP on the target machine. If you search for vulnerabilities associated with the given version `vsftpd 2.3.4`, you will quickly discover that there is a backdoor vulnerability (more precisely, [`CVE-2011-2523`](https://www.cvedetails.com/cve/CVE-2011-2523/)). The CVSS Score is 10, indicating that the impact of this vulnerability is severe.&#x20;
 
@@ -207,7 +217,7 @@ This showed the importance of authentication and authorisation (don't let anyone
 
 Finally, you can press `ctrl + C` to end the session. If you are finished with the exploit, you can type `back` to go back to the main `msfconsole` menu.
 
-### 1.2.2. Exploit SSH
+### 1.3.2. Exploit SSH
 
 Okay, so the previous one is highly unlikely given the vulnerable service is more than a decade old and people have moved on. So let's try some other exploits against a more common service - SSH!
 
@@ -229,7 +239,7 @@ search ssh
 search ssh_login
 ```
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
 Two shows up, and we will use the first one and check the options:
 
@@ -292,7 +302,7 @@ Now the bruteforce attack only has to guess the password!
 Although we have technically improved the attack speed, we are still (at the end of the day) bruteforcing – which is practically impossible nowadays. Such attacks can be mitigated easily by limiting the number of attempts within a given period of time, as well as enforcing multi-factor authentications.
 {% endhint %}
 
-### 1.2.3. Reverse Shell
+### 1.3.3. Reverse Shell
 
 The Metasploit also comes with tools to create vulnerable executable scripts/files using `msfvenom` module. For our instance, we will create a reverse shell using python code:
 
@@ -326,7 +336,7 @@ python -c "[copy and paste payload here]"
 Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
 {% endhint %}
 
-The above example would be considered as a _malware_.
+The above example would be considered _malware_. The msfvenom can be used to create various payloads to do malicious tasks so have a look at its library and explore (please do NOT use them other than on your own sandboxed/virtualised environments)!
 
 
 
