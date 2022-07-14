@@ -10,7 +10,7 @@ If you already have VM and Docker set up and running on your machine, you can sk
 
 ### 0.1.1. VM setup
 
-We will be using [Kali Linux](https://www.kali.org/) as our base VM, as it comes with various tools we will be using already. Kali also has native builds for both AMD64 and ARM64 (see below), so it is easy to have it ready on most of our machines. Please see below for recommendations if you haven't used VM before:
+We will be using [Kali Linux](https://www.kali.org/) as our base VM (the bare metal option), as it comes with various tools we will be using already. Kali also has native builds for both AMD64 and ARM64 (see below), so it is easy to have it ready on most of our machines. Please see below for recommendations if you haven't used VM before:
 
 #### Windows, Linux or Mac using Intel chips AMD64
 
