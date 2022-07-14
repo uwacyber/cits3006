@@ -1,8 +1,8 @@
-# Lab 1: Security tools (NOT READY)
+# Lab 1: Security tools 1 (NOT READY)
 
 The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context.
 
-The tools we will cover are: `wireshark`, `nmap` and `metasploit`, the tools that are often used to gather information and gain the first step into the target host(s). Those tools are already installed on your Kali Linux. Of course, we will cover more useful and interesting tools later on as well.
+The tools we will cover are: `nmap` and `metasploit`, the tools that are often used to gather information and gain the first step into the target host(s). Those tools are already installed on your Kali Linux. Of course, we will cover more useful and interesting tools later on as well.
 
 {% hint style="info" %}
 In this lab, we will be running at least two VMs: Kali and metasploitable.
@@ -29,11 +29,7 @@ If your machine uses an Apple Silicon ARM64, you must do the following tasks to 
 
 Please note, that the VMs used in the lab should be able to reach each other (test using `ping`).
 
-## 1.1. wireshark
-
-
-
-## 1.2. nmap
+## 1.1. nmap
 
 Nmap is blah blah
 
@@ -45,9 +41,11 @@ Nmap can be used to scan the network to find vulnerable host(s). This can be don
 
 e.g.,
 
-`$ nmap -sn 192.168.64.0/24`
+```
+nmap -sn 192.168.64.0/24
+```
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So if the host does not respond to pings, it won't be listed here. There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
 
@@ -59,7 +57,9 @@ If you don't see your metasploitable VM in the list, please check your network s
 
 Now we have discovered our target machine, we can scan to see which ports are open (i.e., what services are running).
 
-`$ nmap -sV -O -T4 192.168.64.5`
+```
+nmap -sV -O -T4 192.168.64.5
+```
 
 {% hint style="info" %}
 Find out what those flags mean.
@@ -67,35 +67,41 @@ Find out what those flags mean.
 
 Then we should be able to see something like:
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
 
 
-## 1.3. Metasploit
+## 1.2. Metasploit
 
 For this part of the lab, we will carry out a few exploits using the Metasploit framework. The Metasploit framework is essentially a collection of scripts that performs the described exploit, and most scripts are targeting vulnerabilities on networks and servers. The Metasploit framework is open-source, so it can also be customised to various needs. So let's have a look at a few exploit examples in this lab.
 
 First, you may need to update it to the latest version.
 
-`$ sudo apt update -y; sudo apt install Metasploit-framework -y`
+```
+sudo apt update -y; sudo apt install Metasploit-framework -y
+```
 
 From the nmap scan above, we have discovered the IP address of our target (metasploitable VM) machine and the services running. The first one we will exploit is the one at the top at port 21 - the ftp service.
 
-### 1.3.1. Exploit FTP
+### 1.2.1. Exploit FTP
 
 The Nmap scan revealed the version of the FTP on the target machine. If you search for vulnerabilities associated with the given version `vsftpd 2.3.4`, you will quickly discover that there is a backdoor vulnerability (more precisely, [`CVE-2011-2523`](https://www.cvedetails.com/cve/CVE-2011-2523/)). The CVSS Score is 10, indicating that the impact of this vulnerability is severe.&#x20;
 
 Since it's there, we'll exploit it. Launch the Metasploit from the terminal:
 
-`$ msfconsole`
+```vim
+msfconsole
+```
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (1).png>)
 
 From the msfconsole, we can search for the identified service-related exploits
 
-`$ use vsftpd`
+```
+use vsftpd
+```
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (4) (1).png>)
 
 In fact, there is only one exploit (the backdoor one) available, so it will be automatically be selected. If it is not automatically selected, just type: `use 0` (i.e., the number 0th exploit) to select it.
 
@@ -107,19 +113,23 @@ If you already know the exploit to use and its path, you can type in:
 
 Next, we need to check options to see what inputs the exploit requires.
 
-`$ show options`
+```
+show options
+```
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/image (2) (1).png>)
 
 The exploit is actually simple, and only requires the target host's IP address. So set the RHOST with the target IP address found using Nmap (the RPORT is already set, but if the FTP service runs on a different port or if the RPORT is not set, you can update/set it).
 
-`$ set RHOST 192.168.64.5`
+```
+set RHOST 192.168.64.5
+```
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (1).png>)
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (2).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.
@@ -137,7 +147,104 @@ This showed the importance of authentication and authorisation (don't let anyone
 
 Finally, you can press `ctrl + C` to end the session. If you are finished with the exploit, you can type `back` to go back to the main `msfconsole` menu.
 
-### 1.3.2. Exploit SSH
+### 1.2.2. Exploit SSH
 
-Okay, so the previous one is highly unlikely given the vulnerable service is more than a decade old and people have moved on. So let's try some other exploits - SSH!
+Okay, so the previous one is highly unlikely given the vulnerable service is more than a decade old and people have moved on. So let's try some other exploits against a more common service - SSH!
+
+We assume we don’t know the credentials to log in to the metasploitable VM, so we must figure out both the username and password to gain access.
+
+From Nmap scans, we know that the SSH service is running on port 22. However, its version is `OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)`. The protocol 1.0 had lots of bugs that could have been exploited easily, but 2.0 is much more secure. So instead, we will attempt a bruteforce attack.&#x20;
+
+&#x20;Like before, we begin by searching for `ssh` related exploits in the Metasploit console:
+
+```
+search ssh
+```
+
+![](<../.gitbook/assets/image (4).png>)
+
+... But there are too many! So let's reduce the selection to `ssh_login`:
+
+```docker
+search ssh_login
+```
+
+![](<../.gitbook/assets/image (6).png>)
+
+Two shows up, and we will use the first one and check the options:
+
+```
+use 0
+show options
+```
+
+![](<../.gitbook/assets/image (3).png>)
+
+Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
+
+```
+set USERPASS_FILE = /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
+```
+
+![](../.gitbook/assets/image.png)
+
+At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass  file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
+
+![](<../.gitbook/assets/image (1).png>)
+
+{% hint style="info" %}
+You would notice that this is SSH session 3, meaning I did find two other credentials that could be used to SSH to the metasploitable VM. Which ones do you think they are?
+{% endhint %}
+
+At this stage, you can use the credentials found to SSH into the victim machine. However, this bruteforce attack is quite inefficient because we have to guess both username and password. Imagine each credential login attempt takes 1 second, how long would it take to try 1 million credential pairs? To get a better picture, the widely used password wordlist `rockyou.txt` contains about 14 million passwords! So we must find a better way than trying to guess both username and password. This brings us to the next method.
+
+We are going to revisit Nmap here, because one of the services running was `Samba smbd` (an innocent server daemon that provides filesharing and printing services), which can be exploited to reveal users! So run Nmap:
+
+```
+nmap -script smb-enum-users.nse -p 445 [target IP address]
+```
+
+{% hint style="info" %}
+The script is basically enumerating through users' RIDs that uniquely identifies a user on a domain or system. The username is found because LSA function is exposed, which is used to convert RID to the username.
+{% endhint %}
+
+If you scroll down the list, you will find that the user “msfadmin” is the one that is not disabled! So we can use this information back in our `ssh_login` options!
+
+&#x20;We will also use the `rockyou.txt` password wordlist file that contains a lot of commonly used passwords. It comes with Kali at `/usr/share/wordlists`, you just have to extract it:
+
+```
+sudo gzip -dk /usr/share/wordlists/rockyou.txt.gz
+```
+
+&#x20;Once done, remove the USERPASS file and set USERNAME and PASS\_FILE.
+
+```
+unset USERPASS_FILE
+set PASS_FILE /usr/share/wordlists/rockyou.txt
+set USERNAME msfadmin
+```
+
+![](<../.gitbook/assets/image (5).png>)
+
+Now the bruteforce attack only has to guess the password!
+
+{% hint style="info" %}
+Although we have technically improved the attack speed, we are still (at the end of the day) bruteforcing – which is practically impossible nowadays. Such attacks can be mitigated easily by limiting the number of attempts within a given period of time, as well as enforcing multi-factor authentications.
+{% endhint %}
+
+### 1.2.3. Reverse Shell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
