@@ -1,4 +1,4 @@
-# Lab 1: Network Exploits
+# Lab 1: Network Security
 
 {% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
@@ -376,7 +376,7 @@ Once done, we can now compile the c codes using the makefile provided (if you ha
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).&#x20;
 
-![](<../.gitbook/assets/image (6).png>)
+![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8).png>)
 
 So it works! Let's have a closer look at the code, starting with the `hacker.c` file.
 
