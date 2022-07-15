@@ -1,10 +1,10 @@
-# Lab 1: Security tools 1
+# Lab 1: Network Exploits
 
 {% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-The aim of this lab is to introduce you to some useful security tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context. In addition, to have a better understanding about their underlying mechanisms, unlike in CITS1003 where we just used them to observe outcomes.
+The aim of this lab is to introduce you to some useful network exploit concepts and tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context. In addition, to have a better understanding about the underlying mechanisms of tools, unlike in CITS1003 where we just used tools to observe outcomes.
 
 {% hint style="info" %}
 This means it is essential to have a deeper understanding of tools and how they operate rather than only learning what tools and scripts to use in given scenarios. This applies to all the labs we will do in this unit, so please remember!
@@ -37,9 +37,9 @@ If your machine uses an Apple Silicon ARM64, you must do the following tasks to 
 
 Please note, that the VMs used in the lab should be able to reach each other (test using `ping`).
 
-## 1.1. Port Scanner using Bash
+## 1.1. Port Scan using Bash
 
-Before we jump into learning tools, let's create our own port scanner using a bash script to understand how a script may be created and be used.
+First, let's create our own port scanner using a bash script to understand how a script may be created and be used.
 
 This only works on new versions of Bash (which is the case with Kali). If you are not using Kali, you can test by following the steps below:
 
@@ -111,9 +111,11 @@ Note that this is quite slow (give it a few mins), but once done, it will create
 
 We just created our own port scanner using Bash!
 
-The underlying principle is the same, the tools we will cover will have some scripts that carry out the specified tasks, and is automated through the tool commands.
+The underlying principle is the same, the tools we will cover next will have some scripts that carry out the specified tasks like above, which are just automatically ran through the tool commands.
 
 ## 1.2. Nmap
+
+Since writing scripts ourselves is inefficient, we now will have a look at a tool named _Nmap_.
 
 Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls, and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring, etc.), but of course, it is also useful for malicious purposes.&#x20;
 
@@ -151,11 +153,13 @@ Then we should be able to see something like:
 
 ![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
 
-So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Now we will move on to gaining access by exploiting some of the vulnerabilities associated with the services we found.
+So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Just remember, Nmap is just executing a bunch of scripts like we wrote in the previous section, just automated. So you can always dig through its exploit database and have a look at the details of those attacks (because it is open-source, it is possible).&#x20;
+
+Now we will move on to gaining access by exploiting some of the vulnerabilities associated with the services we found.
 
 ## 1.3. Metasploit
 
-For this part of the lab, we will carry out a few exploits using the Metasploit framework. The Metasploit framework is essentially a collection of scripts that performs the described exploit, and most scripts are targeting vulnerabilities on networks and servers. The Metasploit framework is open-source, so it can also be customised to various needs. So let's have a look at a few exploit examples in this lab.
+For this part of the lab, we will carry out a few exploits using the Metasploit framework. The Metasploit framework is essentially (and also) a collection of scripts that performs the described exploit, and most scripts are targeting vulnerabilities on networks and servers. The Metasploit framework is open-source, so it can also be customised to various needs. So let's have a look at a few exploit examples in this lab.
 
 First, you may need to update it to the latest version.
 
@@ -364,7 +368,7 @@ wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/fi
 
 Unzip using the `unzip` command.
 
-Let's test it first, we have to update the attacker's IP address in the `victim.c` (line 27) code (you can update the port too if you want, but make sure to do it on both files).&#x20;
+Let's test it first, we have to update the attacker's IP address in the `victim.c` (at line 27) code (you can update the port too if you want, but make sure to do it on both files).&#x20;
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
