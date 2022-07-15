@@ -107,7 +107,7 @@ Now we can run it, let's run it against the metasploitable VM (check its IP addr
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
 We just created our own port scanner using Bash!
 
@@ -149,7 +149,7 @@ Find out what those flags mean.
 
 Then we should be able to see something like:
 
-![](<../.gitbook/assets/image (6) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
 
 So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Now we will move on to gaining access by exploiting some of the vulnerabilities associated with the services we found.
 
@@ -175,7 +175,7 @@ Since it's there, we'll exploit it. Launch the Metasploit from the terminal:
 msfconsole
 ```
 
-![](<../.gitbook/assets/image (5) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1).png>)
 
 From the msfconsole, we can search for the identified service-related exploits
 
@@ -183,7 +183,7 @@ From the msfconsole, we can search for the identified service-related exploits
 use vsftpd
 ```
 
-![](<../.gitbook/assets/image (4) (1) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1) (1).png>)
 
 In fact, there is only one exploit (the backdoor one) available, so it will be automatically be selected. If it is not automatically selected, just type: `use 0` (i.e., the number 0th exploit) to select it.
 
@@ -207,7 +207,7 @@ The exploit is actually simple, and only requires the target host's IP address. 
 set RHOST 192.168.64.5
 ```
 
-![](<../.gitbook/assets/image (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (1).png>)
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
@@ -243,7 +243,7 @@ From Nmap scans, we know that the SSH service is running on port 22. However, it
 search ssh
 ```
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1).png>)
 
 ... But there are too many! So let's reduce the selection to `ssh_login`:
 
@@ -251,7 +251,7 @@ search ssh
 search ssh_login
 ```
 
-![](<../.gitbook/assets/image (6) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1).png>)
 
 Two shows up, and we will use the first one and check the options:
 
@@ -272,7 +272,7 @@ set USERPASS_FILE = /usr/share/metasploit-framework/data/wordlists/piata_ssh_use
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass  file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (1).png>)
 
 {% hint style="info" %}
 You would notice that this is SSH session 3, meaning I did find two other credentials that could be used to SSH to the metasploitable VM. Which ones do you think they are?
@@ -306,7 +306,7 @@ set PASS_FILE /usr/share/wordlists/rockyou.txt
 set USERNAME msfadmin
 ```
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (1).png>)
 
 Now the bruteforce attack only has to guess the password!
 
@@ -342,7 +342,7 @@ We set 443 to be the incoming port from the target host, so we listen on this po
 python -c "[copy and paste payload here]"
 ```
 
-![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4).png>)
+![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1).png>)
 
 {% hint style="info" %}
 Usually the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
@@ -354,15 +354,51 @@ The above example would be considered _malware_. The msfvenom can be used to cre
 
 So now we understand the tool can create reverse shell payloads for various applications, but how exactly does it work? Let's find out!
 
+First, download the reverse shell files:
 
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/rshell.zip
+```
 
+![](<../.gitbook/assets/image (4).png>)
 
+Unzip using the `unzip` command.
 
+Let's test it first, we have to update the attacker's IP address in the `victim.c` (line 27) code (you can update the port too if you want, but make sure to do it on both files).&#x20;
 
+Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
+![](<../.gitbook/assets/image (1).png>)
 
+We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).&#x20;
 
+![](<../.gitbook/assets/image (6).png>)
 
+So it works! Let's have a closer look at the code, starting with the `hacker.c` file.
 
-\--END--
+There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
+![](<../.gitbook/assets/image (5).png>)
+
+This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
+
+![](<../.gitbook/assets/image (7).png>)
+
+Again, nothing much in the code other than typical socket coding for the client, BUT look at lines 61 - 63. This is where the reverse shell happens:
+
+1. the [`dup2` function](https://man7.org/linux/man-pages/man2/dup.2.html) takes two arguments `oldfd` and `newfd`, where the two [file descriptors](https://en.wikipedia.org/wiki/File\_descriptor) (fd) are made equivalent (i.e., you can use either). For example, After `dup2(socket_id, 0)`, whatever file was opened on the descriptor `socket_id` is now also opened (with the same mode and position) on the descriptor `0`, i.e. on standard input.&#x20;
+2. This is applied to all other file descriptors 1 and 2 representing the standard output and the standard error, respectively.
+
+This means all the `stdio` are redirected to the socket that is sent to the attacker (bad)!
+
+{% hint style="info" %}
+In normal server code, this is where the server would respond to the client with the response. But instead, since the victim's `stdio` are all redirected to the socket to the attacker, the attacker can now also _send_ commands back to the victim host (which is very bad!).
+{% endhint %}
+
+However, this code does not have any obfuscation, which means it is very easy to detect such code in use and be filtered/blocked. Hence, Metasploit tries to obfuscate the payload generated to hide such malicious code (but the detection mechanisms can also have their own techniques to look through obfuscations, albeit the performance varies).
+
+## 1.4 Summary
+
+In this lab, we covered two useful tools, Nmap and Metasploit. There were additional exercises to better understand how such tools work (port scanner and reverse shell) to provide a deeper understanding of different exploit techniques.
+
+Next up, Vulnerabilities.
