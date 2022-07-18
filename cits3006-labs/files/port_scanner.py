@@ -16,7 +16,7 @@ def get_args():
   
 def main():
   if __name__ == '__main__':
-     target = getargs().target
+     target = get_args().target
      t_IP = gethostbyname(target)
      print ('Starting scan on host: ', t_IP)
 
