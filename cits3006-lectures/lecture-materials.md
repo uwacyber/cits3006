@@ -4,7 +4,7 @@ You will find lecture slides available here. For lecture recordings, please log 
 
 
 
-* [0\. Introduction](cits3006-lectures/00.introduction.pdf)
+ [0\. Introduction](cits3006-lectures/00.introduction.pdf)
 
 * [1\. Ethics](cits3006-lectures/01.Ethics.pdf)
 
