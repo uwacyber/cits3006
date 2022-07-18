@@ -8,6 +8,7 @@
 
 ## CITS3006 Labs
 
+* [Background: Networks](cits3006-labs/network-101.md)
 * [Introduction to Labs](cits3006-labs/introduction-to-labs.md)
 * [Lab 0: Setup and Linux](cits3006-labs/lab-0-setup-and-linux.md)
 * [Lab 1: Network Security](cits3006-labs/lab-1-network-security.md)
