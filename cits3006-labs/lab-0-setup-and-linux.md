@@ -205,10 +205,10 @@ You can also check what is running in the background and foreground with `bg` an
 The file system is structured as a tree that flows down from the root directory, which is simply represented as /. Below shows an example listing of a system’s root directory using the ls command:
 
 `user@MY-PC:~$ ls /`\
-`bin   etc        initrd.img.old lost+found proc selinux usr`\
-`boot  fixdm      lib            media      root srv     var`\
-`cdrom home       lib32          mnt        run  sys     vmlinuz`\
-`dev   initrd.img lib64          opt        sbin tmp     vmlinuz.old`
+`bin etc initrd.img.old lost+found proc selinux usr`\
+`boot fixdm lib media root srv var`\
+`cdrom home lib32 mnt run sys vmlinuz`\
+`dev initrd.img lib64 opt sbin tmp vmlinuz.old`
 
 The standard path is listed as all the directories to a file, separated by the `/` character. You can also use `..` to represent the folder that the current folder is in, `.` to represent the current directory, and `~` to represent your home directory. For example
 
@@ -221,7 +221,7 @@ The standard path is listed as all the directories to a file, separated by the `
 
 Linux will automatically complete a command or filename if you are part-way through typing it; all you have to do is hit the \[Tab] key. Press \[Tab] enough times and it will list possible suggestions based on what you currently have typed in the terminal.
 
-#### ****
+#### \*\*\*\*
 
 #### **0.2.4.1. File operations**
 
@@ -259,7 +259,7 @@ Every user has a user ID (uid) and a group ID (gid). Each user also has a list o
 `user@MY-PC:~$ id`\
 `uid=1000(user)gid=1000(user)groups=1000(user),4(adm),24(cdrom),27(sudo),29(audio),30(dip),44(video),46(plugdev),109(lpadmin),119(pulse),124(sambashare)`
 
-#### ****
+#### \*\*\*\*
 
 #### **0.2.5.1. sudo and root**
 
@@ -277,8 +277,6 @@ Say you want to edit the hostname file, which contains the name of your computer
 `sudo nano /etc/hostname`
 
 to which it asks you for your password, and then opens nano with the extra privileges provided by `sudo`. There is a `sudoers` file which contains a list of users who can use `sudo`, and what privileges they get from using it.
-
-
 
 #### **0.2.5.2. File permissions**
 
@@ -302,8 +300,6 @@ where the first set, `u`, refers to the permissions for the user who owns the fi
 `drwxrwxr-x`
 
 This is a directory, the user has read/write/execute access, users belonging to the group of the file have read/write/execute access, and everyone else has read/execute access, but not write access.
-
-
 
 #### **0.2.5.3. Changing permissions**
 
@@ -349,11 +345,12 @@ So when we set our file junk1 to 755 earlier, we set it to rwxr-xr-x, which is a
 
 ### 0.2.6. Network commands
 
-#### 0.2.6.1. `ping`
-* Can be handful for DNS checks (up / or down) | is a DNS tool to resolves web addresses to an IP address.
+#### 0.2.6.1. ping
+
+* Can be a handful for DNS checks (up / or down) | is a DNS tool to resolve web addresses to an IP address.
 * Test reachability - determine round-trip time, and uses ICMP protocol.
 
-```console
+```
 ~#: ping www.google.com 
 
 PING www.google.com (172.217.168.164): 56 data bytes
@@ -364,35 +361,32 @@ PING www.google.com (172.217.168.164): 56 data bytes
 round-trip min/avg/max/stddev = 25.236/25.608/25.981/0.373 ms
 ```
 
+#### 0.2.6.2. netstat
 
-#### 0.2.6.2. `netstat`
 * Network statistics
 * Get info on host system TCP / UDP connections and status of all open and listening ports and routing table.
+* Who are you talking to?
+* Who is trying to talk to you?
 
-* Who you talking to? 
-* Who trying talking to you? 
-
-```console
+```
 netstat -a # (show all active connections) (servers)
 netstat -n # (hosts)
 netstat -b # (Show binaries Windows)
 ```
 
-#### 0.2.6.3. `traceroute`
-* Traceroute - how packets get from host to another endpoint. Traceroute is helpful to see what routers are being hit, both internal and external.
+#### 0.2.6.3. traceroute
 
+* Traceroute - how packets get from the host to another endpoint. Traceroute is helpful to see what routers are being hit, both internal and external.
 * **Take advantage of ICMP Time to Live (TTL) Exceeded error message**
-	- The time in TTL refers to hops, not seconds or minutes.
-	- TTL=1 is the first router.
-	- TTL=2 is the second router, and so on.
+  * The time in TTL refers to hops, not seconds or minutes.
+  * TTL=1 is the first router.
+  * TTL=2 is the second router, and so on.
 
-<p align="center">
-<img width="90%" src="https://2.bp.blogspot.com/-bJD787kOoXg/WxfnpFe4tVI/AAAAAAAAXN4/XTCxg0nFEAQOjtEVcvDzL2N-pK-EbQA2wCLcBGAs/s1600/0.png" />
-</p>
+![](https://2.bp.blogspot.com/-bJD787kOoXg/WxfnpFe4tVI/AAAAAAAAXN4/XTCxg0nFEAQOjtEVcvDzL2N-pK-EbQA2wCLcBGAs/s1600/0.png)
 
-* *As shown above, on HOP 2 the TTL exceeded and back to the device A, counting 3 on TTL for the next HOP.*
+* _As shown above, on HOP 2 the TTL exceeded and back to device A, counting 3 on TTL for the next HOP._
 
-```console
+```
 ~#: traceroute google.com
 
 traceroute to google.com (172.217.17.14), 64 hops max, 52 byte packets
@@ -410,11 +404,13 @@ traceroute to google.com (172.217.17.14), 64 hops max, 52 byte packets
     79.125.252.199 (79.121.251.191)  22.885 ms
 ```
 
-#### 0.2.6.4. `arp` 
+#### 0.2.6.4. arp
+
 * Address resolution protocol - caches of ip-to-ethernet
 * Determine a MAC address based on IP addresses
 * Option `-a`: view local ARP table
-```console
+
+```
 ~#: arp -a
 
 ? (192.168.1.3) at 00:11:22:33:44:55 [ether] on enp0s10
@@ -423,11 +419,11 @@ traceroute to google.com (172.217.17.14), 64 hops max, 52 byte packets
 _gateway (192.168.1.1) at 00:31:33:8b:2a:da [ether] on enp0s10
 ```
 
-#### 0.2.6.5. `ifconfig`
+#### 0.2.6.5. ifconfig
 
-* Equivalent to ipconfig for UNIX/Linux OS.
+* Equivalent to ipconfig in Windows for UNIX/Linux OS.
 
-```console
+```
 ~#: ifconfig
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         ether 00:11:22:33:44:55  txqueuelen 0  (Ethernet)
@@ -446,10 +442,11 @@ enp0s10: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
-#### 0.2.6.6. `iwconfig`
+#### 0.2.6.6. iwconfig
+
 similar to ifconfig, but is dedicated to the wireless network interface.
 
-```console
+```
 ~#: iwconfig
 lo        no wireless extensions.
 
@@ -464,12 +461,13 @@ wlp3s0b1  IEEE 802.11  ESSID:off/any
 docker0   no wireless extensions.
 ```
 
-#### 0.2.6.7. `ip addr`
+#### 0.2.6.7. ip addr
+
 show / manipulate routing, network devices, interfaces and tunnels.
 
 Show all the ip configuration, mac address, ipv6 etc.
 
-```console
+```
 ~#: ip addr
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -485,11 +483,11 @@ Show all the ip configuration, mac address, ipv6 etc.
        valid_lft forever preferred_lft forever
 ```
 
-#### 0.2.6.8. `nslookup`
+#### 0.2.6.8. nslookup
 
 * Query Internet name servers interactively; check if the DNS server is working
 
-```console
+```
 nslookup www.certifiedhacker.com
 
 output:
@@ -507,13 +505,13 @@ Non-authoritative answer:
 www.certifiedhacker.com canonical name = certifiedhacker.com.
 Name:   certifiedhacker.com
 Address: 162.241.216.11
-
 ```
 
-#### 0.2.6.9. `dig` 
-* DNS lookup tool - Functions like nslookup, but allows for further functionality.
+#### 0.2.6.9. dig
 
-```console
+* DNS lookup tool - Functions like `nslookup`, but allows for further functionality.
+
+```
 dig www.certifiedhacker.com
 
 output:
@@ -536,39 +534,22 @@ certifiedhacker.com.    14400   IN      A       162.241.216.11
 ;; SERVER: 192.168.1.1#53(192.168.1.1)
 ;; WHEN: Mon Mar 02 15:40:29 EST 2020
 ;; MSG SIZE  rcvd: 92
-
 ```
 
-#### 0.2.6.10. `netcat`
-TCP/IP swiss army knife; you can make any type of connection and see the results from a command line. With nc you can connect to anything on any port number or you can make your system listen on a port number. Can be an agressive tool for recon.
+#### 0.2.6.10. netcat
 
-<p align="center">
-<img src="https://www.researchgate.net/publication/329745450/figure/fig3/AS:705181092179978@1545139682702/Remote-Command-and-Control-example-through-Netcat.ppm" />
-</p>
+TCP/IP swiss army knife; you can make any type of connection and see the results from a command line. With `nc` you can connect to anything on any port number or you can make your system listen on a port number. Can be an aggressive tool for recon.
+
+![](https://www.researchgate.net/publication/329745450/figure/fig3/AS:705181092179978@1545139682702/Remote-Command-and-Control-example-through-Netcat.ppm)
 
 * "Read" or "Write" to the network
-	- Open a port and send or receive some traffic
-	- Listen on a port number
-	- Transfer data
-	- Scan ports and send data to be a port
+  * Open a port and send or receive some traffic
+  * Listen on a port number
+  * Transfer data
+  * Scan ports and send data to a port
 * Become a backdoor
-	- Run a shell from a remote device
+  * Run a shell from a remote device
 
-#### 0.2.6.11. `stat` 
-stat can return the status of an entire file system, the status of the first hard disk and so on.
-
-<p align="center">
-<img width="88%" src="https://www.howtoforge.com/images/command-tutorial/big/stat-basic.png" />
-</p>
-
-- Archive attribute - **Windows** - if something is created or changed
-
-#### 0.2.6.12. `tcpdump`
-* Tcpdump is a data-network packet analyzer computer program that runs under a command line interface. It allows the user to display TCP/IP and other packets being transmitted or received over a network to which the computer is attached. Distributed under the BSD license, tcpdump is free software
-
-<p align="center">
-<img width="90%" src="https://packetflows.com/wp-content/uploads/2017/05/tcpdump_i.png" />
-</p>
 
 
 ### Need more practice?
