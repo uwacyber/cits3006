@@ -4,18 +4,18 @@ You will find lecture slides available here. For lecture recordings, please log 
 
 
 
-* 0\. Introduction(cits3006-lectures/00.introduction.pdf)
+* 00\. Introduction(cits3006-lectures/00.introduction.pdf)
 
-* [1\. Ethics](cits3006-lectures/01.Ethics.pdf)
+* [01\. Ethics](cits3006-lectures/01.Ethics.pdf)
 
-* [2\. Reconnaissance](cits3006-lectures/02.Reconnaissance.pdf)
+* [02\. Reconnaissance](cits3006-lectures/02.Reconnaissance.pdf)
 
-* 3\. Network Exploits(cits3006-lectures/03.Network_Exploits.pdf)
+* 03\. Network Exploits(cits3006-lectures/03.Network_Exploits.pdf)
 
-* 4\. Malware Basics(cits3006-lectures/04.Malware_Basics.pdf)
+* 04\. Malware Basics(cits3006-lectures/04.Malware_Basics.pdf)
 
-* 5\. Malware Advanced(cits3006-lectures/05.Malware_Advanced.pdf)
+* 05\. Malware Advanced(cits3006-lectures/05.Malware_Advanced.pdf)
 
-* 6\. ?
+* 06\. ?
 
 &#x20;
