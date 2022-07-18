@@ -4,11 +4,11 @@ You will find lecture slides available here. For lecture recordings, please log 
 
 
 
-0\. Introduction
+* [0\. Introduction](cits3006-lectures/0.introduction.pdf)
 
-1\. Ethics
+* [1\. Ethics](cits3006-lectures/1. Ethics.pdf)
 
-2\. Reconnaissance
+* [2\. Reconnaissance](cits3006-lectures/2. Reconnaissance.pdf)
 
 3\. Network Exploits
 
