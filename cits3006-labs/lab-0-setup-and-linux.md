@@ -10,7 +10,11 @@ If you already have VM and Docker set up and running on your machine, you can sk
 
 ### 0.1.1. VM setup
 
-We will be using [Kali Linux](https://www.kali.org/) as our base VM (the bare metal option), as it comes with various tools we will be using already. Kali also has native builds for both AMD64 and ARM64 (see below), so it is easy to have it ready on most of our machines. Please see below for recommendations if you haven't used VM before:
+We will be using [Kali Linux](https://www.kali.org/) as our base VM (the bare metal option), as it comes with various tools we will be using already. Kali also has native builds for both AMD64 and ARM64 (see below), so it is easy to have it ready on most of our machines. Please see below for recommendations if you haven't used a VM before (minimum instruction provided, you are required to do your own research for setting up VMs on your machine):
+
+{% hint style="danger" %}
+In general, you are expected to troubleshoot your setup issues yourself (we already did this in your first year). We will still try to help you with your setup issues, but the helpers will prioritise helping lab-related questions first especially if the labs are very busy.
+{% endhint %}
 
 #### Windows, Linux or Mac using Intel chips AMD64
 
@@ -18,10 +22,18 @@ We will be using [Kali Linux](https://www.kali.org/) as our base VM (the bare me
 * If it doesn't work well, you can try using [VMware Workstation Player](https://www.vmware.com/au/products/workstation-player.html).
 * If the above two fail, please contact the lab facilitator.
 
-#### Mac using Apple Silicon ARM64 (M1 series, M2 etc.)
+{% hint style="warning" %}
+A typical issue people have running VMs on Windows machines are that you have Hyper-V on. You should research and turn it off if your VMs have issues.
+{% endhint %}
+
+#### Mac using Apple Silicon chips ARM64 (M1 series, M2 etc.)
 
 * You can use [UTM](https://mac.getutm.app/) - all instructions for ARM64 will be based on using UTM.
 * You can also use other apps like [Parallels](https://www.parallels.com/au/products/desktop/) only if you prefer, but it would not be required.
+
+{% hint style="warning" %}
+Apple Silicon machines still have a lot of incompatibility issues, so not all functionalities may be available to use. Best efforts are made to do the labs on AS machines, but we may not be able to help you if you used different tools and face problems.
+{% endhint %}
 
 ### 0.1.2. Docker setup
 
@@ -29,11 +41,11 @@ The process for installing Docker Desktop is straightforward and involves using 
 
 {% embed url="https://www.docker.com/get-started" %}
 
-It is recommended to use Docker within your VM if needed when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
+It is recommended to use Docker within your VM (e.g., Kali) if needed, especially when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
 
 ## 0.2 Linux refresher
 
-This lab is to provide a refresher on your Linux knowledge. You may skim/skip through this lab if you feel confident, but if you haven't don't much in Linux for a while (a semester or two), you are strongly advised to complete this lab before moving on to other labs to improve your workflow efficiency. For each example, you should try it yourself before moving on to the next section.
+This lab is to provide a refresher on your Linux knowledge, and you can do this on your Kali VM. You may skim/skip through this lab if you feel confident, but if you haven't done much in Linux for a while (a semester or two), you are strongly advised to complete this lab before moving on to other labs to improve your workflow efficiency. For each example, you should try it yourself before moving on to the next section.
 
 ### 0.2.1. Distributions
 
@@ -139,7 +151,7 @@ The shell uses a number of special characters called wildcards, similar to regul
 
 `*` Match 0 or more characters. For example, `rm *.txt` will delete all files that end in .txt, and `cp somedirectory/* .` will copy all files from \`somedirectory' to the current directory.
 
-`?` Match any single character. For example, `cp example.?` somedir will copy all files named \`example' with a single character extension, into the directory \`somedir'
+`?` Match any single character. For example, `cp example.?` will copy all files named \`example' with a single character extension, into the directory \`somedir'
 
 `[]` Match any single character in the square brackets. You can even specify a range, i.e. `rm m[a-e]m` will delete any files starting and ending with `m`, and with any letter between \`a' and \`e' in between. `rm m[abc]m` will delete files \`mam', \`mbm', \`mcm'.
 
@@ -238,7 +250,7 @@ Linux uses a global terminal variable to find programs. This is the $PATH variab
 
 This would mean that if I were to use the command `ls`, it would search for a binary file called 'ls' in `/usr/local/sbin`, then in `/usr/local/bin`, and so on until it found it. Then it would be executed. Because these are searched in order, if you were to prepend a directory path to the front of `$PATH` with your own copy of `ls` in it, and then run the ls command, then your copy would be run instead.
 
-This is sometimes used as an exploit by modifying the user's `$PATH` variable so that a path containing malicious binaries with the same names as common commands is on the front. When the user goes to run these commands, then the malicious binaries are run instead.
+This is sometimes used as an exploit by modifying the user's `$PATH` variable so that a path containing malicious binaries with the same names as common commands is on the front. When the user runs these commands, then the malicious binaries are run instead.
 
 ### 0.2.5. Users and Permissions
 

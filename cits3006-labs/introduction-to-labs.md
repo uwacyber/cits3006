@@ -6,9 +6,9 @@ As always, please contact the lab facilitator if you are stuck. You will be aske
 
 ## Laptop Requirement
 
-This unit requires software that the University IT team can't install on the lab machines and so you will need to use your own laptop. This can be either Windows, Mac or Linux and instructions will be provided for those platforms as necessary. We will be running (often) two or more VMs at the same time, so it is advisable to get a laptop that has high core counts (minimum 4), additional RAM (minimum 16GB), and enough storage space (around 50GB). For further details on laptop specifications, you can see here: [https://teaching.csse.uwa.edu.au/units/unitinfo/laptops.php](https://teaching.csse.uwa.edu.au/units/unitinfo/laptops.php)
+This unit requires software that the University IT team can't install on the lab machines and so you will need to use your own laptop. This can be either Windows, Mac or Linux and instructions will be provided for those platforms as necessary. We will be running (often) two or more VMs at the same time, so it is advisable to get a laptop that has high core counts (minimum 4), additional RAM (minimum 16GB), and enough storage space (extra 50GB in addition to whatever you use already). For further details on laptop specifications, you can see here: [https://teaching.csse.uwa.edu.au/units/unitinfo/laptops.php](https://teaching.csse.uwa.edu.au/units/unitinfo/laptops.php)
 
-If you do not have a laptop, it will make your life easier by getting one that meets the requirements specified from the above link.
+If you do not have a laptop, it will make your life easier by getting one that meets the requirements specified in the above link.
 
 Only in special cases, you may request a loan laptop from the student office. Please contact the Student Office to ask for more details: [studentwelfare-studserv@uwa.edu.au](mailto:studentwelfare-studserv@uwa.edu.au)
 
