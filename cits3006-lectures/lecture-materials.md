@@ -1,6 +1,6 @@
 # Lecture Materials
 
-You will find lecture slides available here. For lecture recordings, please log in to [LMS](https://lms.uwa.edu.au/) and access Lecture Recordings through ECHO360 from the unit page.
+You will find lecture slides available here (you will be able to download the pdf copies). For lecture recordings, please log in to [LMS](https://lms.uwa.edu.au/) and access Lecture Recordings through ECHO360 from the unit page.
 
 * 00\. Introduction
 * [01. Ethics](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/01.Ethics.pdf)
