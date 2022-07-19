@@ -376,7 +376,7 @@ Once done, we can now compile the c codes using the makefile provided (if you ha
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
-![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8).png>)
+![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8) (1).png>)
 
 So it works! Let's have a closer look at the code, starting with the `hacker.c` file.
 
