@@ -107,7 +107,7 @@ Now we can run it, let's run it against the metasploitable VM (check its IP addr
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-![](<../.gitbook/assets/image (6) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1).png>)
 
 We just created our own port scanner using Bash!
 
@@ -151,7 +151,7 @@ Find out what those flags mean.
 
 Then we should be able to see something like:
 
-![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (1) (1).png>)
 
 So we have used Nmap to discover hosts in the network, and also scan them to find services and OS details. Just remember, Nmap is just executing a bunch of scripts like we wrote in the previous section, just automated. So you can always dig through its exploit database and have a look at the details of those attacks (because it is open-source, it is possible).
 
@@ -179,7 +179,7 @@ Since it's there, we'll exploit it. Launch the Metasploit from the terminal:
 msfconsole
 ```
 
-![](<../.gitbook/assets/image (5) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1) (1) (1).png>)
 
 From the msfconsole, we can search for the identified service-related exploits
 
@@ -187,7 +187,7 @@ From the msfconsole, we can search for the identified service-related exploits
 use vsftpd
 ```
 
-![](<../.gitbook/assets/image (4) (1) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1) (1) (1) (1).png>)
 
 In fact, there is only one exploit (the backdoor one) available, so it will be automatically be selected. If it is not automatically selected, just type: `use 0` (i.e., the number 0th exploit) to select it.
 
@@ -203,7 +203,7 @@ Next, we need to check options to see what inputs the exploit requires.
 show options
 ```
 
-![](<../.gitbook/assets/image (2) (1) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1) (1).png>)
 
 The exploit is actually simple, and only requires the target host's IP address. So set the RHOST with the target IP address found using Nmap (the RPORT is already set, but if the FTP service runs on a different port or if the RPORT is not set, you can update/set it).
 
@@ -215,7 +215,7 @@ set RHOST 192.168.64.5
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](<../.gitbook/assets/image (2) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.
@@ -247,7 +247,7 @@ Like before, we begin by searching for `ssh` related exploits in the Metasploit 
 search ssh
 ```
 
-![](<../.gitbook/assets/image (4) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1) (1) (1).png>)
 
 ... But there are too many! So let's reduce the selection to `ssh_login`:
 
@@ -255,7 +255,7 @@ search ssh
 search ssh_login
 ```
 
-![](<../.gitbook/assets/image (6) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
 
 Two shows up, and we will use the first one and check the options:
 
@@ -310,7 +310,7 @@ set PASS_FILE /usr/share/wordlists/rockyou.txt
 set USERNAME msfadmin
 ```
 
-![](<../.gitbook/assets/image (5) (1) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1) (1).png>)
 
 Now the bruteforce attack only has to guess the password!
 
@@ -346,7 +346,7 @@ We set 443 to be the incoming port from the target host, so we listen on this po
 python -c "[copy and paste payload here]"
 ```
 
-![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1) (1).png>)
+![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1) (1) (1).png>)
 
 {% hint style="info" %}
 Usually the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
@@ -364,7 +364,7 @@ First, download the reverse shell files:
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/rshell.zip
 ```
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1).png>)
 
 Unzip using the `unzip` command.
 
@@ -376,17 +376,17 @@ Once done, we can now compile the c codes using the makefile provided (if you ha
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
-![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8) (1).png>)
+![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8) (1) (1).png>)
 
 So it works! Let's have a closer look at the code, starting with the `hacker.c` file.
 
 There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
-![](<../.gitbook/assets/image (5) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1).png>)
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 
-![](<../.gitbook/assets/image (7).png>)
+![](<../.gitbook/assets/image (7) (1).png>)
 
 Again, nothing much in the code other than typical socket coding for the client, BUT look at lines 61 - 63. This is where the reverse shell happens:
 
