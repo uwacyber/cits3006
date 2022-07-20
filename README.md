@@ -8,6 +8,10 @@ The unit will cover areas as defined in the Cyber Security Book of Knowledge (Cy
 
 On this site, you will find all materials necessary for you to complete the assessments of this unit, including lab materials and the project.
 
+{% hint style="danger" %}
+This unit provides cybersecurity knowledge and techniques for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws. The authors do not take any responsibility for your misbehaviour using the information provided here.
+{% endhint %}
+
 ### Outcomes
 
 Students are able to (1) identify security vulnerabilities in computer systems; (2) demonstrate an understanding of different penetration testing methods and skills; (3) design basic penetration testing methods; (4) select appropriate penetration testing tools for different applications/platforms/environments; and (5) evaluate security design, implementation and penetration testing practices.
