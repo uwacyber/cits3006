@@ -18,7 +18,7 @@ There are 3 lab quizzes that are worth a total of 60% of unit marks. There will 
 
 ### Advisable prior studies
 
-Although the prerequisite for this unit is only 12 points of programming, you are advised to take this unit in the third year to obtain various computer science knowledge (especially computer networks) to ensure that you have a comprehensive understanding of computer systems and networks to do well in this unit.
+Although the prerequisite for this unit is only 12 points of programming, you are advised to take this unit in the third year so that you can obtain various computer science knowledge (especially computer systems and networks) to ensure that you have a comprehensive understanding of computer systems and networks to do well in this unit. Some essential background knowledge are also provided in the labs section, such as the [Networks 101 module](cits3006-labs/network-101.md).
 
 ### License Terms
 
