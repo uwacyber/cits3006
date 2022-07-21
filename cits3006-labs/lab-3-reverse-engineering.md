@@ -22,27 +22,53 @@ Static analysis is usually the initial stage of malware analysis. Commonly the s
 
 #### 3.1.1. DearCry Sample
 
-We will analyze the DearCry ransomware sample (often classified also as DoejoCrypt) obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is relatively large malware sample.
+We will analyze the DearCry ransomware sample (often classified also as DoejoCrypt) obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is relatively large malware sample. Download the sample using the "download sample" link, as shown in Figure 1.
 
-![](../.gitbook/assets/lab-X-assets/1.png) _Figure 1: DearCry Metadata from Malware Bazaar repository_
+![](../.gitbook/assets/lab-3-assets/1.png) 
+
+_Figure 1: DearCry Metadata from Malware Bazaar repository_
 
 #### 3.1.2. Strings
 
 DearCry is very simple ransomware, as we can see even by extraction of the embedded strings. We use the `strings` command (Unix), or the Sysinternals tool called strings.exe (Windows).
 
-![](../.gitbook/assets/lab-X-assets/2.png) _Figure 2: Extracted strings with ransom note template and name of the ransomware._
+> strings e044d9...bin
+>
+> or
+>
+> strings e044d9...exe
+
+![](../.gitbook/assets/lab-3-assets/2.png) 
+
+_Figure 2: Extracted strings with ransom note template and name of the ransomware._
 
 There is no obfuscation, all strings are clearly visible. For example, the ransom note. The sample leaks some debug information about its origin, too. From the PDB filepath we can determine the username, used development tools and original name of the project.
 
-![](../.gitbook/assets/lab-X-assets/3.png) _Figure 3: Extracted strings with RSA public key and file extensions to be encrypted_
+![](../.gitbook/assets/lab-3-assets/3.png) 
+
+_Figure 3: Extracted strings with RSA public key and file extensions to be encrypted_
 
 RSA Public key is visible here, and also the list of file extensions. DearCry ransomware will probably encrypt files with these extensions, as we will see later.
 
 #### 3.1.3. Capabilities
 
-![](../.gitbook/assets/lab-X-assets/4.png) _Figure 4: Sample overview reported by capa tool_ ![](../.gitbook/assets/lab-X-assets/5.png) _Figure 5: Sample capabilities - file operations; OpenSSL crypto library used._
+![](../.gitbook/assets/lab-3-assets/4.png) 
 
-As a next step, we can quickly identify capabilities in the analyzed sample with the [capa tool](https://github.com/mandiant/capa). There is lot of cryptography, ciphers, hashes. And it is linked against OpenSSL cryptography library.
+_Figure 4: Sample overview reported by capa tool_ 
+
+![](../.gitbook/assets/lab-3-assets/5.png) 
+
+_Figure 5: Sample capabilities - file operations; OpenSSL crypto library used._
+
+As a next step, we can quickly identify capabilities in the analyzed sample with the [capa tool](https://github.com/mandiant/capa). 
+
+> capa e044d9...bin
+>
+> or
+>
+> capa e044d9...exe
+
+There is lot of cryptography, ciphers, hashes. And it is linked against OpenSSL cryptography library.
 
 ### 3.2. Behavioural Analysis
 
@@ -54,21 +80,34 @@ We will skip this step for now, because we already know that this is a DearCry r
 
 ### 3.3. Reverse Engineering
 
-Reverse engineering is the phase in which we decompile or disassemble the machine instructions of program into more readable form. In this case, analyzed sample is a Portable Executable file produced by Microsoft Visual Studio compiler. We use IDA, Interactive Disassembler, for reverse engineering of this DearCry sample.
+Reverse engineering is the phase in which we decompile or disassemble the machine instructions of program into more readable form. In this case, analyzed sample is a Portable Executable file produced by Microsoft Visual Studio compiler. We use IDA, Interactive Disassembler, for reverse engineering of this DearCry sample. IDA can be downloaded [here](https://hex-rays.com/ida-free/). Open the .exe or .bin file in IDA.
 
 #### 3.3.1. IDA Flirt Signatures
 
-When IDA finished its automatic analysis, we can see disassembled program with lot of functions. By default, almost all functions are assumed to be regular (blue color in program navigation bar), without known library functions (light cyan in navigation bar). We can fix this by applying IDA's FLIRT signatures, for example, Microsoft Visual C runtime signatures identified more than 600 functions. But there is still very small portion of all functions.
+When IDA finished its automatic analysis, we can see disassembled program with lot of functions. By default, almost all functions are assumed to be regular (blue color in program navigation bar), without known library functions (light cyan in navigation bar). We can fix this by applying IDA's FLIRT signatures, for example, Microsoft Visual C runtime signatures identified more than 600 functions. But there is still very small portion of all functions. To access the signatures subview, click on "View", "Open subviews" and then select "Signatures".
 
-![](../.gitbook/assets/lab-X-assets/6.png) _Figure 6:Applied IDA FLIRT Signatures and Program overview in Navigation Bar_
+![](../.gitbook/assets/lab-3-assets/6.png) 
+
+_Figure 6:Applied IDA FLIRT Signatures and Program overview in Navigation Bar_
 
 Recall that capa tool identified that this sample is linked against OpenSSL, and there are many strings containing the OpenSSL term. It seems that DearCry is statically linked against OpenSSL version 1.1.
 
-![](../.gitbook/assets/lab-X-assets/7.png) _Figure 7: GitHub repository with FLIRT signatures for OpenSSL_
+![](../.gitbook/assets/lab-3-assets/7.png) 
 
-We can obtain the signatures for OpenSSL from the [community driven collection of IDA FLIRT signature files](https://github.com/Maktm/FLIRTDB/tree/master/openssl/windows). They are available for couple of common libraries. We will download and use two which fits most to our case - OpenSSL 1.1 compiled by Visual Studio 2008, as we saw in the extracted strings. With these two FLIRT signatures applied, we have identified more than 3000 of library functions. Now it seems that only small portion of DearCry functions is custom, developed by authors of the ransomware.
+_Figure 7: GitHub repository with FLIRT signatures for OpenSSL_
 
-![](../.gitbook/assets/lab-X-assets/8.png) _Figure 8: Applied IDA FLIRT Signatures for OpenSSL library_
+We can obtain the signatures for OpenSSL from the [community driven collection of IDA FLIRT signature files](https://github.com/Maktm/FLIRTDB/tree/master/openssl/windows). They are available for couple of common libraries. We will download and use two which fits most to our case - OpenSSL 1.1 compiled by Visual Studio 2008, as we saw in the extracted strings. 
+
+* libcryptoMT_8_msvc_x86.sig
+* libcryptoMT_10_msvc_x86.sig
+
+Download them from the link above. Move the downloaded files into the signature folder of your IDA installation. The default path should be `/home/kali/idafree-7.7/sig/pc/`. Then load them into IDA via "File", "Load file" and select "IDA Flirt signature". You will also need to load the `vc32rtf` signature via the same method.
+
+With these two FLIRT signatures applied, we have identified more than 3000 of library functions. Now it seems that only small portion of DearCry functions is custom, developed by authors of the ransomware.
+
+![](../.gitbook/assets/lab-3-assets/8.png) 
+
+_Figure 8: Applied IDA FLIRT Signatures for OpenSSL library_
 
 When we examine imports, they are mostly related to cryptography, because of dependencies of embedded OpenSSL library. On the other hand, there is only one exported symbol called start, which is the usual entry point of portable executable files.
 
@@ -78,45 +117,67 @@ When we examine imports, they are mostly related to cryptography, because of dep
 
 Now we are ready to begin with analysis of disassembled code. Our objective is to understand what the analyzed program does and how it works.
 
-![](../.gitbook/assets/lab-X-assets/9.png) _Figure 9: Start routine of the analyzed sample_
+![](../.gitbook/assets/lab-3-assets/9.png) 
+
+_Figure 9: Start routine of the analyzed sample_
 
 This is more less standard start routine, with checking for “MZ” (5A4Dh) and “PE” executable headers, then parsing command line arguments and set environment variables. After that, near to the end of start routine, there is a call with three arguments. This is the main function of the programs developed in C or C++.
 
-![](../.gitbook/assets/lab-X-assets/10.png) _Figure 10: End of the start routine with call to main function_
+![](../.gitbook/assets/lab-3-assets/10.png) 
+
+_Figure 10: End of the start routine with call to main function_
 
 **3.3.2.2. Main Function**
 
 The main function is simple. It starts service control dispatcher, which connects the main service thread to the service control manager. The service related to this ransomware is called “msupdate”.
 
-![](../.gitbook/assets/lab-X-assets/11.png) _Figure 11: Disassembled main function of the ransomware sample_
+![](../.gitbook/assets/lab-3-assets/11.png) 
+
+_Figure 11: Disassembled main function of the ransomware sample_
 
 **3.3.2.3. ServiceMain Function**
 
 ServiceMain function is also simple, it registers service control handler for this “msupdate” service. And then, it calls yet unknown function sub\_401D10.
 
-![](../.gitbook/assets/lab-X-assets/12.png) _Figure 12: Disassembled ServiceMain function_
+![](../.gitbook/assets/lab-3-assets/12.png) 
+
+_Figure 12: Disassembled ServiceMain function_
 
 Back in main function, we can see that the same sub\_401D10 function is called right after service dispatcher. It seems that this function is responsible for all malicious things performed by this ransomware sample. Hence, it will probably do some ransomware stuff.
 
 **3.3.2.4. “Do-ransomware-stuff” Function**
 
-![](../.gitbook/assets/lab-X-assets/13.png) _Figure 13: "do\_ransomware\_stuff" function called from main and ServiceMain functions_
+![](../.gitbook/assets/lab-3-assets/13.png) 
+
+_Figure 13: "do\_ransomware\_stuff" function called from main and ServiceMain functions_
 
 Let's look into the ransomware stuff function. First interesting function is sub\_401000. It references the embedded RSA Public Key and creates string with hexadecimal representation of some values in loop. It actually creates a formatted string with hash value of RSA key.
 
-![](../.gitbook/assets/lab-X-assets/14.png) _Figure 14: Obtaining the hexadecimal representation of the embedded RSA Public Key’s hash value_
+![](../.gitbook/assets/lab-3-assets/14.png) 
+
+_Figure 14: Obtaining the hexadecimal representation of the embedded RSA Public Key’s hash value_
 
 Next, the ransomware stuff function then prepares a formatted ransom note message and get list of logical drives of the infected machine. It searches for drives with letters between C and Z included, and all types of drive except CD-ROM drive.
 
-![](../.gitbook/assets/lab-X-assets/15.png) _Figure 15: Preparation of formatted ransom note message in the ransomware stuff function_ ![](../.gitbook/assets/lab-X-assets/16.png) _Figure 16: Enumeration of logical drives of the infected machine_
+![](../.gitbook/assets/lab-3-assets/15.png) 
+
+_Figure 15: Preparation of formatted ransom note message in the ransomware stuff function_ 
+
+![](../.gitbook/assets/lab-3-assets/16.png) 
+
+_Figure 16: Enumeration of logical drives of the infected machine_
 
 After that, it passes each drive to the function sub\_401640, which will probably be responsible for encrypting drive or folder.
 
-![](../.gitbook/assets/lab-X-assets/17.png) _Figure 17: Hypothesis: function sub\_401640 is responsible for encrypting drive or folder and creation of readme.txt file with ransom note_
+![](../.gitbook/assets/lab-3-assets/17.png) 
+
+_Figure 17: Hypothesis: function sub\_401640 is responsible for encrypting drive or folder and creation of readme.txt file with ransom note_
 
 Then, this ransomware stuff function drops readme.txt file with the ransom note. And finally, the last call will delete service “msupdate”, created by this ransomware previously.
 
-![](../.gitbook/assets/lab-X-assets/18.png) _Figure 18: Removing msupdate service created by this ransomware previously_
+![](../.gitbook/assets/lab-3-assets/18.png) 
+
+_Figure 18: Removing msupdate service created by this ransomware previously_
 
 #### 3.3.3. File Encryption
 
@@ -126,13 +187,17 @@ Until now, we used top-down methodology for analysis of ransomware logic. Now we
 
 During static analysis we saw string “.CRYPT”, which looks like an extension of the files encrypted by this ransomware. Let's examine the cross references to this string in IDA. It is referenced only in one function; thus this function should be responsible for writing an encrypted file to disk.
 
-![](../.gitbook/assets/lab-X-assets/19.png) _Figure 19: Cross references to ".CRYPT" and creating the encrypted file by ransomware_
+![](../.gitbook/assets/lab-3-assets/19.png) 
+
+_Figure 19: Cross references to ".CRYPT" and creating the encrypted file by ransomware_
 
 Let us examine this encrypt file function. Mode “rb+” means that the original file is opened for updating. To be more specific, for reading and writing. The “wb” mode means, that file with “.CRYPT” extension is opened for writing. Hence, DearCry uses copy encryption instead of in-place encryption of files, and it is similar to the infamous WannaCry ransomware.
 
 In Figure 20 we can see that DearCry ransomware prepends a “DEARCRY!” marker to the beginning of the encrypted .CRYPT files.
 
-![](../.gitbook/assets/lab-X-assets/20.png) _Figure 20: DEARCRY! file marker and encryption of AES key with RSA_
+![](../.gitbook/assets/lab-3-assets/20.png) 
+
+_Figure 20: DEARCRY! file marker and encryption of AES key with RSA_
 
 **3.3.3.2. OpenSSL Encryption: RSA+AES**
 
@@ -149,11 +214,15 @@ XTgYtEjhzJAC+esXiTYqklWMXJS1EmUpoQIBAw==
 -----END RSA PUBLIC KEY-----
 ```
 
-![](../.gitbook/assets/lab-X-assets/21.png) _Figure 21:Prime factors of 2048-bit RSA public key_
+![](../.gitbook/assets/lab-3-assets/21.png) 
+
+_Figure 21:Prime factors of 2048-bit RSA public key_
 
 Then, the encrypted symmetric key is written as a part of header of the encrypted file after the “DEARCRY!” marker.
 
-![](../.gitbook/assets/lab-X-assets/22.png) _Figure 22: OpenSSL functions for encryption. sub\_402F00 has not been identified by used FLIRT signature_
+![](../.gitbook/assets/lab-3-assets/22.png) 
+
+_Figure 22: OpenSSL functions for encryption. sub\_402F00 has not been identified by used FLIRT signature_
 
 In the Figure 22 there are calls to OpenSSL’s functions \_EVP\_CIPHER\_CTX\_new, \_EVP\_CipherInit\_ex and sub\_402F00, which has not been recognized by used FLIRT signature, but this function should return the type of encryption to be used. Let’s identify this function manually by quick review of OpenSSL library and its usage in DearCry ransomware. From the OpenSSL documentation, the first two parameters of EVP\_CipherInit\_ex are context (EVP\_CIPHER\_CTX) and type (EVP\_CIPHER):
 
@@ -172,55 +241,77 @@ EVP_CipherInit_ex(&ctx, EVP_rc4(), NULL, &key, &iv, 1);
 
 The EVP\_rc4() function is the example of candidate for the unknown function sub\_402F00. Actually, functions such as EVP\_rc4() are very simple, they contain only couple of instructions which return the object describing the type of the cipher, as is depicted in the Figure 23.
 
-![](../.gitbook/assets/lab-X-assets/23.png) _Figure 23: EVP\_Cipher type object returned by sub\_402F00_
+![](../.gitbook/assets/lab-3-assets/23.png) 
+
+_Figure 23: EVP\_Cipher type object returned by sub\_402F00_
 
 The first value (427) is something called NID, numbered value of ASN.1 object identifier. The NID value of 427 is associated with the AES-256-CBC cipher.
 
-![](../.gitbook/assets/lab-X-assets/24.png) _Figure 24: Identification of AES-256-CBC encryption used by DearCry ransomware_
+![](../.gitbook/assets/lab-3-assets/24.png) 
+
+_Figure 24: Identification of AES-256-CBC encryption used by DearCry ransomware_
 
 #### 3.3.4. Put it all together
 
 So, what have we analyzed? It seems that the chain between start or main function and encrypt\_file function is almost completely analyzed, except one function, sub\_4015D0; see Figure 25.
 
-![](../.gitbook/assets/lab-X-assets/25.png) _Figure 25: Function graph with already analyzed functions_
+![](../.gitbook/assets/lab-3-assets/25.png) 
+
+_Figure 25: Function graph with already analyzed functions_
 
 **3.3.4.1. Check-marker Function**
 
 Let’s focus on function sub\_4015D0. This time, a file is opened in read mode, and handle to this file is passed to another function, sub\_4010C0. It reads first 8 bytes and compare them with the string DearCry. After that, it performs additional checks. Therefore, it checks header and marker and verifies if file is already encrypted by the ransomware. After these checks by check\_marker function (originally sub\_4010C0), the actual encrypt file function is executed depending on the results of checks.
 
-![](../.gitbook/assets/lab-X-assets/26.png) _Figure 26: Checking the “DEARCRY!” file marker in sub\_4010C0, followed by encrypt\_file in sub\_4015D0_
+![](../.gitbook/assets/lab-3-assets/26.png) 
+
+_Figure 26: Checking the “DEARCRY!” file marker in sub\_4010C0, followed by encrypt\_file in sub\_4015D0_
 
 So, we just analyzed another two functions, for checking files and “DEARCRY!” markers before encryption itself. But we also see now, that the encrypt drive/folder function calls itself recursively, and it seems that it will be rather function for encrypting folders instead of drives only.
 
-![](../.gitbook/assets/lab-X-assets/27.png) _Figure 27: Function graph related to the files encryption and recursive function encrypt\_drive/folder_
+![](../.gitbook/assets/lab-3-assets/27.png) 
+
+_Figure 27: Function graph related to the files encryption and recursive function encrypt\_drive/folder_
 
 **3.3.4.2. Encrypt-folder Function**
 
 Let's dive into the encrypt\_folder function. It uses Find first file and find next file API calls for searching files in current directory. For files with extension from the aforementioned list of extensions, it calls already analyzed encryption function.
 
-![](../.gitbook/assets/lab-X-assets/28.png) _Figure 28: Encrypt\_folder function uses Win32 API calls FindFirstFileA and FindNextFileA_
+![](../.gitbook/assets/lab-3-assets/28.png) 
 
-![](../.gitbook/assets/lab-X-assets/29.png) _Figure 29: Checking of file extensions to encrypt_
+_Figure 28: Encrypt\_folder function uses Win32 API calls FindFirstFileA and FindNextFileA_
+
+![](../.gitbook/assets/lab-3-assets/29.png) 
+
+_Figure 29: Checking of file extensions to encrypt_
 
 **3.3.4.3. ReportServiceStatus Function**
 
 Now there is only one not yet analyzed function, sub\_401C10. Quick look into it reveals that it is kind of report service status for indicating the service state.
 
-![](../.gitbook/assets/lab-X-assets/30.png) _Figure 30: Last custom function - ReportServiceStatus_
+![](../.gitbook/assets/lab-3-assets/30.png) 
+
+_Figure 30: Last custom function - ReportServiceStatus_
 
 Now we have analyzed every regular function written by authors of the ransomware and we have rather good understanding what this ransomware does and how it works.
 
-![](../.gitbook/assets/lab-X-assets/31.png) _Figure 31: Function graph of analyzed functions reveals the program logic, too_
+![](../.gitbook/assets/lab-3-assets/31.png) 
+
+_Figure 31: Function graph of analyzed functions reveals the program logic, too_
 
 #### 3.3.5. Cross-check with behavioural analysis
 
 We can cross-check our results with the results from the behavioral analysis previously performed in sandbox. For example, the encrypted files with the CRYPT extension and DearCry marker in its beginning are clearly visible in the results.
 
-![](../.gitbook/assets/lab-X-assets/32.png) _Figure 32: File with .CRYPT extension and "DEARCRY!" file marker_
+![](../.gitbook/assets/lab-3-assets/32.png) 
+
+_Figure 32: File with .CRYPT extension and "DEARCRY!" file marker_
 
 Also, file readme.txt contains the formatted ransom note message including the contact emails and hash of the RSA key.
 
-![](../.gitbook/assets/lab-X-assets/33.png) _Figure 33: Formatted ransom note with emails and hash of the RSA key_
+![](../.gitbook/assets/lab-3-assets/33.png) 
+
+_Figure 33: Formatted ransom note with emails and hash of the RSA key_
 
 ### 3.4. Conclusion
 
