@@ -4,10 +4,6 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-
-
-
-
 ## TODO:
 
 * update instructions for kali linux: capa tool, IDA,
@@ -16,21 +12,21 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 The aim of this lab is to perform deep analysis of DearCry ransomware and demonstrate some techniques of malware analysis, and especially reverse engineering of malicious sample for educational purposes. Materials in this lab adapted from [LIFARS](https://lifars.com/wp-content/uploads/2021/04/DearCry\_Ransomware.pdf).
 
-### X.0. Introduction
+## 3.0. Introduction
 
 The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomwares, DearCry is special in terms of its complexity. It is very simple malware, and it could be reverse engineered in couple of minutes as we demonstrate in this paper. The main objective of this document is to provide not only the analysis of DearCry ransomware, but also to provide educational tips and tricks, which could be useful in the cybersecurity community and students of computer science.
 
-### X.1. Static Analysis
+### 3.1. Static Analysis
 
 Static analysis is usually the initial stage of malware analysis. Commonly the samples are scanned with antivirus software and IOC scanners. This phase also includes the analysis of sample metadata, embedded strings, resources, imports and exports (in case of Portable executable files, .EXE), presence of macros and auto-open or auto-close actions (in case of Office Documents).
 
-#### X.1.1. DearCry Sample
+#### 3.1.1. DearCry Sample
 
 We will analyze the DearCry ransomware sample (often classified also as DoejoCrypt) obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is relatively large malware sample.
 
 ![](../.gitbook/assets/lab-X-assets/1.png) _Figure 1: DearCry Metadata from Malware Bazaar repository_
 
-#### X.1.2. Strings
+#### 3.1.2. Strings
 
 DearCry is very simple ransomware, as we can see even by extraction of the embedded strings. We use the `strings` command (Unix), or the Sysinternals tool called strings.exe (Windows).
 
@@ -42,13 +38,13 @@ There is no obfuscation, all strings are clearly visible. For example, the ranso
 
 RSA Public key is visible here, and also the list of file extensions. DearCry ransomware will probably encrypt files with these extensions, as we will see later.
 
-#### X.1.3. Capabilities
+#### 3.1.3. Capabilities
 
 ![](../.gitbook/assets/lab-X-assets/4.png) _Figure 4: Sample overview reported by capa tool_ ![](../.gitbook/assets/lab-X-assets/5.png) _Figure 5: Sample capabilities - file operations; OpenSSL crypto library used._
 
 As a next step, we can quickly identify capabilities in the analyzed sample with the [capa tool](https://github.com/mandiant/capa). There is lot of cryptography, ciphers, hashes. And it is linked against OpenSSL cryptography library.
 
-### X.2. Behavioural Analysis
+### 3.2. Behavioural Analysis
 
 During behavioral analysis, the sample is executed in sandbox. This protected environment is monitored for any activities performed by the sample, such as spawning new processes, network communication, dropping files or overwriting the existent files. By reviewing of sample’s behavior, we can often say if the sample is malicious and if yes, what kind of malware it is (e.g., ransomware).
 
@@ -56,11 +52,11 @@ With behavioral analysis we can also quickly collect lot of indicators of compro
 
 We will skip this step for now, because we already know that this is a DearCry ransomware sample which encrypts files. We will rather deep dive into the DearCry internals and code. We will demonstrate the process of reverse engineering the malware. However, we will later do a crosscheck of our findings with output from the sandbox, in this case, just for educational purposes.
 
-### X.3. Reverse Engineering
+### 3.3. Reverse Engineering
 
 Reverse engineering is the phase in which we decompile or disassemble the machine instructions of program into more readable form. In this case, analyzed sample is a Portable Executable file produced by Microsoft Visual Studio compiler. We use IDA, Interactive Disassembler, for reverse engineering of this DearCry sample.
 
-#### X.3.1. IDA Flirt Signatures
+#### 3.3.1. IDA Flirt Signatures
 
 When IDA finished its automatic analysis, we can see disassembled program with lot of functions. By default, almost all functions are assumed to be regular (blue color in program navigation bar), without known library functions (light cyan in navigation bar). We can fix this by applying IDA's FLIRT signatures, for example, Microsoft Visual C runtime signatures identified more than 600 functions. But there is still very small portion of all functions.
 
@@ -76,9 +72,9 @@ We can obtain the signatures for OpenSSL from the [community driven collection o
 
 When we examine imports, they are mostly related to cryptography, because of dependencies of embedded OpenSSL library. On the other hand, there is only one exported symbol called start, which is the usual entry point of portable executable files.
 
-#### X.3.2. Ransomware Logic
+#### 3.3.2. Ransomware Logic
 
-**X.3.2.1. Entry Point**
+**3.3.2.1. Entry Point**
 
 Now we are ready to begin with analysis of disassembled code. Our objective is to understand what the analyzed program does and how it works.
 
@@ -88,13 +84,13 @@ This is more less standard start routine, with checking for “MZ” (5A4Dh) and
 
 ![](../.gitbook/assets/lab-X-assets/10.png) _Figure 10: End of the start routine with call to main function_
 
-**X.3.2.2. Main Function**
+**3.3.2.2. Main Function**
 
 The main function is simple. It starts service control dispatcher, which connects the main service thread to the service control manager. The service related to this ransomware is called “msupdate”.
 
 ![](../.gitbook/assets/lab-X-assets/11.png) _Figure 11: Disassembled main function of the ransomware sample_
 
-**X.3.2.3. ServiceMain Function**
+**3.3.2.3. ServiceMain Function**
 
 ServiceMain function is also simple, it registers service control handler for this “msupdate” service. And then, it calls yet unknown function sub\_401D10.
 
@@ -102,7 +98,7 @@ ServiceMain function is also simple, it registers service control handler for th
 
 Back in main function, we can see that the same sub\_401D10 function is called right after service dispatcher. It seems that this function is responsible for all malicious things performed by this ransomware sample. Hence, it will probably do some ransomware stuff.
 
-**X.3.2.4. “Do-ransomware-stuff” Function**
+**3.3.2.4. “Do-ransomware-stuff” Function**
 
 ![](../.gitbook/assets/lab-X-assets/13.png) _Figure 13: "do\_ransomware\_stuff" function called from main and ServiceMain functions_
 
@@ -122,11 +118,11 @@ Then, this ransomware stuff function drops readme.txt file with the ransom note.
 
 ![](../.gitbook/assets/lab-X-assets/18.png) _Figure 18: Removing msupdate service created by this ransomware previously_
 
-#### X.3.3. File Encryption
+#### 3.3.3. File Encryption
 
 Until now, we used top-down methodology for analysis of ransomware logic. Now we can change our approach and use bottom-up methodology instead of top-down.
 
-**X.3.3.1. Encrypt-file Function**
+**3.3.3.1. Encrypt-file Function**
 
 During static analysis we saw string “.CRYPT”, which looks like an extension of the files encrypted by this ransomware. Let's examine the cross references to this string in IDA. It is referenced only in one function; thus this function should be responsible for writing an encrypted file to disk.
 
@@ -138,7 +134,7 @@ In Figure 20 we can see that DearCry ransomware prepends a “DEARCRY!” marker
 
 ![](../.gitbook/assets/lab-X-assets/20.png) _Figure 20: DEARCRY! file marker and encryption of AES key with RSA_
 
-**X.3.3.2. OpenSSL Encryption: RSA+AES**
+**3.3.3.2. OpenSSL Encryption: RSA+AES**
 
 The ransomware uses OpenSSL for generating a random key for symmetric encryption (AES-256-CBC) and encrypts this symmetric key with RSA using the embedded public key (2048-bit length):
 
@@ -182,13 +178,13 @@ The first value (427) is something called NID, numbered value of ASN.1 object id
 
 ![](../.gitbook/assets/lab-X-assets/24.png) _Figure 24: Identification of AES-256-CBC encryption used by DearCry ransomware_
 
-#### X.3.4. Put it all together
+#### 3.3.4. Put it all together
 
 So, what have we analyzed? It seems that the chain between start or main function and encrypt\_file function is almost completely analyzed, except one function, sub\_4015D0; see Figure 25.
 
 ![](../.gitbook/assets/lab-X-assets/25.png) _Figure 25: Function graph with already analyzed functions_
 
-**X.3.4.1. Check-marker Function**
+**3.3.4.1. Check-marker Function**
 
 Let’s focus on function sub\_4015D0. This time, a file is opened in read mode, and handle to this file is passed to another function, sub\_4010C0. It reads first 8 bytes and compare them with the string DearCry. After that, it performs additional checks. Therefore, it checks header and marker and verifies if file is already encrypted by the ransomware. After these checks by check\_marker function (originally sub\_4010C0), the actual encrypt file function is executed depending on the results of checks.
 
@@ -198,7 +194,7 @@ So, we just analyzed another two functions, for checking files and “DEARCRY!�
 
 ![](../.gitbook/assets/lab-X-assets/27.png) _Figure 27: Function graph related to the files encryption and recursive function encrypt\_drive/folder_
 
-**X.3.4.2. Encrypt-folder Function**
+**3.3.4.2. Encrypt-folder Function**
 
 Let's dive into the encrypt\_folder function. It uses Find first file and find next file API calls for searching files in current directory. For files with extension from the aforementioned list of extensions, it calls already analyzed encryption function.
 
@@ -206,7 +202,7 @@ Let's dive into the encrypt\_folder function. It uses Find first file and find n
 
 ![](../.gitbook/assets/lab-X-assets/29.png) _Figure 29: Checking of file extensions to encrypt_
 
-**X.3.4.3. ReportServiceStatus Function**
+**3.3.4.3. ReportServiceStatus Function**
 
 Now there is only one not yet analyzed function, sub\_401C10. Quick look into it reveals that it is kind of report service status for indicating the service state.
 
@@ -216,7 +212,7 @@ Now we have analyzed every regular function written by authors of the ransomware
 
 ![](../.gitbook/assets/lab-X-assets/31.png) _Figure 31: Function graph of analyzed functions reveals the program logic, too_
 
-#### X.3.5. Cross-check with behavioural analysis
+#### 3.3.5. Cross-check with behavioural analysis
 
 We can cross-check our results with the results from the behavioral analysis previously performed in sandbox. For example, the encrypted files with the CRYPT extension and DearCry marker in its beginning are clearly visible in the results.
 
@@ -226,7 +222,7 @@ Also, file readme.txt contains the formatted ransom note message including the c
 
 ![](../.gitbook/assets/lab-X-assets/33.png) _Figure 33: Formatted ransom note with emails and hash of the RSA key_
 
-### X.4. Conclusion
+### 3.4. Conclusion
 
 We introduced several principles of malware analysis and demonstrated them during the analysis of DearCry ransomware sample, which has been used in connection with the recent attacks on vulnerable Microsoft Exchange servers.
 
@@ -234,9 +230,9 @@ During this analysis, we spent most of the time with reverse engineering, includ
 
 Last, but not least, this lab equips somebody interested in, and wanting to do their own analyze of DearCry ransomware. Analyzed samples are available on the Malware Bazaar website and this lab can be used as a walkthrough for educational purposes.
 
-### X.5. Appendix
+### 3.5. Appendix
 
-#### X.5.1. Sample Information
+#### 3.5.1. Sample Information
 
 |             |                                                                                             |
 | ----------- | ------------------------------------------------------------------------------------------- |
@@ -250,7 +246,7 @@ Last, but not least, this lab equips somebody interested in, and wanting to do t
 | SSDeep hash | 24576:C5Nv2SkWFP/529IC8u2bAs0NIzkQS+KpPbEasBY2iKDl1fpxkLVZgMCS+: oB70s9yjE62iIl1fpxkLVZgMC3 |
 | Imphash     | f8b8e20e844ccd50a8eb73c2fca3626d                                                            |
 
-#### X.5.2. List of File Extensions
+#### 3.5.2. List of File Extensions
 
 DearCry ransomware encrypts the files with the following extensions:
 
@@ -262,7 +258,7 @@ DearCry ransomware encrypts the files with the following extensions:
 .MDB .MDF .BAK .LOG .EDB .STM .DBF .ORA
 ```
 
-#### X.5.3. RSA Public Key
+#### 3.5.3. RSA Public Key
 
 ```
 -----BEGIN RSA PUBLIC KEY-----
@@ -275,7 +271,7 @@ XTgYtEjhzJAC+esXiTYqklWMXJS1EmUpoQIBAw==
 -----END RSA PUBLIC KEY-----
 ```
 
-#### X.5.4. Ransomnote
+#### 3.5.4. Ransomnote
 
 ```
 Your file has been encrypted!
