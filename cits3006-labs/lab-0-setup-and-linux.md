@@ -2,7 +2,7 @@
 
 ## 0.1. Setup VM and Docker
 
-You will be using Kali as your based VM, and likely various other VM images and/or Docker containers to carry out labs and the project. So it is essential that you setup your system to be able to use them wherever required.
+You will be using Kali as your based VM, and likely various other VM images (and possibly Docker containers in the VMs) to carry out labs and the project. So it is essential that you set up your system to be able to use them wherever required.
 
 {% hint style="info" %}
 If you already have VM and Docker set up and running on your machine, you can skip to [Section 0.2](lab-0-setup-and-linux.md#0.2-linux-refresher) (and maybe revisit here later if things aren't working as intended).
