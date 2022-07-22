@@ -1,8 +1,9 @@
+from __future__ import absolute_import
 import pynput
 from pynput.keyboard import Listener, Key
 import socket
 
-from __future__ import absolute_import
+
 
 import os
 import sys
