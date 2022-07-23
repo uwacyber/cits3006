@@ -14,7 +14,7 @@ The aim of this lab is to perform deep analysis of DearCry ransomware and demons
 
 ## 3.0. Introduction
 
-The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomwares, DearCry is special in terms of its complexity. It is very simple malware, and it could be reverse engineered in couple of minutes as we demonstrate in this paper. The main objective of this document is to provide not only the analysis of DearCry ransomware, but also to provide educational tips and tricks, which could be useful in the cybersecurity community and students of computer science.
+The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomware, DearCry is special in terms of its complexity - it is very simple malware which could be reverse engineered in a couple of minutes as we will discover below (actually, not a couple of minutes but much shorter than other malware in general).&#x20;
 
 ## 3.1. Static Analysis
 
