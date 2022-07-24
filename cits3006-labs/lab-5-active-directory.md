@@ -4,8 +4,9 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-# TODO:
-* cleaning up
+# TODO
+* more AD exploits?
+* written conclusion needed
 
 In this guide, we will build an Active Directory environment in a virtualized lab and see how features can be exploited to hack Windows users. Active Directory (AD) is Microsoft’s service to manage Windows domain networks. 95% of Fortune 100 companies implement AD into their networks. The way you can use the same set of credentials, to log into any Windows machine within your given institution, is done though Active Directory. AD can easily span whole corporations and campuses, acting as a “phone book” for Windows desktops, printers, and other computers that need authentication services. For our purposes, our AD will span one server and X number of workstations. 
 
@@ -279,7 +280,6 @@ Then run `hashcat` with both your saved hash and the word list
 
 ![](/.gitbook/assets/lab-5-assets/43.png "43")
 
-
 ### 5.5.3 psexec
 
 `psexec` is a Microsoft developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access testadmin’s computer with our new found credentials. You need to enter the Root domain name (dc.local), the username (testadmin), the password ('password1!'), then the IP address of testadmin machine (192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
@@ -288,7 +288,7 @@ Note: if the `psexec` returns an error, make sure the Windows Defender Antivirus
 
 ![](/.gitbook/assets/lab-5-assets/44.png "44")
 
-That’s how you own testadmin's computer. Since testadmin is an admin user we can see we also have an admin shell with the whoami command.
+That’s how you own testadmin's computer. Since testadmin is an admin user we can see we also have an admin shell with the whoami command. Thus, we have managed to access a remote shell via exploiting the AD.
 
 ### 5.5.4 Target enumeration with Nmap, Nbtscan, CME
 
@@ -344,4 +344,6 @@ Download [Kerbrute](https://github.com/ropnop/kerbrute/releases) from the Git re
 
 
 ## 5.6 Conclusion
-Using `responder` to capture hashes, cracking with `hashcat`, then using `psexec` to login to a remote shell is just one of hundreds of common ways to exploit Active Directory. Search engines are a hackers deadliest weapon, use it to find out more about Active Directory attacks.
+<!-- Using `responder` to capture hashes, cracking with `hashcat`, then using `psexec` to login to a remote shell is just one of hundreds of common ways to exploit Active Directory. Search engines are a hackers deadliest weapon, use it to find out more about Active Directory attacks. -->
+
+CONCLUSION HERE
