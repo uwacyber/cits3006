@@ -24,6 +24,10 @@ Static analysis is usually the initial stage of malware analysis. Commonly the s
 
 We will analyze the DearCry ransomware sample (often classified also as DoejoCrypt) obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in Figure 1.
 
+{% hint style="danger" %}
+READ: **DO NOT** execute and run the malware sample, as you risk compromising your machine.
+{% endhint %}
+
 ![](../.gitbook/assets/lab-3-assets/1.png)
 
 _Figure 1: DearCry Metadata from Malware Bazaar repository_
