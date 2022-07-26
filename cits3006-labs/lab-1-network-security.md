@@ -269,7 +269,7 @@ show options
 Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
 
 ```
-set USERPASS_FILE = /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
+set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
 ```
 
 ![](../.gitbook/assets/image.png)
