@@ -10,9 +10,11 @@ You will find lecture slides available here (you will be able to download the pd
 * [05. More Malware](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/05.More\_Malware.pdf)
 * [06. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/06.Reverse\_Engineering.pdf)
 * 07\. Application Security
-* 08\. ?
-* 09\. ?
-* 0A. ?
-* 0B. ?
-* 0C. ?
-* 0D. ?
+* 08\. Privilege Escalation
+* 09\. Active Directory
+* 0A. Web Security
+* 0B. Defence Techniques
+* 0C. Social Engineering
+* 0D. Cloud Security
+* 0E. Guest Lecture
+* 0F. Revision
