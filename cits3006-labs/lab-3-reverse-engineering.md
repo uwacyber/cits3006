@@ -58,7 +58,7 @@ We will begin our analysis of the ransomware by running the `strings` command on
 strings free_bitcoin | grep "EVP\|1234567890abcdef"
 ```
 
-![](<../.gitbook/assets/image (14).png>)
+![](<../.gitbook/assets/image (5).png>)
 
 The above screenshot shows that the malware uses the OpenSSL Crypto library. The ransomware is also using the AES 128-bit encryption with the CBC mode, which means that the key used to encrypt the files is 128 bits (16 bytes) long.
 
@@ -76,7 +76,7 @@ objdump -d free_bitcoin
 
 Ignoring the included functions from libraries, we find that the malware has the functions `main`, `encrypt_file`, `decrypt_file` and `gen_key`. Let us take a closer look at the `gen_key` function since this is most likely where the key is created to be used for encryption. Below is the assembly code of this function.
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (13).png>)
 
 Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.&#x20;
 
@@ -87,11 +87,11 @@ gcc -o srand_test srand_test.c
 
 The test code uses the value of 16 (0x10 in hexadecimal) to set the seed, so we will look for where this value is in the assembly code.
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (16).png>)
 
 When you run `objdump` on the compiled file, you should see the main function as:
 
-![](<../.gitbook/assets/image (17).png>)
+![](<../.gitbook/assets/image (1).png>)
 
 We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
 
@@ -142,11 +142,11 @@ gdb ./free_bitcoin
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (4).png>)
 
-![](<../.gitbook/assets/image (6).png>)
+![](../.gitbook/assets/image.png)
 
-![](<../.gitbook/assets/image (12).png>)
+![](<../.gitbook/assets/image (8).png>)
 
 We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
 
@@ -156,7 +156,7 @@ There seems to be an incompatibility using GDB-peda on Apple Silicon (ARM64) mac
 You can still observe how data changes, but it is best to work with your friend in the lab to go through below.
 {% endhint %}
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (15).png>)
 
 The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
 
@@ -166,15 +166,15 @@ The second observation is that the character `e` is stored inside the `RDX` regi
 
 To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012ba` and step through the program’s execution by machine instruction (using the `si` command) until we find something interesting in the registers or the stack.
 
-![](<../.gitbook/assets/image (7).png>)
+![](<../.gitbook/assets/image (12).png>)
 
 At this stage, you can see that something from the registry `0x402008` is being moved to `EDX`. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `RDX`. This is shown below.
 
-![](<../.gitbook/assets/image (16).png>)
+![](<../.gitbook/assets/image (3).png>)
 
 This means something interesting should be located at `0x402008`:
 
-![](<../.gitbook/assets/image (15).png>)
+![](<../.gitbook/assets/image (2).png>)
 
 Well, what do you know, it is the same string we found a while back!
 
@@ -434,9 +434,9 @@ During this analysis, we spent most of the time with reverse engineering, includ
 
 Last, but not least, this lab equips somebody interested in, and wanting to do their own analyze of DearCry ransomware. Analyzed samples are available on the Malware Bazaar website and this lab can be used as a walkthrough for educational purposes.
 
-## 3.5. Appendix
+## 3.4. Appendix
 
-### 3.5.1. Sample Information
+### 3.4.1. Sample Information
 
 |             |                                                                                             |
 | ----------- | ------------------------------------------------------------------------------------------- |
@@ -450,7 +450,7 @@ Last, but not least, this lab equips somebody interested in, and wanting to do t
 | SSDeep hash | 24576:C5Nv2SkWFP/529IC8u2bAs0NIzkQS+KpPbEasBY2iKDl1fpxkLVZgMCS+: oB70s9yjE62iIl1fpxkLVZgMC3 |
 | Imphash     | f8b8e20e844ccd50a8eb73c2fca3626d                                                            |
 
-### 3.5.2. List of File Extensions
+### 3.4.2. List of File Extensions
 
 DearCry ransomware encrypts the files with the following extensions:
 
@@ -462,7 +462,7 @@ DearCry ransomware encrypts the files with the following extensions:
 .MDB .MDF .BAK .LOG .EDB .STM .DBF .ORA
 ```
 
-### 3.5.3. RSA Public Key
+### 3.4.3. RSA Public Key
 
 ```
 -----BEGIN RSA PUBLIC KEY-----
@@ -475,7 +475,7 @@ XTgYtEjhzJAC+esXiTYqklWMXJS1EmUpoQIBAw==
 -----END RSA PUBLIC KEY-----
 ```
 
-### 3.5.4. Ransomnote
+### 3.4.4. Ransomnote
 
 ```
 Your file has been encrypted!
