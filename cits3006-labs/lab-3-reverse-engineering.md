@@ -26,10 +26,10 @@ We will be using a malware code, so you should only conduct this lab within a VM
 
 One of the most interesting stories about reverse engineering is the story about the ransomware WannaCry. WannaCry propagated across the internet using the EternalBlue exploit, which was developed by the NSA and leaked by an anonymous hacker group called the Shadow Brokers. It was devastating computers across the world, until Marcus Hitchins reverse engineered the ransomware. Marcus found an unregistered domain within the malware and decided to register the domain. Consequently, he inadvertently found the kill switch for the ransomware, stopping one of the largest cyber-attacks known to this day.
 
-In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM AMD64 chip users.&#x20;
+In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM AMD64 chip users.
 
 {% hint style="warning" %}
-This section of the lab does not work on Apple Silicon computers or any other ARM-based architectures, because the instruction sets are vastly different between the AMD and ARM architectures when you compile codes.&#x20;
+This section of the lab does not work on Apple Silicon computers or any other ARM-based architectures, because the instruction sets are vastly different between the AMD and ARM architectures when you compile codes.
 
 Alternate ways to do this section is to work with others in the lab, or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work.
 {% endhint %}
@@ -54,7 +54,7 @@ strings free_bitcoin | grep "EVP\|1234567890abcdef"
 
 The above screenshot shows that the malware uses the OpenSSL Crypto library. The ransomware is also using the AES 128-bit encryption with the CBC mode, which means that the key used to encrypt the files is 128 bits (16 bytes) long.
 
-The other interesting detail is the string “1234567890abcdef” inside the program, which could be the key since it is 16 bytes long, or the key could be generated using this string in some way, or it is just there to throw off our investigation. We will just take a note of it for now.&#x20;
+The other interesting detail is the string “1234567890abcdef” inside the program, which could be the key since it is 16 bytes long, or the key could be generated using this string in some way, or it is just there to throw off our investigation. We will just take a note of it for now.
 
 Next, we will collect more info using `objdump`.
 
@@ -70,7 +70,7 @@ Ignoring the included functions from libraries, we find that the malware has the
 
 ![](<../.gitbook/assets/image (13).png>)
 
-Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.&#x20;
+Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.
 
 ```
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/srand_test.c
@@ -177,17 +177,20 @@ You can now either (1) continue debugging the ransomware to find the key (keep r
 
 For this task, we will look at another tool and also another ransomware: DearCry. The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomware, DearCry is special in terms of its complexity - it is very simple malware which could be reverse engineered in a couple of minutes as we will discover below (actually, not a couple of minutes but much shorter than other malware in general).
 
-First, we need to download the ransomware sample, which can be obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in the figure below.
+First, we need to download the ransomware sample, which can be obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). For your convenience, you can use the `wget` command below also. The zip file is password protected with the password `infected`. It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in the figure below.
 
 ```
-wget https://bazaar.abuse.ch/download/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/dearcry.zip
 ```
 
 {% hint style="danger" %}
-READ: **DO NOT** execute and run the malware sample, as you risk compromising your machine.
+READ: although we are running it in Kali so the PE file is not compatible to run, but it is still a good practice to **NOT** execute and run the malware sample, as you risk compromising your machine (in case you are running it on Windows).
 {% endhint %}
 
-![](../.gitbook/assets/lab-3-assets/1.png)
+```
+7z x dearcry.zip
+mv 0e....exe dearcry.exe
+```
 
 ### 3.2.1. Static Analysis
 
