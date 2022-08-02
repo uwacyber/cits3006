@@ -26,25 +26,17 @@ We will be using a malware code, so you should only conduct this lab within a VM
 
 One of the most interesting stories about reverse engineering is the story about the ransomware WannaCry. WannaCry propagated across the internet using the EternalBlue exploit, which was developed by the NSA and leaked by an anonymous hacker group called the Shadow Brokers. It was devastating computers across the world, until Marcus Hitchins reverse engineered the ransomware. Marcus found an unregistered domain within the malware and decided to register the domain. Consequently, he inadvertently found the kill switch for the ransomware, stopping one of the largest cyber-attacks known to this day.
 
-In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM users.&#x20;
+In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM AMD64 chip users.&#x20;
 
-{% tabs %}
-{% tab title="Intel (AMD64)" %}
-```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/free_bitcoin_amd
-```
-{% endtab %}
+{% hint style="warning" %}
+This section of the lab does not work on Apple Silicon computers or any other ARM-based architectures, because the instruction sets are vastly different between the AMD and ARM architectures when you compile codes.&#x20;
 
-{% tab title="Apple Silicon (ARM64)" %}
-```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/free_bitcoin_arm
-```
-{% endtab %}
-{% endtabs %}
-
-{% hint style="info" %}
-Once downloaded, rename it to `free_bitcoin`.
+Alternate ways to do this section is to work with others in the lab, or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work.
 {% endhint %}
+
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/free_bitcoin
+```
 
 It was reported that a victim tried to get free bitcoin by running the program, but instead encrypted everything in the working directory. We will try and reverse engineer the malware to retrieve the encryption key used to encrypt the victim’s files.
 
@@ -150,12 +142,6 @@ We will begin our analysis by getting the machine instruction for when the funct
 
 We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
 
-{% hint style="info" %}
-There seems to be an incompatibility using GDB-peda on Apple Silicon (ARM64) machines, where you do not get the nice GUI presentation of the registers, code and the stack (as you will be below).&#x20;
-
-You can still observe how data changes, but it is best to work with your friend in the lab to go through below.
-{% endhint %}
-
 ![](<../.gitbook/assets/image (15).png>)
 
 The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
@@ -168,7 +154,7 @@ To investigate this further, we will now set a breakpoint after the rand call at
 
 ![](<../.gitbook/assets/image (12).png>)
 
-At this stage, you can see that something from the registry `0x402008` is being moved to `EDX`. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `RDX`. This is shown below.
+At this stage, you can see that something from the registry `0x402008` is being moved to `EDX` (it is noted as RDX in the registers). As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
 
 ![](<../.gitbook/assets/image (3).png>)
 
@@ -185,13 +171,17 @@ So from our findings, we can conclude that:
 3. Step 2 is repeated until the key size is 16 bytes.
 4. Using the generated key, aes-128-cbc is used to encrypt files.
 
-You can now either (1) continue debugging the ransomware to find the key, or (2) write a code that mimics the key generation steps described above (i.e., set the seed to 1234 and choose char from "1234567890abcdef". The first output is "e", followed by "4" and so forth). Either way, you should converge to the same key.
+You can now either (1) continue debugging the ransomware to find the key (keep running until you see 16 bytes of key), or (2) write a code that mimics the key generation steps described above (i.e., set the seed to 1234 and choose char from "1234567890abcdef". The first output is "e", followed by "4" and so on). Either way, you should converge to the same key.
 
 ## 3.2. Another tool: IDA
 
 For this task, we will look at another tool and also another ransomware: DearCry. The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomware, DearCry is special in terms of its complexity - it is very simple malware which could be reverse engineered in a couple of minutes as we will discover below (actually, not a couple of minutes but much shorter than other malware in general).
 
-First, we need to download the ransomware sample, which can be obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in Figure 1.
+First, we need to download the ransomware sample, which can be obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in the figure below.
+
+```
+wget https://bazaar.abuse.ch/download/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/
+```
 
 {% hint style="danger" %}
 READ: **DO NOT** execute and run the malware sample, as you risk compromising your machine.
@@ -199,21 +189,15 @@ READ: **DO NOT** execute and run the malware sample, as you risk compromising yo
 
 ![](../.gitbook/assets/lab-3-assets/1.png)
 
-_Figure 1: DearCry Metadata from Malware Bazaar repository_
-
 ### 3.2.1. Static Analysis
 
 Static analysis is usually the initial stage of malware analysis. Commonly the samples are scanned with antivirus software and IOC scanners. This phase also includes the analysis of sample metadata, embedded strings, resources, imports and exports (in case of Portable executable files, .EXE), presence of macros and auto-open or auto-close actions (in case of Office Documents).
 
 #### 3.2.1.1. Strings
 
-DearCry is very simple ransomware, as we can see even by extraction of the embedded strings. We use the `strings` command (Unix), or the Sysinternals tool called strings.exe (Windows).
+DearCry is very simple ransomware, as we can see even by extraction of the embedded strings. We use the `strings` command:
 
-> strings e044d9...bin
 >
-> or
->
-> strings e044d9...exe
 
 ![Figure 2: Extracted strings with ransom note template and name of the ransomware.](../.gitbook/assets/lab-3-assets/2.png)
 
