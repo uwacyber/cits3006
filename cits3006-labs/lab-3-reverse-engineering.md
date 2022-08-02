@@ -14,15 +14,184 @@ The aim of this lab is to perform deep analysis of DearCry ransomware and demons
 
 ## 3.0. Introduction
 
-The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomware, DearCry is special in terms of its complexity - it is very simple malware which could be reverse engineered in a couple of minutes as we will discover below (actually, not a couple of minutes but much shorter than other malware in general).&#x20;
+Many malware use obfuscation techniques to try to hide the information about how they function. In this lab, we will try to uncover their mechanisms using reverse engineering techniques.
 
-## 3.1. Static Analysis
+## 3.1. Reverse Engineering using GDB
 
-Static analysis is usually the initial stage of malware analysis. Commonly the samples are scanned with antivirus software and IOC scanners. This phase also includes the analysis of sample metadata, embedded strings, resources, imports and exports (in case of Portable executable files, .EXE), presence of macros and auto-open or auto-close actions (in case of Office Documents).
+GDB, the GNU Project debugger, allows you to see what is going on \`inside' another program while it executes -- or what another program was doing at the moment it crashed. So think of it like a debugger, not for the program you are writing, but for one that has been compiled already. By understanding how they function, it is also possible to reverse the damage caused (e.g., decrypting files that the ransomware encrypted).
 
-### 3.1.1. DearCry Sample
+{% hint style="danger" %}
+We will be using a malware code, so you should only conduct this lab within a VM!
+{% endhint %}
 
-We will analyze the DearCry ransomware sample (often classified also as DoejoCrypt) obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in Figure 1.
+One of the most interesting stories about reverse engineering is the story about the ransomware WannaCry. WannaCry propagated across the internet using the EternalBlue exploit, which was developed by the NSA and leaked by an anonymous hacker group called the Shadow Brokers. It was devastating computers across the world, until Marcus Hitchins reverse engineered the ransomware. Marcus found an unregistered domain within the malware and decided to register the domain. Consequently, he inadvertently found the kill switch for the ransomware, stopping one of the largest cyber-attacks known to this day.
+
+In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM users.&#x20;
+
+{% tabs %}
+{% tab title="Intel (AMD64)" %}
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/free_bitcoin_amd
+```
+{% endtab %}
+
+{% tab title="Apple Silicon (ARM64)" %}
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/free_bitcoin_arm
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+Once downloaded, rename it to `free_bitcoin`.
+{% endhint %}
+
+It was reported that a victim tried to get free bitcoin by running the program, but instead encrypted everything in the working directory. We will try and reverse engineer the malware to retrieve the encryption key used to encrypt the victim’s files.
+
+Ideally, we would use a reverse engineering suite of tools such as Ghidra, but since it requires 4 GB of RAM, we will use more light-weight tools namely GDB to reverse engineer the ransomware, but we will first use other simple tools (`strings` and `objdump`) to discover more about the ransomware at hand.
+
+### 3.1.1. Using strings command
+
+We will begin our analysis of the ransomware by running the `strings` command on the binary. Below is a picture of the output of strings being piped into grep to highlight some key library functions and hardcoded strings that were found inside the ransomware.
+
+```
+strings free_bitcoin | grep "EVP\|1234567890abcdef"
+```
+
+![](<../.gitbook/assets/image (14).png>)
+
+The above screenshot shows that the malware uses the OpenSSL Crypto library. The ransomware is also using the AES 128-bit encryption with the CBC mode, which means that the key used to encrypt the files is 128 bits (16 bytes) long.
+
+The other interesting detail is the string “1234567890abcdef” inside the program, which could be the key since it is 16 bytes long, or the key could be generated using this string in some way, or it is just there to throw off our investigation. We will just take a note of it for now.&#x20;
+
+Next, we will collect more info using `objdump`.
+
+### 3.1.2. Using objdump
+
+This is where we start looking at the assembly code of the ransomware. Run:
+
+```
+objdump -d free_bitcoin
+```
+
+Ignoring the included functions from libraries, we find that the malware has the functions `main`, `encrypt_file`, `decrypt_file` and `gen_key`. Let us take a closer look at the `gen_key` function since this is most likely where the key is created to be used for encryption. Below is the assembly code of this function.
+
+![](<../.gitbook/assets/image (5).png>)
+
+Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.&#x20;
+
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/srand_test.c
+gcc -o srand_test srand_test.c
+```
+
+The test code uses the value of 16 (0x10 in hexadecimal) to set the seed, so we will look for where this value is in the assembly code.
+
+![](../.gitbook/assets/image.png)
+
+When you run `objdump` on the compiled file, you should see the main function as:
+
+![](<../.gitbook/assets/image (17).png>)
+
+We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
+
+Now we are ready to debug our ransomware.
+
+### 3.1.3. Using GDB-peda
+
+`GDB`, as described above, is a debugging tool. However, its interface is quite difficult to use without spending time learning more about it. To make your life (slightly) less miserable, we will install also the `peda`, a Python Exploit Development Assistant for `GDB` (which makes the presentation and usage a bit more novice-friendly).
+
+First, install GDB:
+
+```
+sudo apt-get update -y
+sudo apt-get install gdb -y
+```
+
+Next, install `peda` (line by line):
+
+```
+git clone https://github.com/longld/peda.git ~/peda
+echo "source ~/peda/peda.py" >> ~/.gdbinit
+```
+
+\
+Below we list some useful commands for inside the `gdb-peda` shell to help you reverse engineer the ransomware.
+
+* `gdb-peda$ info func` : Prints out all the functions inside of the program.
+* `gdb-peda$ disas <function name>` : Print the assembly code and machine instruction number of a function.
+* `gdb-peda$ b *<machine instruction address>` : Pauses the program's execution at the machine instruction address and prints the program's state.
+* `gdb-peda$ x/2x $esp` **:** Prints the first 2\*4=8 bytes from the start of the stack ($esp)
+* `gdb-peda$ r` : Starts the program's execution from the very start.
+* `gdb-peda$ c` **:** Continue the program's execution to the next breakpoint or until completion.
+* `gdb-peda$ si` : Execute the next machine instruction and then print the state of the program.
+
+For a list of more commands to use gdb, take a look at [https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf).
+
+Since the ransomware is poorly designed and only encrypts the files in the working directory, we will create a test folder to execute the malware from. Ideally, if you are doing real malware analysis you would want to completely isolate it inside a separate VM before executing it. However, for our purposes running it from inside an isolated directory should be sufficient since it only encrypts files inside the working directory.
+
+You can use the commands below to prepare your test folder and start gdb-peda.
+
+```
+mkdir test
+cp free_bitcoin test/
+cd test/
+chmod 500 free_bitcoin
+gdb ./free_bitcoin
+```
+
+We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
+
+![](<../.gitbook/assets/image (1).png>)
+
+![](<../.gitbook/assets/image (6).png>)
+
+![](<../.gitbook/assets/image (12).png>)
+
+We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
+
+{% hint style="info" %}
+There seems to be an incompatibility using GDB-peda on Apple Silicon (ARM64) machines, where you do not get the nice GUI presentation of the registers, code and the stack (as you will be below).&#x20;
+
+You can still observe how data changes, but it is best to work with your friend in the lab to go through below.
+{% endhint %}
+
+![](<../.gitbook/assets/image (4).png>)
+
+The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
+
+Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
+
+The second observation is that the character `e` is stored inside the `RDX` register (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is most likely the first character of the encryption key.
+
+To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012ba` and step through the program’s execution by machine instruction (using the `si` command) until we find something interesting in the registers or the stack.
+
+![](<../.gitbook/assets/image (7).png>)
+
+At this stage, you can see that something from the registry `0x402008` is being moved to `EDX`. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `RDX`. This is shown below.
+
+![](<../.gitbook/assets/image (16).png>)
+
+This means something interesting should be located at `0x402008`:
+
+![](<../.gitbook/assets/image (15).png>)
+
+Well, what do you know, it is the same string we found a while back!
+
+So from our findings, we can conclude that:
+
+1. The ransomware sets the random seed to be `1234`.
+2. The `rand` generator is used to select a char from a string "`1234567890abcdef`".
+3. Step 2 is repeated until the key size is 16 bytes.
+4. Using the generated key, aes-128-cbc is used to encrypt files.
+
+You can now either (1) continue debugging the ransomware to find the key, or (2) write a code that mimics the key generation steps described above (i.e., set the seed to 1234 and choose char from "1234567890abcdef". The first output is "e", followed by "4" and so forth). Either way, you should converge to the same key.
+
+## 3.2. Another tool: IDA
+
+For this task, we will look at another tool and also another ransomware: DearCry. The DearCry ransomware has been used in current attacks related to the exploitation of Microsoft Exchange Servers. Unlike other ransomware, DearCry is special in terms of its complexity - it is very simple malware which could be reverse engineered in a couple of minutes as we will discover below (actually, not a couple of minutes but much shorter than other malware in general).
+
+First, we need to download the ransomware sample, which can be obtained from [Malware Bazaar](https://bazaar.abuse.ch/sample/e044d9f2d0f1260c3f4a543a1e67f33fcac265be114a1b135fd575b860d2b8c6/). It is a portable executable file, and it is approximately 1.2 MB in size. This means that it is a relatively large malware sample. Download the sample using the "download sample" link, as shown in Figure 1.
 
 {% hint style="danger" %}
 READ: **DO NOT** execute and run the malware sample, as you risk compromising your machine.
@@ -32,7 +201,11 @@ READ: **DO NOT** execute and run the malware sample, as you risk compromising yo
 
 _Figure 1: DearCry Metadata from Malware Bazaar repository_
 
-### 3.1.2. Strings
+### 3.2.1. Static Analysis
+
+Static analysis is usually the initial stage of malware analysis. Commonly the samples are scanned with antivirus software and IOC scanners. This phase also includes the analysis of sample metadata, embedded strings, resources, imports and exports (in case of Portable executable files, .EXE), presence of macros and auto-open or auto-close actions (in case of Office Documents).
+
+#### 3.2.1.1. Strings
 
 DearCry is very simple ransomware, as we can see even by extraction of the embedded strings. We use the `strings` command (Unix), or the Sysinternals tool called strings.exe (Windows).
 
@@ -50,7 +223,7 @@ There is no obfuscation, all strings are clearly visible. For example, the ranso
 
 RSA Public key is visible here, and also the list of file extensions. DearCry ransomware will probably encrypt files with these extensions, as we will see later.
 
-### 3.1.3. Capabilities
+#### 3.2.1.2. Capabilities
 
 ![Figure 4: Sample overview reported by capa tool](../.gitbook/assets/lab-3-assets/4.png)
 
@@ -66,7 +239,7 @@ As a next step, we can quickly identify capabilities in the analyzed sample with
 
 There is a lot of cryptography, ciphers, hashes. And it is linked against OpenSSL cryptography library.
 
-## 3.2. Behavioural Analysis
+### 3.2.2. Behavioural Analysis
 
 During behavioral analysis, the sample is executed in a sandbox. This protected environment is monitored for any activities performed by the sample, such as spawning new processes, network communication, dropping files or overwriting the existent files. By reviewing of sample’s behavior, we can often say if the sample is malicious and if yes, what kind of malware it is (e.g., ransomware).
 
@@ -74,11 +247,11 @@ With behavioral analysis, we can also quickly collect a lot of indicators of com
 
 We will skip this step for now, because we already know that this is a DearCry ransomware sample which encrypts files. We will rather deep dive into the DearCry internals and code. We will demonstrate the process of reverse engineering the malware. However, we will later do a crosscheck of our findings with output from the sandbox, in this case, just for educational purposes.
 
-## 3.3. Reverse Engineering
+### 3.2.3. Reverse Engineering
 
 Reverse engineering is the phase in which we decompile or disassemble the machine instructions of program into more readable form. In this case, analyzed sample is a Portable Executable file produced by Microsoft Visual Studio compiler. We use IDA, Interactive Disassembler, for reverse engineering of this DearCry sample. IDA can be downloaded [here](https://hex-rays.com/ida-free/). Open the .exe or .bin file in IDA.
 
-### 3.3.1. IDA Flirt Signatures
+#### 3.2.3.1. IDA Flirt Signatures
 
 When IDA finished its automatic analysis, we can see disassembled program with a lot of functions. By default, almost all functions are assumed to be regular (blue color in the program navigation bar), without known library functions (light cyan in the navigation bar). We can fix this by applying IDA's FLIRT signatures, for example, Microsoft Visual C runtime signatures identified more than 600 functions. But there is still a very small portion of all functions. To access the signatures subview, click on "View", "Open subviews" and then select "Signatures".
 
@@ -101,9 +274,9 @@ With these two FLIRT signatures applied, we have identified more than 3000 of li
 
 When we examine imports, they are mostly related to cryptography, because of dependencies of embedded OpenSSL library. On the other hand, there is only one exported symbol called start, which is the usual entry point of portable executable files.
 
-### 3.3.2. Ransomware Logic
+#### 3.2.3.2. Ransomware Logic
 
-#### **3.3.2.1. Entry Point**
+**>>Entry Point**
 
 Now we are ready to begin with analysis of disassembled code. Our objective is to understand what the analyzed program does and how it works.
 
@@ -113,13 +286,13 @@ This is more or less the standard start routine, with checking for “MZ” (5A4
 
 ![Figure 10: End of the start routine with call to main function](../.gitbook/assets/lab-3-assets/10.png)
 
-#### **3.3.2.2. Main Function**
+**>>Main Function**
 
 The main function is simple. It starts service control dispatcher, which connects the main service thread to the service control manager. The service related to this ransomware is called “msupdate”.
 
 ![Figure 11: Disassembled main function of the ransomware sample](../.gitbook/assets/lab-3-assets/11.png)
 
-#### **3.3.2.3. ServiceMain Function**
+**>>ServiceMain Function**
 
 ServiceMain function is also simple, it registers service control handler for this “msupdate” service. And then, it calls yet unknown function sub\_401D10.
 
@@ -127,7 +300,7 @@ ServiceMain function is also simple, it registers service control handler for th
 
 Back in the main function, we can see that the same sub\_401D10 function is called right after the service dispatcher. It seems that this function is responsible for all malicious things performed by this ransomware sample. Hence, it will probably do some ransomware stuff.
 
-#### **3.3.2.4. “Do-ransomware-stuff” Function**
+**>>“Do-ransomware-stuff” Function**
 
 ![Figure 13: "do\_ransomware\_stuff" function called from main and ServiceMain functions](../.gitbook/assets/lab-3-assets/13.png)
 
@@ -149,11 +322,11 @@ Then, this ransomware stuff function drops `readme.txt` file with the ransom not
 
 ![Figure 18: Removing msupdate service created by this ransomware previously](../.gitbook/assets/lab-3-assets/18.png)
 
-### 3.3.3. File Encryption
+#### 3.2.3.3. File Encryption
 
 Until now, we used top-down methodology for analysis of ransomware logic. Now we can change our approach and use bottom-up methodology instead of top-down.
 
-**3.3.3.1. Encrypt-file Function**
+**>>Encrypt-file Function**
 
 During static analysis we saw string “.CRYPT”, which looks like an extension of the files encrypted by this ransomware. Let's examine the cross references to this string in IDA. It is referenced only in one function; thus this function should be responsible for writing an encrypted file to disk.
 
@@ -165,7 +338,7 @@ In Figure 20 we can see that DearCry ransomware prepends a “DEARCRY!” marker
 
 ![Figure 20: DEARCRY! file marker and encryption of AES key with RSA](../.gitbook/assets/lab-3-assets/20.png)
 
-#### **3.3.3.2. OpenSSL Encryption: RSA+AES**
+**>>OpenSSL Encryption: RSA+AES**
 
 The ransomware uses OpenSSL for generating a random key for symmetric encryption (AES-256-CBC) and encrypts this symmetric key with RSA using the embedded public key (2048-bit length):
 
@@ -209,13 +382,13 @@ The first value (427) is something called NID, the numbered value of ASN.1 objec
 
 ![Figure 24: Identification of AES-256-CBC encryption used by DearCry ransomware](../.gitbook/assets/lab-3-assets/24.png)
 
-#### 3.3.4. Put it all together
+#### 3.2.3.4. Put it all together
 
 So, what have we analyzed? It seems that the chain between the start or main function and `encrypt_file` function is almost completely analyzed, except for one function, `sub_4015D0`; see Figure 25.
 
 ![Figure 25: Function graph with already analyzed functions](../.gitbook/assets/lab-3-assets/25.png)
 
-#### **3.3.4.1. Check-marker Function**
+**>>Check-marker Function**
 
 Let’s focus on function sub\_4015D0. This time, a file is opened in read mode, and handle to this file is passed to another function, sub\_4010C0. It reads first 8 bytes and compare them with the string DearCry. After that, it performs additional checks. Therefore, it checks header and marker and verifies if file is already encrypted by the ransomware. After these checks by check\_marker function (originally sub\_4010C0), the actual encrypt file function is executed depending on the results of checks.
 
@@ -225,7 +398,7 @@ So, we just analyzed another two functions, for checking files and “DEARCRY!�
 
 ![Figure 27: Function graph related to the files encryption and recursive function encrypt\_drive/folder](../.gitbook/assets/lab-3-assets/27.png)
 
-#### **3.3.4.2. Encrypt-folder Function**
+**>>Encrypt-folder Function**
 
 Let's dive into the encrypt\_folder function. It uses Find first file and find next file API calls for searching files in current directory. For files with extension from the aforementioned list of extensions, it calls already analyzed encryption function.
 
@@ -233,7 +406,7 @@ Let's dive into the encrypt\_folder function. It uses Find first file and find n
 
 ![Figure 29: Checking of file extensions to encrypt](../.gitbook/assets/lab-3-assets/29.png)
 
-#### **3.3.4.3. ReportServiceStatus Function**
+**>>ReportServiceStatus Function**
 
 Now there is only one not yet analyzed function, sub\_401C10. Quick look into it reveals that it is kind of report service status for indicating the service state.
 
@@ -243,7 +416,7 @@ Now we have analyzed every regular function written by authors of the ransomware
 
 ![Figure 31: Function graph of analyzed functions reveals the program logic, too](../.gitbook/assets/lab-3-assets/31.png)
 
-### 3.3.5. Cross-check with behavioural analysis
+#### 3.2.3.5. Cross-check with behavioural analysis
 
 We can cross-check our results with the results from the behavioral analysis previously performed in sandbox. For example, the encrypted files with the CRYPT extension and DearCry marker in its beginning are clearly visible in the results.
 
@@ -253,7 +426,7 @@ Also, file readme.txt contains the formatted ransom note message including the c
 
 ![Figure 33: Formatted ransom note with emails and hash of the RSA key](../.gitbook/assets/lab-3-assets/33.png)
 
-## 3.4. Conclusion
+## 3.3. Conclusion
 
 We introduced several principles of malware analysis and demonstrated them during the analysis of DearCry ransomware sample, which has been used in connection with the recent attacks on vulnerable Microsoft Exchange servers.
 
