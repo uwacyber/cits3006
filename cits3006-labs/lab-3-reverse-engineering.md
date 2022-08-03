@@ -151,7 +151,7 @@ The screenshot above shows the state of the program after reaching the `rand` fu
 
 To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012aa` and step through the program’s execution by machine instruction (`c`, then using the `si` command) until we find something interesting in the registers or the stack. At every step (after each `si` command), try to inspect the registers, code and stack to see if you can find any useful information. Once you reach the code `movzx`, you will see the below state.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (3).png>)
 
 At this stage, you can see that the address `0x402008` is being moved to `EDX` (it is noted as RDX in the registers), which contains a familiar string we found before. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
 
@@ -180,13 +180,41 @@ Once you run ghidra (just type `ghidra` from the terminal), you will first be gr
 
 Download the files we will be using for this section.
 
+{% tabs %}
+{% tab title="Intel (AMD64)" %}
+
+
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-arm.zip
+```
+{% endtab %}
+
+{% tab title="Apple Silicon (ARM64)" %}
+
+
 ```
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-linux.zip
 ```
+{% endtab %}
+
+{% tab title="Source (if none of them works)" %}
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-source.zip
+```
+
+Once downloaded, compile codes using the makefile provided.
+{% endtab %}
+{% endtabs %}
 
 On Ghidra, create a new project (doesn't matter shared or not). You can name it `crackme0`.
 
 Next, import `crackme0x00` from the unzipped folder to Ghidra, you can either drag and drop, or import file from the menu. You can leave the other settings unchanged, and finish importing the file.
+
+![](<../.gitbook/assets/image (3).png>)
+
+Open the analyser by double-clicking the binary. You will be prompted with the analyser, which you simply press "yes" (the pre-selected analysers are sufficient here). Then it will get you here:
+
+
 
 
 
