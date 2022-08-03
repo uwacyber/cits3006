@@ -4,8 +4,9 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
 {% endhint %}
 
-# TODO:
-* cleaning up
+# TODO
+* more AD exploits?
+* written conclusion needed
 
 In this guide, we will build an Active Directory environment in a virtualized lab and see how features can be exploited to hack Windows users. Active Directory (AD) is Microsoft’s service to manage Windows domain networks. 95% of Fortune 100 companies implement AD into their networks. The way you can use the same set of credentials, to log into any Windows machine within your given institution, is done though Active Directory. AD can easily span whole corporations and campuses, acting as a “phone book” for Windows desktops, printers, and other computers that need authentication services. For our purposes, our AD will span one server and X number of workstations. 
 
@@ -158,7 +159,7 @@ This command sets up a service principle name using your Domain Controllers name
 
 Confirm everything was done correctly with the command:
 
-> setspn -T dc.local -Q */*
+> setspn -T dc.local -Q \*/\*
 
 If you see "Existing SPN found!" at the bottom, then you were successful in setting everthing up.
 
@@ -279,7 +280,6 @@ Then run `hashcat` with both your saved hash and the word list
 
 ![](/.gitbook/assets/lab-5-assets/43.png "43")
 
-
 ### 5.5.3 psexec
 
 `psexec` is a Microsoft developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access testadmin’s computer with our new found credentials. You need to enter the Root domain name (dc.local), the username (testadmin), the password ('password1!'), then the IP address of testadmin machine (192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
@@ -288,7 +288,62 @@ Note: if the `psexec` returns an error, make sure the Windows Defender Antivirus
 
 ![](/.gitbook/assets/lab-5-assets/44.png "44")
 
-That’s how you own testadmin's computer. Since testadmin is an admin user we can see we also have an admin shell with the whoami command.
+That’s how you own testadmin's computer. Since testadmin is an admin user we can see we also have an admin shell with the whoami command. Thus, we have managed to access a remote shell via exploiting the AD.
 
-### 5.5.4 Conclusion
-Using `responder` to capture hashes, cracking with `hashcat`, then using `psexec` to login to a remote shell is just one of hundreds of common ways to exploit Active Directory. Search engines are a hackers deadliest weapon, use it to find out more about Active Directory attacks.
+### 5.5.4 Target enumeration with Nmap, Nbtscan, CME
+
+First enumerate what hosts are on the network, their IP addresses, how many are there and what services they are running.
+
+**Nmap**
+
+Quickly find hosts on the subnet with a ping scan. The subnet of this network in this example is at 192.168.86.134/24:
+
+> nmap -sn 192.168.86.0/24
+
+![](/.gitbook/assets/lab-5-assets/45.png "45")
+
+Enumerate common AD and Windows ports via:
+
+> sudo nmap -T4 -n -Pn -sV -p22,53,80,88,445,5985 192.168.86.0/24
+
+![](/.gitbook/assets/lab-5-assets/47.png "47")
+
+Filtered ports we can assume are closed. Hosts with port 88 running Kerberos and port 53 running DNS open, we can strongly assume is the Domain Controller (DC) or a Windows Server. Now we know the Domain Controller is on 192.168.86.134. For the Domain name of the machine, enumerate the DC using LDAP and we’ll find the root domain name is dc.local, via:
+
+> sudo nmap -T4 -Pn -p 389 --script ldap* 192.168.86.134
+
+![](/.gitbook/assets/lab-5-assets/48.png "48")
+
+**nbtscan**
+
+Enumerate NetBOIS names of hosts:
+
+> nbtscan 192.168.86.0/24
+
+![](/.gitbook/assets/lab-5-assets/49.png "49")
+
+**CrackMapExec**
+
+CrackMapExec more neatly finds host IP’s, NetBIOS names, domain names, Windows versions, SMB Sigining all in one small command:
+
+> crackmapexec smb 192.168.86.0/24
+
+![](/.gitbook/assets/lab-5-assets/50.png "50")
+
+### 5.5.5 Username enumeration with Nmap and Kerbrute
+
+Now we know what computers are on the network, we need to find out what user accounts can authenticate to them. Once we have usernames, we can find passwords, then get our precious foothold into the system.
+
+[Kerberos](https://docs.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview) makes it easy to enumerate valid usernames for the domain. We can send Kerberos requests to the DC checking different usernames. Tools like Nmap and [Kerbrute](https://github.com/ropnop/kerbrute/releases) makes this process easy. All you need is a username list. You can use one from [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) or craft one based off [naming conventions and what you know about the target](https://activedirectorypro.com/active-directory-user-naming-convention/).
+
+**Kerbrute**
+
+Download [Kerbrute](https://github.com/ropnop/kerbrute/releases) from the Git repository. Download the [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) usernames list. You can combine this with other lists to build a larger store of usernames.
+
+![](/.gitbook/assets/lab-5-assets/51.png "51")
+
+
+## 5.6 Conclusion
+<!-- Using `responder` to capture hashes, cracking with `hashcat`, then using `psexec` to login to a remote shell is just one of hundreds of common ways to exploit Active Directory. Search engines are a hackers deadliest weapon, use it to find out more about Active Directory attacks. -->
+
+CONCLUSION HERE
