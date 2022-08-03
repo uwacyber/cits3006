@@ -127,10 +127,10 @@ The only issue with Union-based SQLi is that it relies on the results of the SQL
 
 Error-based SQLi attacks are an alternative to Union-based SQLi that exploits verbose error messages that are displayed on a website if a SQL error occurs. An attacker can abuse these error messages to leak out information from the database using the error messages that are shown on the website.
 
-For MySQL servers, the **`updatexml`** is a useful functioning for causing an SQL error and leaking the result of a different query in the error message. For an example, the below payload is an example of using `updatexml` to leak a name of a database from the `information_schema.schemata` table.
+For MySQL servers, the **`updatexml`** is a useful functioning for causing an SQL error and leaking the result of a different query in the error message. For an example, the below payload is an example of using `updatexml` to leak a name of a database from the `information_schema.schemata` table. However, this payload will not always work and you would normally need to experiment how to leak data using error messages.
 
 ```
-' AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT 1,1)),null)--
+' AND updatexml(null,concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT 1,1)),null)--
 ```
 
 ---
