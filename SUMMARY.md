@@ -13,7 +13,7 @@
 * [Lab 0: Setup and Linux](cits3006-labs/lab-0-setup-and-linux.md)
 * [Lab 1: Network Security](cits3006-labs/lab-1-network-security.md)
 * [Lab 2: Malware](cits3006-labs/lab-2-malware.md)
-* [Lab 3: Reverse Engineering (NOT READY)](cits3006-labs/lab-3-reverse-engineering.md)
+* [Lab 3: Reverse Engineering](cits3006-labs/lab-3-reverse-engineering.md)
 * [Lab 4: Application Security (NOT READY)](cits3006-labs/lab-4-application-security.md)
 * [Lab 5: Active Directory (NOT READY)](cits3006-labs/lab-5-active-directory.md)
 * [Lab 6: Web Security (NOT READY)](cits3006-labs/lab-6-web-security.md)
