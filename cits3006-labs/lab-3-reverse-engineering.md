@@ -4,17 +4,17 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
-## TODO:
-
-* update instructions for kali linux: capa tool, IDA,
-* tools section
-* check figure references
-
-The aim of this lab is to perform deep analysis of DearCry ransomware and demonstrate some techniques of malware analysis, and especially reverse engineering of malicious sample for educational purposes. Materials in this lab adapted from [LIFARS](https://lifars.com/wp-content/uploads/2021/04/DearCry\_Ransomware.pdf).
-
 ## 3.0. Introduction
 
 Many malware use obfuscation techniques to try to hide the information about how they function. In this lab, we will try to uncover their mechanisms using reverse engineering techniques.
+
+{% hint style="info" %}
+Later, we will use a tool named Ghidra, but it is a bit large. So install it now in a separate terminal:
+
+sudo apt-get update -y
+
+sudo apt-get install ghidra -y
+{% endhint %}
 
 ## 3.1. Reverse Engineering using GDB
 
@@ -31,7 +31,7 @@ In this section, we will be reverse engineering a newly discovered ransomware ca
 {% hint style="warning" %}
 This section of the lab does not work on Apple Silicon computers or any other ARM-based architectures, because the instruction sets are vastly different between the AMD and ARM architectures when you compile codes.
 
-Alternate ways to do this section is to work with others in the lab, or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work.
+Alternate ways to do this section is to work with others in the lab (suggested), or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work also (but can cost you if you don't have free credit).
 {% endhint %}
 
 ```
@@ -50,7 +50,7 @@ We will begin our analysis of the ransomware by running the `strings` command on
 strings free_bitcoin | grep "EVP\|1234567890abcdef"
 ```
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (3).png>)
 
 The above screenshot shows that the malware uses the OpenSSL Crypto library. The ransomware is also using the AES 128-bit encryption with the CBC mode, which means that the key used to encrypt the files is 128 bits (16 bytes) long.
 
@@ -68,7 +68,7 @@ objdump -d free_bitcoin
 
 Ignoring the included functions from libraries, we find that the malware has the functions `main`, `encrypt_file`, `decrypt_file` and `gen_key`. Let us take a closer look at the `gen_key` function since this is most likely where the key is created to be used for encryption. Below is the assembly code of this function.
 
-![](<../.gitbook/assets/image (13).png>)
+![](<../.gitbook/assets/image (18).png>)
 
 Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.
 
@@ -79,11 +79,11 @@ gcc -o srand_test srand_test.c
 
 The test code uses the value of 16 (0x10 in hexadecimal) to set the seed, so we will look for where this value is in the assembly code.
 
-![](<../.gitbook/assets/image (16).png>)
+![](<../.gitbook/assets/image (16) (1).png>)
 
 When you run `objdump` on the compiled file, you should see the main function as:
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (3).png>)
 
 We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
 
@@ -122,62 +122,71 @@ For a list of more commands to use gdb, take a look at [https://darkdust.net/fil
 
 Since the ransomware is poorly designed and only encrypts the files in the working directory, we will create a test folder to execute the malware from. Ideally, if you are doing real malware analysis you would want to completely isolate it inside a separate VM before executing it. However, for our purposes running it from inside an isolated directory should be sufficient since it only encrypts files inside the working directory.
 
-You can use the commands below to prepare your test folder and start gdb-peda.
+You can use the commands below to prepare your test folder and start `gdb-peda`.
 
 ```
 mkdir test
 cp free_bitcoin test/
 cd test/
 chmod 500 free_bitcoin
-gdb ./free_bitcoin
+gdb free_bitcoin
 ```
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
 
-![](<../.gitbook/assets/image (4).png>)
-
-![](<../.gitbook/assets/image (3).png>)
-
-![](<../.gitbook/assets/image (8).png>)
-
-We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
-
-![](<../.gitbook/assets/image (15) (1).png>)
-
-The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
-
-Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
-
-The second observation is that the character `e` is stored inside the `RDX` register (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is most likely the first character of the encryption key.
-
-To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012ba` and step through the program’s execution by machine instruction (using the `si` command) until we find something interesting in the registers or the stack.
-
-![](<../.gitbook/assets/image (12).png>)
-
-At this stage, you can see that something from the registry `0x402008` is being moved to `EDX` (it is noted as RDX in the registers). As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
-
-![](<../.gitbook/assets/image (3) (1).png>)
-
-This means something interesting should be located at `0x402008`:
+![](<../.gitbook/assets/image (6).png>)
 
 ![](<../.gitbook/assets/image (2).png>)
 
-Well, what do you know, it is the same string we found a while back!
+![](../.gitbook/assets/image.png)
 
-So from our findings, we can conclude that:
+We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
+
+![](<../.gitbook/assets/image (3).png>)
+
+The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
+
+* Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
+* The second observation is that the character `e` is stored inside the `EDX` register, as shown as `RDX`, (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is possibly (and most likely) the first character of the encryption key.
+
+To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012aa` and step through the program’s execution by machine instruction (`c`, then using the `si` command) until we find something interesting in the registers or the stack. At every step (after each `si` command), try to inspect the registers, code and stack to see if you can find any useful information. Once you reach the code `movzx`, you will see the below state.
+
+![](<../.gitbook/assets/image (4).png>)
+
+At this stage, you can see that the address `0x402008` is being moved to `EDX` (it is noted as RDX in the registers), which contains a familiar string we found before. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
+
+![](<../.gitbook/assets/image (1).png>)
+
+So definitely, the string "`1234567890abcdef`" is used to generate the key string!
+
+Based on our findings, we can conclude that:
 
 1. The ransomware sets the random seed to be `1234`.
 2. The `rand` generator is used to select a char from a string "`1234567890abcdef`".
-3. Step 2 is repeated until the key size is 16 bytes.
-4. Using the generated key, aes-128-cbc is used to encrypt files.
+3. Step 2 is repeated until the key size is 16 bytes (i.e., looped 16 times).
+4. Using the generated key from step 3, aes-128-cbc is used to encrypt files.
 
-You can now either (1) continue debugging the ransomware to find the key (keep running until you see 16 bytes of key), or (2) write a code that mimics the key generation steps described above (i.e., set the seed to 1234 and choose char from "1234567890abcdef". The first output is "e", followed by "4" and so on). Either way, you should converge to the same key.
+You can now either (1) continue debugging the ransomware to find the key (keep running until you generate the first 16 bytes of the key), or (2) write a code that mimics the key generation steps described above (i.e., set the seed to `1234` and choose char from "`1234567890abcdef`". The first output is "`e`", followed by "4" and so on). Either way, you should converge to the same key.
 
 ## 3.2. Another tool: Ghidra
 
-Description.
+Ghidra is a tool for reverse engineering, which has been used for many years by special services. Now it is available to everyone.
 
+By now, you should have completed installing Ghidra. Since the required JDK is already installed on Kali, your ghidra should be good to go (if using other OS VM, install necessary requirements yourselves).
 
+Once you run ghidra (just type `ghidra` from the terminal), you will first be greeted with the agreement notice - press "agree". Then, you see the Ghidra Help - you can read this at your own time to get more familiar with Ghidra, but otherwise you can close it for now. Finally, you will see the main ghidra window and the tip window (close this also). Now we are ready to get started!
+
+### 3.2.1. Opening a project in Ghidra
+
+Download the files we will be using for this section.
+
+```
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-linux.zip
+```
+
+On Ghidra, create a new project (doesn't matter shared or not). You can name it `crackme0`.
+
+Next, import `crackme0x00` from the unzipped folder to Ghidra, you can either drag and drop, or import file from the menu. You can leave the other settings unchanged, and finish importing the file.
 
 
 

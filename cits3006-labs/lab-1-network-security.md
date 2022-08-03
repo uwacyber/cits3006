@@ -272,7 +272,7 @@ Like before, set the `RHOST` to be the target IP address. In addition, we must a
 set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
 ```
 
-![](<../.gitbook/assets/image (9).png>)
+![](<../.gitbook/assets/image (9) (3).png>)
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
