@@ -164,7 +164,7 @@ For this part of the lab, we will carry out a few exploits using the Metasploit 
 First, you may need to update it to the latest version.
 
 ```
-sudo apt update -y; sudo apt install Metasploit-framework -y
+sudo apt update -y; sudo apt install metasploit-framework -y
 ```
 
 From the nmap scan above, we have discovered the IP address of our target (metasploitable VM) machine and the services running. The first one we will exploit is the one at the top at port 21 - the FTP service.
@@ -276,7 +276,7 @@ set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userp
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
-![](<../.gitbook/assets/image (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (2).png>)
 
 {% hint style="info" %}
 You would notice that this is SSH session 3, meaning I did find two other credentials that could be used to SSH to the metasploitable VM. Which ones do you think they are?
