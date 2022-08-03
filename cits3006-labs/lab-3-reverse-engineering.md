@@ -258,11 +258,7 @@ The entered password is saved to the `local_lc` variable. The string value 25038
 
 ### 3.2.3. Inspecting `crackme0x01` using Ghidra
 
-We will now look at the next binary `crackme0x01`.
-
-
-
-
+Try the next binary `crackme0x01` yourself and see if you can crack the password!
 
 ## 3.3. Conclusion
 
