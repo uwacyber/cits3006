@@ -232,7 +232,7 @@ Now we will inspect our binary file. The behaviour we observed was that it promp
 
 ![](<../.gitbook/assets/image (1).png>)
 
-### 3.2.2. Inspecting `crackme0x00` using Ghidra
+### 3.2.2. `crackme0x00` walkthrough using Ghidra
 
 Let's start by inspecting the program strings: WIndow -> Defined Strings.
 
@@ -256,11 +256,11 @@ The entered password is saved to the `local_lc` variable. The string value 25038
 
 ![](<../.gitbook/assets/image (12).png>)
 
-### 3.2.3. Solve`crackme0x01` and `crackme0x02` using Ghidra
+### 3.2.3. Solve `crackme0x01` and `crackme0x02` using Ghidra
 
 Try the next two binaries `crackme0x01` and `crackme0x02` yourself and see if you can crack the password!
 
-### 3.2.4. Solving crackme0x03 using Ghidra
+### 3.2.4. `crackme0x03` walkthrough using Ghidra
 
 We start off similar to the previous questions, but obviously, this won't have the password saved the same as before. When we inspect the strings, we can still see the word "Password" as the prompt, so it is a good place to start. Inspecting the code where the password in entered first:
 
