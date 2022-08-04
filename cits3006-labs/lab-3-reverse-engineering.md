@@ -142,7 +142,7 @@ We will begin our analysis by getting the machine instruction for when the funct
 
 We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
 
-![](<../.gitbook/assets/image (13).png>)
+![](<../.gitbook/assets/image (13) (2).png>)
 
 The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
 
@@ -214,11 +214,11 @@ On Ghidra, create a new project (doesn't matter shared or not). You can name it 
 
 Next, import `crackme0x00` from the unzipped folder to Ghidra, you can either drag and drop, or import file from the menu. You can leave the other settings unchanged, and finish importing the file.
 
-![](<../.gitbook/assets/image (3) (1).png>)
+![](<../.gitbook/assets/image (3) (1) (4).png>)
 
 Open the analyser by double-clicking the binary. You will be prompted with the analyser, which you simply press "yes" (the pre-selected analysers are sufficient here). Then it will get you here:
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (4) (1).png>)
 
 On the CodeBrowser console, you see a few windows:
 
@@ -230,15 +230,15 @@ On the CodeBrowser console, you see a few windows:
 
 Now we will inspect our binary file. The behaviour we observed was that it prompts for the password, checks the password, and then responds based on the user input provided.
 
-![](<../.gitbook/assets/image (1) (2).png>)
+![](<../.gitbook/assets/image (1).png>)
 
 ### 3.2.2. Inspecting `crackme0x00` using Ghidra
 
 Let's start by inspecting the program strings: WIndow -> Defined Strings.
 
-![](<../.gitbook/assets/image (7).png>)
+![](<../.gitbook/assets/image (7) (3).png>)
 
-![](<../.gitbook/assets/image (2) (1).png>)
+![](<../.gitbook/assets/image (2).png>)
 
 Well, it seems the password was stored in cleartext in the binary as shown above. Nevertheless, we will still have a look at whether this password indeed is the one that works with the binary. Double-click the `Password` entry in the `Defined Strings` window, which will take you to the section where the string is stored.
 
@@ -246,11 +246,11 @@ Well, it seems the password was stored in cleartext in the binary as shown above
 
 You will see that it is referencing something in the main function (the green text on the RHS). So let's follow by double-clicking the address, which takes you here:
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 You will see that there is a `scanf` call after the reference to the `Password`, and then followed by the `strcmp`. This looks pretty much like where the password was prompted when the binary was run, and how the password is checked! Having a look at the decompiled code makes this suspicion a reality:
 
-![](<../.gitbook/assets/image (6) (1).png>)
+![](<../.gitbook/assets/image (6).png>)
 
 The entered password is saved to the `local_lc` variable. The string value 250382 has been stored in the `local_3c` variable (see the assembly code). The result from `strcmp` is then checked, with zero being the same string. Hence, the string `250382` is our password!
 
@@ -264,7 +264,7 @@ Try the next two binaries `crackme0x01` and `crackme0x02` yourself and see if yo
 
 We start off similar to the previous questions, but obviously, this won't have the password saved the same as before. When we inspect the strings, we can still see the word "Password" as the prompt, so it is a good place to start. Inspecting the code where the password in entered first:
 
-![](<../.gitbook/assets/image (2).png>)
+![](../.gitbook/assets/image.png)
 
 The main function can be inspected from here, and indeed the way the password check is done is different. Instead of checking the password in the main, it calls another function `test`, with two variables passed in.&#x20;
 
@@ -272,23 +272,23 @@ The main function can be inspected from here, and indeed the way the password ch
 
 But at this point, you probably guessed that the second arg 0x52b24 is probably the password we are looking for. If you try that as is, it will fail because of course the representation is in hex. You have to convert it to decimal first, and this is already done for you - right-click on the variable and it will show you other commonly used conversion values. The decimal value 338724 seems like a  good candidate, so try that as a password.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (13).png>)
 
 Indeed, that was the password!
 
-![](<../.gitbook/assets/image (20).png>)
+![](<../.gitbook/assets/image (4).png>)
 
 Anyway, let's inspect the function test to see that this is indeed the place where the password is checked or not. From the decompiler window, double-click the function name `test`.
 
-![](<../.gitbook/assets/image (14).png>)
+![](<../.gitbook/assets/image (3).png>)
 
 de the test function, it is showing some shift functions, which aren't conventional c functions so it must be doing something, possibly shifting. So let us try shifting the letters.
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (19).png>)
 
 Function called `shift` is being used, this isn't any built-in function so is a custom, and is probably doing some shifting. Double-click the shift function to see what it does.
 
-![](<../.gitbook/assets/image (19).png>)
+![](<../.gitbook/assets/image (20).png>)
 
 If you read the function carefully, the operation is quite simple. To make the readability better, let's rename some variables (you can press "`L`", or right-click to see the option):
 
@@ -298,15 +298,15 @@ If you read the function carefully, the operation is quite simple. To make the r
 
 Then we have:
 
-![](<../.gitbook/assets/image (10).png>)
+![](<../.gitbook/assets/image (22).png>)
 
 So basically the loop goes over each char from the input arg `param_1`, and shift it by -0x3 (remember, we are working in hex). We can shift from terminal using Python:
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (21).png>)
 
 Indeed, those were the messages displayed when guessing the password!
 
-
+There are more `crackme` puzzles provided in the zip, so have a go at them at your own speed :)
 
 ## 3.3. Conclusion
 
