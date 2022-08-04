@@ -107,7 +107,7 @@ Now we can run it, let's run it against the metasploitable VM (check its IP addr
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-![](<../.gitbook/assets/image (6) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (2).png>)
 
 We just created our own port scanner using Bash!
 
@@ -372,7 +372,7 @@ Let's test it first, we have to update the attacker's IP address in the `victim.
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
-![](<../.gitbook/assets/image (1) (2).png>)
+![](<../.gitbook/assets/image (1) (2) (1).png>)
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 

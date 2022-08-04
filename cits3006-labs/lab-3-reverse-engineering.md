@@ -1,4 +1,4 @@
-# Lab 3: Reverse Engineering (NOT READY)
+# Lab 3: Reverse Engineering
 
 {% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
@@ -230,7 +230,7 @@ On the CodeBrowser console, you see a few windows:
 
 Now we will inspect our binary file. The behaviour we observed was that it prompts for the password, checks the password, and then responds based on the user input provided.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (2).png>)
 
 ### 3.2.2. Inspecting `crackme0x00` using Ghidra
 
@@ -238,7 +238,7 @@ Let's start by inspecting the program strings: WIndow -> Defined Strings.
 
 ![](<../.gitbook/assets/image (7).png>)
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/image (2) (1).png>)
 
 Well, it seems the password was stored in cleartext in the binary as shown above. Nevertheless, we will still have a look at whether this password indeed is the one that works with the binary. Double-click the `Password` entry in the `Defined Strings` window, which will take you to the section where the string is stored.
 
@@ -250,15 +250,63 @@ You will see that it is referencing something in the main function (the green te
 
 You will see that there is a `scanf` call after the reference to the `Password`, and then followed by the `strcmp`. This looks pretty much like where the password was prompted when the binary was run, and how the password is checked! Having a look at the decompiled code makes this suspicion a reality:
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
 The entered password is saved to the `local_lc` variable. The string value 250382 has been stored in the `local_3c` variable (see the assembly code). The result from `strcmp` is then checked, with zero being the same string. Hence, the string `250382` is our password!
 
 ![](<../.gitbook/assets/image (12).png>)
 
-### 3.2.3. Inspecting `crackme0x01` using Ghidra
+### 3.2.3. Solve`crackme0x01` and `crackme0x02` using Ghidra
 
-Try the next binary `crackme0x01` yourself and see if you can crack the password!
+Try the next two binaries `crackme0x01` and `crackme0x02` yourself and see if you can crack the password!
+
+### 3.2.4. Solving crackme0x03 using Ghidra
+
+We start off similar to the previous questions, but obviously, this won't have the password saved the same as before. When we inspect the strings, we can still see the word "Password" as the prompt, so it is a good place to start. Inspecting the code where the password in entered first:
+
+![](<../.gitbook/assets/image (2).png>)
+
+The main function can be inspected from here, and indeed the way the password check is done is different. Instead of checking the password in the main, it calls another function `test`, with two variables passed in.&#x20;
+
+![](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F7fBivtRyeRgCSUaXucCZ%2Fuploads%2FhJxypjT3OcenDqdfxvmr%2Fimage.png?alt=media\&token=32248987-87b3-46f6-8c65-02fc5ac4b7ca)
+
+But at this point, you probably guessed that the second arg 0x52b24 is probably the password we are looking for. If you try that as is, it will fail because of course the representation is in hex. You have to convert it to decimal first, and this is already done for you - right-click on the variable and it will show you other commonly used conversion values. The decimal value 338724 seems like a  good candidate, so try that as a password.
+
+![](<../.gitbook/assets/image (6).png>)
+
+Indeed, that was the password!
+
+![](<../.gitbook/assets/image (20).png>)
+
+Anyway, let's inspect the function test to see that this is indeed the place where the password is checked or not. From the decompiler window, double-click the function name `test`.
+
+![](<../.gitbook/assets/image (14).png>)
+
+de the test function, it is showing some shift functions, which aren't conventional c functions so it must be doing something, possibly shifting. So let us try shifting the letters.
+
+![](../.gitbook/assets/image.png)
+
+Function called `shift` is being used, this isn't any built-in function so is a custom, and is probably doing some shifting. Double-click the shift function to see what it does.
+
+![](<../.gitbook/assets/image (19).png>)
+
+If you read the function carefully, the operation is quite simple. To make the readability better, let's rename some variables (you can press "`L`", or right-click to see the option):
+
+* `local_80` -> `i`
+* `local_7c` -> `output`
+* `sVar1` -> `str_len`
+
+Then we have:
+
+![](<../.gitbook/assets/image (10).png>)
+
+So basically the loop goes over each char from the input arg `param_1`, and shift it by -0x3 (remember, we are working in hex). We can shift from terminal using Python:
+
+![](<../.gitbook/assets/image (1).png>)
+
+Indeed, those were the messages displayed when guessing the password!
+
+
 
 ## 3.3. Conclusion
 
