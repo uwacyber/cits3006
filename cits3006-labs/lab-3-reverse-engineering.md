@@ -70,7 +70,7 @@ Ignoring the included functions from libraries, we find that the malware has the
 
 ![](<../.gitbook/assets/image (18).png>)
 
-Of interest is that the function calls `srand` (at line 7, address `40129b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.
+Of interest is that the function calls `srand` (at line 7, address `40128b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.
 
 ```
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/srand_test.c
@@ -185,7 +185,7 @@ Download the files we will be using for this section.
 
 
 ```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-arm.zip
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-linux.zip
 ```
 {% endtab %}
 
@@ -193,7 +193,7 @@ wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/fi
 
 
 ```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-linux.zip
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/crackme-arm.zip
 ```
 {% endtab %}
 
