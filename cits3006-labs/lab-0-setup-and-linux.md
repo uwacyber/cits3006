@@ -43,6 +43,26 @@ The process for installing Docker Desktop is straightforward and involves using 
 
 It is recommended to use Docker within your VM (e.g., Kali) if needed, especially when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
 
+### 0.1.3. Transferring files between VMs
+
+Often we will need to transfer files between VMs, most of the time from your attacker VM (Kali) to target hosts (Windows, Ubuntu, Metasploitable etc.). One of the easiest way is to enable web server on Kali:
+
+```
+sudo service apache2 start
+```
+
+This will let you start a web server from your Kali VM, which you can access by typing the IP address of Kali on the browser. Since it is a web server, you can also use `wget` command to retrieve files if you don't have GUI enabled on the VM.
+
+To share, create a share folder located at `/var/www/html/`:
+
+```
+sudo mkdir /var/www/html/share
+```
+
+Now you can place files you want to share in the share folder, then it should appear when you access the web server.
+
+Another way is to create a shared folder in the cloud (e.g., Dropbox, OneDrive, Google Drive etc.) and transfer between the VMs that way. Make sure not to use your personal account as we will be moving malicious files, which may be synced to your host drive if that is enabled.
+
 ## 0.2 Linux refresher
 
 This lab is to provide a refresher on your Linux knowledge, and you can do this on your Kali VM. You may skim/skip through this lab if you feel confident, but if you haven't done much in Linux for a while (a semester or two), you are strongly advised to complete this lab before moving on to other labs to improve your workflow efficiency. For each example, you should try it yourself before moving on to the next section.
