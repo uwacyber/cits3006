@@ -107,7 +107,12 @@ git clone https://github.com/longld/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
 ```
 
-\
+Also install OpenSSL library:
+
+```
+sudo apt-get install libssl-dev
+```
+
 Below we list some useful commands for inside the `gdb-peda` shell to help you reverse engineer the ransomware.
 
 * `gdb-peda$ info func` : Prints out all the functions inside of the program.
