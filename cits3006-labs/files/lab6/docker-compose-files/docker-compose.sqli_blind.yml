@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  vuln-flask-server:
+    container_name: sqli-lab-blind-based
+    # Add -arm at the end if you are using an arm64 processor (eg. Mac M1/M2 laptops)
+    image: uwacyber/cits3006:sqli-blind
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "1337:1337"
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.30
+    platform: linux/amd64
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: "dbuser"
+      MYSQL_PASSWORD: "wowthisissecure"
+      MYSQL_DATABASE: "vulndb"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+      start_period: 10s
