@@ -1,27 +1,15 @@
 # Lab Quizzes
 
+All details on how to attempt lab quizzes are provided via the announcements, please check them regularly.
+
 ## Lab Quiz 1
 
-All the instructions are provided in the lab quiz venue.
-
-
+Held usually in week 4.
 
 ## Lab Quiz 2
 
-First session
-
-{% file src="../.gitbook/assets/lq2_cits3006.zip" %}
-
-{% file src="../.gitbook/assets/lq2_cits3006_arm.zip" %}
-
-
-
-Second session
-
-{% file src="../.gitbook/assets/cits3006_lq2.zip" %}
-
-{% file src="../.gitbook/assets/cits3006_lq2_arm.zip" %}
-
-
+Held usually in week 7.
 
 ## Lab Quiz 3
+
+Held usually in week 10.
