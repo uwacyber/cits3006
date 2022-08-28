@@ -24,3 +24,19 @@ We will use Windows 7 VM instead of Windows 10 VM, as it is much easier to turn 
 
 
 
+## 4.X Summary
+
+add summary...
+
+
+
+Next up, Active Directory
+
+{% hint style="info" %}
+Please preview the next lab setup guide, as you will need to set up a new VM - Windows Server 2019. The size of the ISO is about 5GB, so it is a good idea to download that beforehand and get started on its installation (took me half an hour to get it set up FYI).
+{% endhint %}
+
+{% hint style="warning" %}
+M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~1 hour). So start early.
+{% endhint %}
+
