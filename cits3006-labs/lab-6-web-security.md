@@ -10,6 +10,8 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 SQL injection (SQLi) and Cross Site Scripting (XSS) are a type of **injection (AS03:2021)** vulnerability that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
 
+You will need to use your Kali VM, and we will be using docker to run SQL servers.
+
 ***
 
 ## 6.1.0 SQLi
@@ -415,5 +417,15 @@ You need to research a method to exploit the XSS vulnerability with this CSP and
 1. The CSP prevents exfiltrating data using `fetch`.
 2. One of the allowed sources has a JSONP endpoint that you can use in your exploit.
 3. If you have the correct method but it is not working, **make sure you a properly URL encoding your payload**! For an example, the `+` in a URL decodes to .
+
+## 6.3. Conclusion
+
+In this lab, we explored ways to exploit web vulnerabilities, particularly SQLi and XSS, to gain unauthorized access to data and systems.
+
+This is the final lab in CITS3006. You can now focus on studying for your assessment items (the lab quiz 3 and also the project).
+
+
+
+Credit: Alex Brown
 
 ***

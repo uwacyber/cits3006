@@ -8,6 +8,8 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 Many malware use obfuscation techniques to try to hide the information about how they function. In this lab, we will try to uncover their mechanisms using reverse engineering techniques.
 
+You only need to use the Kali VM for this lab.
+
 {% hint style="info" %}
 Later, we will use a tool named Ghidra, but it is a bit large. So install it now in a separate terminal:
 

