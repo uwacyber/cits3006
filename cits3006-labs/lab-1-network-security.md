@@ -382,7 +382,7 @@ So it works! Let's have a closer look at the code, starting with the `hacker.c` 
 
 There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
-![](<../.gitbook/assets/image (5) (1) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1) (2).png>)
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 

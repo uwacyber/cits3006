@@ -81,11 +81,11 @@ gcc -o srand_test srand_test.c
 
 The test code uses the value of 16 (0x10 in hexadecimal) to set the seed, so we will look for where this value is in the assembly code.
 
-![](<../.gitbook/assets/image (16).png>)
+![](<../.gitbook/assets/image (16) (1).png>)
 
 When you run `objdump` on the compiled file, you should see the main function as:
 
-![](<../.gitbook/assets/image (1) (1) (2).png>)
+![](<../.gitbook/assets/image (1) (1) (2) (2).png>)
 
 We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
 
@@ -143,7 +143,7 @@ We will begin our analysis by getting the machine instruction for when the funct
 
 ![](<../.gitbook/assets/image (4) (2).png>)
 
-![](<../.gitbook/assets/image (7) (2).png>)
+![](<../.gitbook/assets/image (7) (2) (1).png>)
 
 ![](<../.gitbook/assets/image (9) (4).png>)
 
@@ -162,7 +162,7 @@ To investigate this further, we will now set a breakpoint after the rand call at
 
 At this stage, you can see that the address `0x402008` is being moved to `EDX` (it is noted as RDX in the registers), which contains a familiar string we found before. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (1).png>)
 
 So definitely, the string "`1234567890abcdef`" is used to generate the key string!
 
@@ -237,7 +237,7 @@ On the CodeBrowser console, you see a few windows:
 
 Now we will inspect our binary file. The behaviour we observed was that it prompts for the password, checks the password, and then responds based on the user input provided.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (1).png>)
 
 ### 3.2.2. `crackme0x00` walkthrough using Ghidra
 
@@ -245,11 +245,11 @@ Let's start by inspecting the program strings: WIndow -> Defined Strings.
 
 ![](<../.gitbook/assets/image (7) (3).png>)
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/image (2) (1).png>)
 
 Well, it seems the password was stored in cleartext in the binary as shown above. Nevertheless, we will still have a look at whether this password indeed is the one that works with the binary. Double-click the `Password` entry in the `Defined Strings` window, which will take you to the section where the string is stored.
 
-![](<../.gitbook/assets/image (9).png>)
+![](<../.gitbook/assets/image (9) (1).png>)
 
 You will see that it is referencing something in the main function (the green text on the RHS). So let's follow by double-clicking the address, which takes you here:
 
@@ -257,7 +257,7 @@ You will see that it is referencing something in the main function (the green te
 
 You will see that there is a `scanf` call after the reference to the `Password`, and then followed by the `strcmp`. This looks pretty much like where the password was prompted when the binary was run, and how the password is checked! Having a look at the decompiled code makes this suspicion a reality:
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
 The entered password is saved to the `local_lc` variable. The string value 250382 has been stored in the `local_3c` variable (see the assembly code). The result from `strcmp` is then checked, with zero being the same string. Hence, the string `250382` is our password!
 
@@ -271,7 +271,7 @@ Try the next two binaries `crackme0x01` and `crackme0x02` yourself and see if yo
 
 We start off similar to the previous questions, but obviously, this won't have the password saved the same as before. When we inspect the strings, we can still see the word "Password" as the prompt, so it is a good place to start. Inspecting the code where the password in entered first:
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (7).png>)
 
 The main function can be inspected from here, and indeed the way the password check is done is different. Instead of checking the password in the main, it calls another function `test`, with two variables passed in.&#x20;
 
@@ -279,7 +279,7 @@ The main function can be inspected from here, and indeed the way the password ch
 
 But at this point, you probably guessed that the second arg 0x52b24 is probably the password we are looking for. If you try that as is, it will fail because of course the representation is in hex. You have to convert it to decimal first, and this is already done for you - right-click on the variable and it will show you other commonly used conversion values. The decimal value 338724 seems like a  good candidate, so try that as a password.
 
-![](<../.gitbook/assets/image (13).png>)
+![](<../.gitbook/assets/image (13) (1).png>)
 
 Indeed, that was the password!
 
@@ -305,11 +305,11 @@ If you read the function carefully, the operation is quite simple. To make the r
 
 Then we have:
 
-![](<../.gitbook/assets/image (22).png>)
+![](<../.gitbook/assets/image (22) (1).png>)
 
 So basically the loop goes over each char from the input arg `param_1`, and shift it by -0x3 (remember, we are working in hex). We can shift from terminal using Python:
 
-![](<../.gitbook/assets/image (21).png>)
+![](<../.gitbook/assets/image (21) (1).png>)
 
 Indeed, those were the messages displayed when guessing the password!
 
