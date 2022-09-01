@@ -151,8 +151,6 @@ We are now going to install Domain Services. In the Server Manager, click on “
 
 Keep clicking "Next" until you reach "Server Roles". Check the box next to "Active Directory Domain Services”, add services, click "Next" until the Results section then click “Install”.
 
-![](../.gitbook/assets/lab-5-assets/1.gif)
-
 Next, click the flag icon, then "Promote this server to a domain controller". Click “Add a new forest” then name your domain whatever you'd like. We've chosen "dc.local" as the root domain name for this demonstration.
 
 ![](../.gitbook/assets/lab-5-assets/10.png)
@@ -186,18 +184,6 @@ Now let's create a domain admin to help us out on our network. Right-click the �
 ![](../.gitbook/assets/lab-5-assets/20.png)
 
 Let's create a few more users. Copy our "test user1" user and repeat the previous steps for test users 2 and 3.
-
-Next let's create a SQL database account just for testing purposes (we won’t actually be setting up a SQL database in this walk-through). Copy the "testadmin" account so all the permissions of an Administrator account are carried over to the SQL account. The password I used was `password1!`, but it can be something else like `StrongPassword4`. Service accounts should not be domain administrators, this has the potential for exploitation.
-
-![](../.gitbook/assets/lab-5-assets/21.png)
-
-Some administrators put passwords in account descriptions, thinking no one else can see them. To see how this can be a vulnerability, put the password in the description of the SQLDatabase account by right-clicking it, and selecting “Properties”:
-
-![](../.gitbook/assets/lab-5-assets/22.png)
-
-Then type in the password in the description section, then click “Apply”, then “OK”. Safe as can be right?
-
-![](../.gitbook/assets/lab-5-assets/23.png)
 
 Many Active Directory’s utilize file shares. Let's set up a file share to see how that common feature can be a vulnerability. Close out of the “Users and Computers” window, then click on “File and Storage Services”.
 
