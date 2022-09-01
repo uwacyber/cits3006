@@ -29,7 +29,7 @@ You will already have Kali, so you can set up the Windows Server 2019. If you al
 {% hint style="info" %}
 M1/M2 users:&#x20;
 
-Because the time to setup the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM.
+Because the time to setup the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM (do note, it is 10GB large).
 
 (add link here)
 
