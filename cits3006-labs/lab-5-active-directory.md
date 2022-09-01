@@ -8,6 +8,12 @@ In this lab, we will build an Active Directory environment in a virtualized lab 
 
 ## 5.1. VM setup
 
+{% hint style="danger" %}
+This lab requires running 3 VMs (Windows server (1vCPU, 1GB Ram, 32GB Storage), Windows workstation (1vCPU, 1GB Ram, 20GB Storage), and Kali (1vCPU, 1GB Ram). If you have 4 cores, it leaves 1 core for your host computer, which usually isn't sufficient (likely to crash your computer). So if your computational power is lacking (less than 4 cores), you can do the lab with others in the lab (groups of 2 or 3 people). An offline router will be provided in the F2F lab for you to connect and do the lab (run through all the lab content and preinstall anything you would need from the internet before connecting), then connect to the router as a bridged mode and do the lab.
+
+If you are an online student without sufficient computing power, you can read through the lab and ask our lab facilitators if you have any questions.
+{% endhint %}
+
 {% hint style="warning" %}
 If using VirtualBox is giving you errors during the setup steps, you are recommended to try [VMware Workstation](https://www.vmware.com/au/products/workstation-player.html) instead. Most of the setup issues were resolved using the VMWare workstation based on the experience.&#x20;
 {% endhint %}
@@ -15,7 +21,7 @@ If using VirtualBox is giving you errors during the setup steps, you are recomme
 You will need to use 3 VMs for this lab, one for each of the following:
 
 * [Windows Server 2019](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019)
-* [Windows 10 Enterprise](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise)
+* [Windows 10 Enterprise](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise) / Windows 7 (see lab 2 instructions)
 * [Kali Linux](https://www.kali.org/get-kali/)
 
 You will already have Kali, so you can set up the Windows Server 2019. If you also need Windows 10 Enterprise, download the ISO from the link provided. You can type in junks in the required fields, it will still take you to the ISO downloads page.
