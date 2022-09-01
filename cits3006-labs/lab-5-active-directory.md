@@ -95,11 +95,15 @@ Now rename your computer to make it easier to use by searching for "View your PC
 
 At this point, you can "Power Off" this VM and move on to setting up the Windows 10 VM.
 
-### 5.1.2 Using an existing Windows 10 VM
+### 5.1.2 Using an existing Windows VM for a workstation
 
-You can use your existing Windows 10 VM. Do this by making a duplicate of your existing one (ensure you randomize the MAC address to get a new IP address). You can skip the next section 5.1.3 and move on to section 5.1.4.
+{% hint style="info" %}
+M1/M2 users: recommended to use Windows 7.
+{% endhint %}
 
-### 5.1.3 Setting Up a new Windows 10 Enterprise VM
+You can use your existing Windows VM. Do this by making a duplicate of your existing one (ensure you randomize the MAC address to get a new IP address). You can skip the next section 5.1.3 and move on to section [5.1.4](lab-5-active-directory.md#5.1.4-preparing-the-network-discovery).
+
+### 5.1.3 Setting Up a new Windows 10 Enterprise VM as a workstation
 
 "Create a New Virtual Machine” and after clicking the “Use ISO image:” button, browse for the Windows 10 Enterprise ISO file. Click "Next" then select the “Windows 10 Enterprise” edition. This machine will act as a user on the network.
 
