@@ -37,8 +37,8 @@ Please preview the next lab setup guide, as you will need to set up a new VM - W
 {% endhint %}
 
 {% hint style="warning" %}
-M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~2 hours). So start early.
+M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~2 hours), but it is a good learning exercise. So you should try doing this before coming to the lab.
 
-If you come to the F2F lab, the lab facilitator will have a copy of preinstalled Windows Server 2019 that you can load onto UTM, so grab that. However, it is still a good idea to read through (or actually try on an AMD64 machine) setting up the AD, as it is a good learning exercise.
+I also provide you a preconfigured Windows Server 2019 image for UTM that you can download (see Lab 5 for details), but please note the image size is 10GB.
 {% endhint %}
 

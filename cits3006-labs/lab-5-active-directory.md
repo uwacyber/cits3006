@@ -29,7 +29,7 @@ You will already have Kali, so you can set up the Windows Server 2019. If you al
 {% hint style="info" %}
 M1/M2 users:&#x20;
 
-Because the time to set up the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM (do note, it is 10GB large).
+Because the time to setup the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM (do note, it is 10GB large).
 
 (add link here)
 
@@ -41,7 +41,7 @@ M1/M2 users:&#x20;
 
 you can follow these steps:
 
-1. Add a new VM in UTM and select Emulate
+1. Add new VM in UTM and select Emulate
 2. Select Windows and insert ISO, also uncheck UEFI Boot
 3. set CPU to 2, then continue to finish.
 4. set CPU type to QEMU64, and force multicore.
@@ -227,7 +227,7 @@ We will start with the Windows 10 workstation we created in [5.1.2](lab-5-active
 * Select your user and click "Share"
 * Under "Password Protection", click on "Network and Sharing Center" and make sure "Turn on network discovery" is checked.
 
-Now we need the IP Address of your domain controller to join this workstation to the domain. Go back to your Windows Server 2019 - domain controller machine and open up the command prompt again. Type in `ipconfig` and record the IPv4 Address. In the screenshot below, the address of the domain controller is at `192.168.86.131`.
+Now we need the IP Address of your domain controller to join this workstation to the domain. Go back to your Windows Server 2019 - domain controller machine and open up the command prompt again. Type in ipconfig and record the IPv4 Address. In our case, the address of the domain controller is at 192.168.86.131.
 
 ![](../.gitbook/assets/lab-5-assets/32.png)
 
@@ -295,7 +295,7 @@ We’re going to exploit our Active Directory by capturing NTLMv2 Hashes with Re
 
 `responder`, a tool from `Impacket`, should be intalled, but if not, you can use pip to install the network exploitation toolkit `Impacket`. Download it to your Kali system and install as follows:
 
-```bash
+```
 git clone https://github.com/SecureAuthCorp/impacket
 cd impacket/
 sudo pip install . --no-cache-dir
@@ -307,7 +307,7 @@ sudo pip install .
 
 Begin running responder on your Kali machine with the following command:
 
-```bash
+```
 sudo responder -I eth0 -dwv
 ```
 
@@ -329,13 +329,13 @@ To turn this hash into a password, we can attempt hash cracking. The most popula
 
 Then, to crack this hash, we’re going to use a word list to compare the hashes too. If we get a match then we’ve found the password. A popular word list `rockyou.txt` is already pre-installed on every Kali machine located at `/usr/share/wordlist`. If it is still zipped, unzip it with the command:
 
-```bash
+```
 sudo gunzip /usr/share/wordlist/rock.txt.gz
 ```
 
 Then run `hashcat` with both your saved hash and the wordlist.
 
-```bash
+```
 hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt --force
 ```
 
@@ -347,7 +347,7 @@ hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt --force
 
 `psexec` is a Microsoft-developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access testadmin’s computer with our newly found credentials. You need to enter the Root domain name (dc.local), the username (testadmin), the password (password1!), then the IP address of testadmin machine (192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
 
-```bash
+```
 psexec.py dc.local/testadmin:'password1!'@192.168.86.132
 ```
 
@@ -358,7 +358,7 @@ if you get an error:
 
 it means impacket isn't installed correctly. This is a good time to work in the Python's virtual environment so let's do that:
 
-<pre class="language-shell"><code class="lang-shell"><strong>git clone https://github.com/SecureAuthCorp/impacket.git
+<pre class="language-python"><code class="lang-python"><strong>git clone https://github.com/SecureAuthCorp/impacket.git
 </strong><strong>virtualenv impacket-venv
 </strong><strong>source impacket-venv/bin/activate
 </strong><strong>cd ~/impacket
@@ -378,11 +378,11 @@ This is how we could gain access to the user's account. However, in practice, yo
 
 ### 5.5.2 Target enumeration with Nmap, Nbtscan, CME
 
-Obviously, the previous attack is one specific instance of exploiting the user on the AD domain. In practice, we need to do recon first, so in this section, we will look at a few AD-specific recon approaches. First enumerate what hosts are on the network, their IP addresses, how many are there, and what services they are running.
+Obviously the previous attack is a one specific instance of exploiting the user on the AD domain. In practice, we need to do recon first, so in this section, we will look at a few AD-specific recon approaches. First enumerate what hosts are on the network, their IP addresses, how many are there, and what services they are running.
 
 #### **5.5.2.1 Nmap**
 
-The subnet of this network in this example is 192.168.86.0/24 (replace the address for your own subnet).
+The subnet of this network in this example is at 192.168.86.0/24 (replace the address for your own subnet).
 
 You would do host discovery first (as done in lab 1, so we will skip).
 
@@ -399,7 +399,7 @@ All these ports are utilised by the AD in some ways.
 
 Now, enumerate common AD and Windows ports:
 
-```bash
+```
 sudo nmap -T4 -n -Pn -sV -p22,53,80,88,445,5985 192.168.86.0/24
 ```
 
@@ -409,7 +409,7 @@ Filtered ports we can assume are closed.&#x20;
 
 Hosts with port 88 running Kerberos and port 53 running DNS open, we can strongly assume is the Domain Controller (DC) or a Windows Server. Now we know the Domain Controller is on 192.168.86.134. For the Domain name of the machine, enumerate the DC using LDAP and we’ll find the root domain name is dc.local, via:
 
-```bash
+```
 sudo nmap -T4 -Pn -p 389 --script ldap* 192.168.86.134
 ```
 
@@ -417,9 +417,9 @@ sudo nmap -T4 -Pn -p 389 --script ldap* 192.168.86.134
 
 #### **5.5.2.2 nbtscan**
 
-Another approach is to enumerate NetBIOS names of hosts using `nbtscan`:
+Another approach is to enumerate NetBIOS names of hosts using nbtscan:
 
-```bash
+```
 nbtscan 192.168.86.0/24
 ```
 
@@ -429,7 +429,7 @@ nbtscan 192.168.86.0/24
 
 `CrackMapExec` more neatly finds host IP’s, NetBIOS names, domain names, Windows versions, SMB Signing all in one small command (also, prebuilt into Kali):
 
-```bash
+```
 crackmapexec smb 192.168.86.0/24
 ```
 
@@ -441,17 +441,17 @@ But as you can see, those tools provide different types of information about the
 
 In the previous section, we enumerated the network to find what computers are online. Now we need to find out what user accounts can authenticate to them. Once we have usernames, we can find passwords, then get our precious foothold into the system.
 
-Kerberos makes it easy to enumerate valid usernames for the domain. We can send Kerberos requests to the DC checking different usernames, which we will do by using a tool named `kerbrute`. For the username list, you can use one from [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) or craft one based on [naming conventions and what you know about the target](https://activedirectorypro.com/active-directory-user-naming-convention/).
+Kerberos makes it easy to enumerate valid usernames for the domain. We can send Kerberos requests to the DC checking different usernames, which we will do by using a tool named `kerbrute`. For the username list, you can use one from [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) or craft one based off [naming conventions and what you know about the target](https://activedirectorypro.com/active-directory-user-naming-convention/).
 
 #### **5.5.3.1 Kerbrute username enumeration**
 
-We first need to set up Kerbrute, which requires GO to install. Then, download Kerbrute from the Git repository. Download the [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) usernames list using `wget` command below. You can combine this with other lists to build a larger store of usernames.
+We first need to setup Kerbrute, which requires GO to install. Then, download Kerbrute from the Git repository. Download the [SecLists](https://github.com/danielmiessler/SecLists/blob/master/Usernames/Names/names.txt) usernames list using `wget` command below. You can combine this with other lists to build a larger store of usernames.
 
-```bash
+```
 sudo apt-get install golang-go
 ```
 
-```bash
+```
 git clone https://github.com/ropnop/kerbrute
 make linux
 ```
@@ -462,7 +462,7 @@ M1/M2 users: before you do `make`, you have to edit the Makefile:
 change `ARCHS=amd64` to `ARCHS=arm64`
 {% endhint %}
 
-```bash
+```
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/users.txt
 ```
 
@@ -470,27 +470,27 @@ Once installed, the binary will be available in the `dist` folder. Then, we can 
 
 {% tabs %}
 {% tab title="AMD64" %}
-```bash
+```
 dist/kerbrute_linux_386 userenum users.txt -d dc.local --dc 192.168.86.134
 ```
 {% endtab %}
 
 {% tab title="ARM64" %}
-```bash
+```
 dist/kerbrute_linux_arm64 userenum users.txt -d dc.local --dc 192.168.86.134
 ```
 {% endtab %}
 {% endtabs %}
 
 {% hint style="warning" %}
-You may not find a matching username if they aren't in the username list. You can manually add your missing usernames to the username list and run `kerbrute` again and see whether they are matched or not.
+At this point, you may not find a matching username if they aren't in the username list. You can manually add your missing usernames to the username list and run `kerbrute` again and see whether they are matched or not.
 {% endhint %}
 
 ![Running on AMD64](../.gitbook/assets/lab-5-assets/51.png)
 
 ![Running on ARM64](<../.gitbook/assets/image (27).png>)
 
-So you can see that this script is nothing but a pattern matching username from the list and querying whether such a user exists or not. I hope that I don't have to go into detail about how this is done, given the basic mechanism is the same as what has been covered in previous labs.
+So you can see that this script is nothing but pattern matching username from the list and querying whether such user exist or not. I hope that I don't have to go into detail how this is done, given the basic mechanism is the same from what has been convered in previous labs.
 
 #### 5.5.3.2 Kerbrute password spraying
 
@@ -498,7 +498,7 @@ Now that we have discovered users on the domain `dc.local`, it's time to try and
 
 The Kerbrute tool has a password spraying function, which we will use here.
 
-```bash
+```
 ./kerbrute_linux_386 passwordspray -d dc.local --dc 192.168.86.134 users.txt password1!
 ```
 
@@ -514,17 +514,15 @@ Obviously, trying password manually isn't ideal so we want to automate this, whi
 
 There are tools available to control the password spraying frequency, such as  this spraying script:
 
-```bash
+```
 git clone https://github.com/Greenwolf/Spray
 ```
 
 The usage is as follows:
 
-{% code overflow="wrap" %}
 ```
 Usage: spray.sh -smb <targetIP> <usernameList> <passwordList> <AttemptsPerLockoutPeriod> <LockoutPeriodInMinutes> <DOMAIN>
 ```
-{% endcode %}
 
 Even then, if there is a cap on the number of attempts allowed, then such an approach cannot be used.
 
