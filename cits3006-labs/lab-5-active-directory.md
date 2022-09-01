@@ -1,12 +1,10 @@
-# Lab 5: Active Directory (NOT READY)
-
-## Lab 5: Active Directory (NOT READY)
+# Lab 5: Active Directory
 
 {% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
-In this guide, we will build an Active Directory environment in a virtualized lab and see how features can be exploited to hack Windows users. Active Directory (AD) is Microsoft’s service to manage Windows domain networks. 95% of Fortune 100 companies implement AD into their networks. The way you can use the same set of credentials, to log into any Windows machine within your given institution, is done through Active Directory. AD can easily span whole corporations and campuses, acting as a “phone book” for Windows desktops, printers, and other computers that need authentication services. For our purposes, our AD will span one server and X number of workstations.
+In this lab, we will build an Active Directory environment in a virtualized lab and see how features can be exploited to hack Windows users. Active Directory (AD) is Microsoft’s service to manage Windows domain networks. 95% of Fortune 100 companies implement AD into their networks. The way you can use the same set of credentials, to log into any Windows machine within your given institution, is done through Active Directory. AD can easily span whole corporations and campuses, acting as a “phone book” for Windows desktops, printers, and other computers that need authentication services. For our purposes, our AD will span one server and one workstation, but the number of workstations can easily be increased following the guide below.
 
 ## 5.1. VM setup
 
@@ -25,7 +23,11 @@ You will already have Kali, so you can set up the Windows Server 2019. If you al
 {% hint style="info" %}
 M1/M2 users:&#x20;
 
-If you are in the lab F2F, the lab facilitator will have a copy of preconfigured Windows Server 2019 that can be loaded to UTM (which will save you a lot of time). You can import the provided .qcow2 using the settings below.
+Because the time to setup the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM.
+
+(add link here)
+
+You simply save it where you want, and double-click it, which should load onto the UTM. The credentials and accounts are listed in the notes. However, you are highly recommended to try setting up the DC yourself for learning purposes.
 {% endhint %}
 
 {% hint style="info" %}
@@ -40,11 +42,11 @@ you can follow these steps:
 5. Start the VM.
 6. Press any key to boot from CD/DVD (remove CD once the installation finishes)
 
-Please note, this VM is very slow since it is emulated!
+Please note, that this VM is very slow since it is emulated!
 
 
 
-For the workstation (WS) VM, it is much easier to use Windows 7 from the previous labs (you can just clone it and use it) as you can disable firewall much easier than on Windows 10.&#x20;
+For the workstation (WS) VM, it is much easier to use Windows 7 from the previous labs (you can just clone it and use it) as you can disable the firewall much easier than on Windows 10.&#x20;
 {% endhint %}
 
 ### 5.1.1 Setting Up Windows Server 2019 VM
