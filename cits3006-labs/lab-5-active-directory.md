@@ -23,7 +23,15 @@ You will need to use 3 VMs for this lab, one for each of the following:
 You will already have Kali, so you can set up the Windows Server 2019. If you also need Windows 10 Enterprise, download the ISO from the link provided. You can type in junks in the required fields, it will still take you to the ISO downloads page.
 
 {% hint style="info" %}
-M1/M2 users: you can follow these steps:
+M1/M2 users:&#x20;
+
+If you are in the lab F2F, the lab facilitator will have a copy of preconfigured Windows Server 2019 that can be loaded to UTM (which will save you a lot of time). You can import the provided .qcow2 using the settings below.
+{% endhint %}
+
+{% hint style="info" %}
+M1/M2 users:&#x20;
+
+you can follow these steps:
 
 1. Add new VM in UTM and select Emulate
 2. Select Windows and insert ISO, also uncheck UEFI Boot
@@ -191,24 +199,6 @@ Click "Next" until you reach "Share Name", leaving the defaults. Give a name (we
 
 ![](../.gitbook/assets/lab-5-assets/26.png)
 
-Next we'll set up our machine to test out Kerberoasting, a popular attack to passively grab Active Directory credentials. Open Command Prompt by pressing your Windows Key, typing “cmd”, then pressing Enter. Then enter the command based on your set up component names:
-
-```
-setspn -a DC-01/SQLDatabase.dc.local:1337 dc\SQLDatabase
-```
-
-This command sets up a service principal name using your Domain Controllers name (DC-01), a random port(1337), the name of your SQLDatabase user (SQLDatabase) and your Root Domain Name (dc.local). You will need to adjust these parameters for the names that you've set up.
-
-Confirm everything was done correctly with the command:
-
-```
-setspn -T dc.local -Q */*
-```
-
-If you see "Existing SPN found!" at the bottom, then you were successful in setting everything up.
-
-![](../.gitbook/assets/lab-5-assets/27.png)
-
 Next let's disable Windows Defender so we can focus on the learning basics of attacking Active Directory, not Anti-virus evasion. Close out of command prompt and search for “Group Policy Management” in the task bar and open that up. Expand the "Domains" submenu, then right-click your root domain name, click “Create a GPO in this Domain, and Link it here…”.
 
 ![](../.gitbook/assets/lab-5-assets/28.png)
@@ -230,7 +220,7 @@ Click “Enabled”, “Apply”, “OK”. We are done configuring our (vulnera
 ### 5.4.1 On Windows 10 WS
 
 {% hint style="info" %}
-How to do this for Windows 7 WS is shown in section 5.4.2 below.
+How to do this for Windows 7 WS is shown in section [5.4.2](lab-5-active-directory.md#5.4.2-windows-7-ws) below.
 {% endhint %}
 
 We will start with the Windows 10 workstation we created in [5.1.2](lab-5-active-directory.md#5.1.2-setting-up-windows-10-enterprise-wm). Open up this VM and log in. Go to the C Drive and create a new folder (we'll call it "Shares" here). This folder will be acting as our share drive in our AD system, perform the following actions to set it up:
@@ -258,10 +248,10 @@ Then set your “Preferred DNS server:” as the IP of the domain controller, th
 A window for "Windows Network Diagnostics" will open and try to detect any problems. If none are found, then we're good to go.
 
 {% hint style="info" %}
-M1/M2 users: seems the network diagnositics isn't working if your host is the preview version. You can instead try to ping your DC and see if you get replies.
+M1/M2 users: seems the network diagnostics isn't working if your host is the preview version. You can instead try to ping your DC and see if you get replies.
 {% endhint %}
 
-In the task-bar search for “Access work or school”. Click "Connect", then click “Join this device to local Active Directory domain”.
+In the taskbar search for “Access work or school”. Click "Connect", then click “Join this device to local Active Directory domain”.
 
 ![](../.gitbook/assets/lab-5-assets/36.png)
 
@@ -271,7 +261,7 @@ Type in your Root domain name `dc.local` and click “Next”. Type in your Admi
 
 Skip the "Add an account" step, then restart the machine.
 
-Now we'll try to log into one of the users we configured on our domain controller, like "testuser1" for example. Instead of your normal user account, select "Other". It will say below the text entry forms "Sign in to: DC". If you see this, then we know our setup is working as we expected.&#x20;
+Now we'll try to log into one of the users we configured on our domain controller, like "testuser1" for example. Instead of your normal user account, select "Other". It will say below the text entry forms "Sign in to: DC". If you see this, then we know our setup is working as we expected. Otherwise, type in the domain in front of the username `dc.local\testuser1` and it will detect the domain you are trying to join.
 
 ![](../.gitbook/assets/lab-5-assets/38.png)
 
@@ -279,17 +269,19 @@ Repeat these steps in [Connecting Users to Domain](lab-5-active-directory.md#5.4
 
 ### 5.4.2 Windows 7 WS
 
+This is recommended for M1/M2 users since Windows Defender used on ARM64 are preview versions so you cannot disable Windows Defender so easily.&#x20;
+
 Once logged in using a local account, open System by clicking the Start button, right-click “Computer”, and then click “Properties”.
 
-![](<../.gitbook/assets/image (22).png>)
+![](<../.gitbook/assets/image (3).png>)
 
 Select "Change settings" under "Computer name, domain, and workgroup settings" section.
 
-![](<../.gitbook/assets/image (16).png>)
+![](../.gitbook/assets/image.png)
 
 You can now select "Change" to change its domain. Here, you can rename the computer as well (this can be WS-01 as above, or if you have both then something like WS-02 - something easy to remember).
 
-![](<../.gitbook/assets/image (21).png>)
+![](<../.gitbook/assets/image (10).png>)
 
 Change the membership (domain), and press "OK" once complete. You will be prompted to enter the administrator details. You will then be asked to reboot. Now you are done!
 
@@ -303,7 +295,7 @@ If you have setup your AD using VMWare, you must also setup Kali on VMWare to co
 
 We’re going to exploit our Active Directory by capturing NTLMv2 Hashes with Responder from `Impacket`. NTLMv2 hashes are basically the scrambled version of Windows passwords. We’ll get to unscrambling them soon enough.
 
-We’ll use pip to install the network exploitation toolkit `Impacket`. Download it to your Kali system:
+`responder`, a tool from `Impacket`, should be intalled, but if not, you can use pip to install the network exploitation toolkit `Impacket`. Download it to your Kali system and install as follows:
 
 ```
 git clone https://github.com/SecureAuthCorp/impacket
@@ -321,17 +313,17 @@ Begin running responder on your Kali machine with the following command:
 sudo responder -I eth0 -dwv
 ```
 
-`-I` to listen on your eth0 network interface, `-d` to enable answers for netbois domain, `-w` to start WPAD rouge proxy server, `-v` for verbose output. These are the most common settings.
+`-I` to listen on your eth0 network interface, `-d` to enable answers for NetBIOS domain, `-w` to start WPAD rouge proxy server, `-v` for verbose output. These are the most common settings.
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (17).png>)
 
-Now Responder is listening on the network, it will be poisoning services like LLMNR and NBT-NS as you can see in the output. Listen long enough and testadmin will innocuously try to access one of the shared files on the network (maybe typo or by accident). We can emulate this by logging into "testadmin" and trying to access the undiscovered shared folder by typing "\\\sharedfolder" in the address bar of the File Explorer.
+Now Responder is listening on the network, it will be poisoning services like LLMNR and NBT-NS as you can see in the output. Listen long enough and `testadmin` will innocuously try to access one of the shared files on the network (maybe a typo or by accident). We can emulate this by logging into "testadmin" account and trying to access the undiscovered shared folder by typing "\\\sharedfolder" in the address bar of File Explorer.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (26).png>)
 
-The responder is acting as a authenticator, so the request to access this new shared folder is captured (poisoned) by the responder and requests for authentication by the user. This triggers the user to send its credentials, which will be captured as shown below.
+The responder is acting as an authenticator, so the request to access this new shared folder is captured (poisoned) by the responder and requests for authentication by the user (i.e., testadmin). This triggers the user to send its credentials, which will be captured as shown below.
 
-![](<../.gitbook/assets/image (8).png>)
+![](<../.gitbook/assets/image (15).png>)
 
 #### 5.5.1.2 Cracking the Hash
 
@@ -349,9 +341,9 @@ Then run `hashcat` with both your saved hash and the wordlist.
 hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt --force
 ```
 
-`-m 5600` is the number that designates NTMLv2 hashes and `--force` ignores any errors we get from running `hashcat` in a VM. Since we chose a very weak password for this user, password cracking should take a very short time (under a minute).
+`-m 5600` is the number that designates NTMLv2 hashes and `--force` ignores any errors we get from running `hashcat` in a VM. Since we chose a very weak password for this user (testadmin:password1!), password cracking should take a very short time (under a minute).
 
-![](<../.gitbook/assets/image (26).png>)
+![](<../.gitbook/assets/image (4).png>)
 
 #### 5.5.1.3 `psexec` for remote access
 
@@ -366,20 +358,29 @@ if you get an error:
 
 `... Script 'scripts/psexec.py' not found in metadata ...`
 
-it means something didn't go right when installing impacket, so you should try fixing the installation. Or you can instead just run it using (assuming impacket was installed at the home directory):
+it means impacket isn't installed correctly. This is a good time to work in the Python's virtual environment so let's do that:
 
-`~/impacket/examples/psexec.py ...`
+<pre class="language-python"><code class="lang-python"><strong>git clone https://github.com/SecureAuthCorp/impacket.git
+</strong><strong>virtualenv impacket-venv
+</strong><strong>source impacket-venv/bin/activate
+</strong><strong>cd ~/impacket
+</strong><strong>pip3 install .
+</strong><strong>psexec.py</strong></code></pre>
+
+At this point, you should not see an error but if you do, ask for help.
 {% endhint %}
 
-Note: if the `psexec` returns an error, make sure the Windows Defender Antivirus and/or Windows Firewall are disabled on the target machine.
+![](<../.gitbook/assets/image (5).png>)
 
-![](<../.gitbook/assets/image (27).png>)
+{% hint style="info" %}
+If the `psexec` returns an error, make sure the Windows Defender Antivirus and/or Windows Firewall are disabled on the target machine.
+{% endhint %}
 
 This is how we could gain access to the user's account. However, in practice, you will unlikely know whether there is an AD DC on the network, etc. So you should really start by scanning the network to discover those step by step, which we will do next.
 
 ### 5.5.2 Target enumeration with Nmap, Nbtscan, CME
 
-First enumerate what hosts are on the network, their IP addresses, how many are there, and what services they are running.
+Obviously the previous attack is a one specific instance of exploiting the user on the AD domain. In practice, we need to do recon first, so in this section, we will look at a few AD-specific recon approaches. First enumerate what hosts are on the network, their IP addresses, how many are there, and what services they are running.
 
 #### **5.5.2.1 Nmap**
 
@@ -414,7 +415,7 @@ Hosts with port 88 running Kerberos and port 53 running DNS open, we can strongl
 sudo nmap -T4 -Pn -p 389 --script ldap* 192.168.86.134
 ```
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/image (12).png>)
 
 #### **5.5.2.2 nbtscan**
 
@@ -424,17 +425,17 @@ Another approach is to enumerate NetBIOS names of hosts using nbtscan:
 nbtscan 192.168.86.0/24
 ```
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (28).png>)
 
 #### **5.5.2.3 CrackMapExec**
 
-`CrackMapExec` more neatly finds host IP’s, NetBIOS names, domain names, Windows versions, SMB Sigining all in one small command (also, prebuilt into Kali):
+`CrackMapExec` more neatly finds host IP’s, NetBIOS names, domain names, Windows versions, SMB Signing all in one small command (also, prebuilt into Kali):
 
 ```
 crackmapexec smb 192.168.86.0/24
 ```
 
-![](<../.gitbook/assets/image (13).png>)
+![](<../.gitbook/assets/image (19).png>)
 
 But as you can see, those tools provide different types of information about the target systems (e.g., IP, MAC, services, domain name etc.), but you will find that the speed of those scans differs. So you should use whichever is necessary for the job required at the time.
 
@@ -489,13 +490,13 @@ At this point, you will actually not see a username match from the outputs, beca
 
 ![Running on AMD64](../.gitbook/assets/lab-5-assets/51.png)
 
-![Running on ARM64](<../.gitbook/assets/image (9).png>)
+![Running on ARM64](<../.gitbook/assets/image (27).png>)
 
 #### 5.5.3.2 Kerbrute password spraying
 
 Now that we have discovered users on the domain `dc.local`, it's time to try and find passwords. Of course, we can use attacks such as discussed in section [5.5.1](lab-5-active-directory.md#5.5.1-exploiting-a-windows-machine-with-responder), but there are many ways to do so, and so we shall do that.&#x20;
 
-The Kerbrute tool has password spraying function, which we will use here.
+The Kerbrute tool has a password spraying function, which we will use here.
 
 ```
 ./kerbrute_linux_386 passwordspray -d dc.local --dc 192.168.86.134 users.txt password1!
@@ -505,11 +506,11 @@ The Kerbrute tool has password spraying function, which we will use here.
 Again, this will fail as is, because we haven't added our admin `testadmin` into the username list `users.txt`. Add `testadmin` and run again.
 {% endhint %}
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (24).png>)
 
 Obviously, trying password manually isn't ideal so we want to automate this, which can be done using `crackmapexec`. Obviously, in modern authentication, you will be locked out of your account after a certain number of failed attempts, and will also be flagged for the administrators to have a. look.
 
-![](<../.gitbook/assets/image (14).png>)
+![](<../.gitbook/assets/image (25).png>)
 
 There are tools available to control the password spraying frequency, such as  this spraying script:
 
@@ -523,15 +524,17 @@ The usage is as follows:
 Usage: spray.sh -smb <targetIP> <usernameList> <passwordList> <AttemptsPerLockoutPeriod> <LockoutPeriodInMinutes> <DOMAIN>
 ```
 
-Even then, if there is a cap on the number of attempts allowed, then such approach cannot be used.
+Even then, if there is a cap on the number of attempts allowed, then such an approach cannot be used.
 
 ### 5.6 Conclusion
 
 This is just the beginning of exploiting AD, there are so many other ways to exploit AD and gain access to user accounts and sensitive data - exploiting misconfigurations, poisoning AD protocols, kerberoasting, pass the hash etc.
 
+Due to its popularity, AD has gained much attention from adversaries, and also it has exposed many vulnerabilities in the past (and is still being discovered). This is both good and bad - the good is that the protection against attacks can be enhanced from previous lessons, and the bad is that due to its complexity, properly securing is a challenging task and this is what we observe in practice.
 
 
-**Next up**: Web Security (SQLi, XSS stuff)
+
+**Next up**: Web Security (SQLi, XSS kind of stuff)
 
 **Preparation**: We will be using docker to host web services for testing. It should be already loaded on Kali, but if it isn't please have it ready.
 

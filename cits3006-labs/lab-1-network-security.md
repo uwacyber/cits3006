@@ -372,7 +372,7 @@ Let's test it first, we have to update the attacker's IP address in the `victim.
 
 Once done, we can now compile the c codes using the makefile provided (if you have binaries in the zip, delete them and recompile).
 
-![](<../.gitbook/assets/image (1) (2).png>)
+![](<../.gitbook/assets/image (1) (2) (1).png>)
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
@@ -382,7 +382,7 @@ So it works! Let's have a closer look at the code, starting with the `hacker.c` 
 
 There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
-![](<../.gitbook/assets/image (5) (1) (1) (2).png>)
+![](<../.gitbook/assets/image (5) (1) (1).png>)
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 
