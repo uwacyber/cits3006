@@ -487,12 +487,14 @@ dist/kerbrute_linux_arm64 userenum users.txt -d dc.local --dc 192.168.86.134
 {% endtabs %}
 
 {% hint style="warning" %}
-At this point, you will actually not see a username match from the outputs, because our created users `testuser1` and `testuser2` are not in the username list. You can add those two users (and any other users missing from the username list) and run `kerbrute` again and see whether they are matched or not.
+At this point, you may not find a matching username if they aren't in the username list. You can manually add your missing usernames to the username list and run `kerbrute` again and see whether they are matched or not.
 {% endhint %}
 
 ![Running on AMD64](../.gitbook/assets/lab-5-assets/51.png)
 
 ![Running on ARM64](<../.gitbook/assets/image (27).png>)
+
+So you can see that this script is nothing but pattern matching username from the list and querying whether such user exist or not. I hope that I don't have to go into detail how this is done, given the basic mechanism is the same from what has been convered in previous labs.
 
 #### 5.5.3.2 Kerbrute password spraying
 
@@ -505,7 +507,7 @@ The Kerbrute tool has a password spraying function, which we will use here.
 ```
 
 {% hint style="info" %}
-Again, this will fail as is, because we haven't added our admin `testadmin` into the username list `users.txt`. Add `testadmin` and run again.
+This also may fail, if the username you created doesn't exist in the username list, or the password you used is not in the password list. You can simply add the password you set for your user into the password list and rerun.
 {% endhint %}
 
 ![](<../.gitbook/assets/image (24).png>)
