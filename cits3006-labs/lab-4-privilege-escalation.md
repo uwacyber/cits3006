@@ -34,7 +34,9 @@ Install the Windows 7 VM via the ISO, similar to the Windows installation done p
     ```
 4. Right click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will setup the Windows system for the subsequent exercises.
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `user` with password `password321`.
+
     ![](<../.gitbook/assets/lab-4-assets/1.png>)
+    
 6. Restart the Windows VM and login to `user`.
 7. Copy the following [Tools](https://drive.google.com/file/d/1Lgg3HXXltB7ZD3F5YSbRl6FX7h_mPzFU/view) 7z archive to the Desktop and extract it. You may need to download [7-zip](https://www.7-zip.org/download.html) to perform the extraction. The password is `lpeworkshop`. 
 
@@ -70,6 +72,7 @@ Using the `accesschk.exe` tool that you downloaded in the `Tools` folder, you ca
 ```
 accesschk64.exe -uwcqv "user" *
 ```
+
 ![](<../.gitbook/assets/lab-4-assets/2.png>)
 
 We've confirmed that `user` has RW (read-write) permissions over the `daclsvc` service, including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to administrator through this misconfigured service. This can be done via:
@@ -136,7 +139,6 @@ reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\BWP123F42 -v Pro
 ```
 
 ![](<../.gitbook/assets/lab-4-assets/8.png>)
-
 
 We can see the username and password for our account clearly as plaintext. Not good! Let's try another SSH service, TightVNC. Query the registry with:
 
