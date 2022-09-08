@@ -36,6 +36,7 @@ Install the Windows 7 VM via the ISO, similar to the Windows installation done p
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `user` with password `password321`.
 
     <br>
+    
     ![](<../.gitbook/assets/lab-4-assets/1.png>)
     
 6. Restart the Windows VM and login to `user`.
