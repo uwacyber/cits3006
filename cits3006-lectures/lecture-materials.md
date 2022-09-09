@@ -11,7 +11,7 @@ You will find lecture slides available here (you will be able to download the pd
 * [06. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/06.Reverse\_Engineering.pdf)
 * [07. Application Security](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/07.Application\_Security.pdf)
 * [08\. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/08.Privilege\_Escalation.pdf)
-* 09\. Active Directory
+* [09\. Active Directory](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/09.Active\_Directory.pdf)
 * 0A. Web Security
 * 0B. Defence Techniques
 * 0C. Social Engineering
