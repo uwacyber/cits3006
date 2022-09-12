@@ -6,7 +6,7 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 ***
 
-## 6.0.0 Introduction
+## 6.0 Introduction
 
 SQL injection (SQLi) and Cross Site Scripting (XSS) are a type of **injection (AS03:2021)** vulnerability that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
 
@@ -14,18 +14,9 @@ You will need to use your Kali VM, and we will be using docker to run SQL server
 
 ***
 
-## 6.1.0 SQLi
+## 6.1 SQLi
 
-A SQLi attack injects a malicious SQL query via input data from the client to the web application. If a website does not securely sanitise user inputs being inserted into a SQL query, then an attacker can malform the query to perform additional operations that were never intended.
-
-For this section, we will explore how SQLi vulnerabilities can occur, how to exploit the follow types of SQLi attacks and using tools such as `sqlmap` to automatically discover and exploit SQLi vulnerabilities.
-
-* Union-based SQLi
-* Error-based SQLi
-* Blind-based SQLi
-* Time-based SQLi
-
-***
+In this lab, we will expand on the materials covered in the lectures and provide you with more exercises in various SQLi types.
 
 ### 6.1.1 Union-based SQLi Attacks
 
