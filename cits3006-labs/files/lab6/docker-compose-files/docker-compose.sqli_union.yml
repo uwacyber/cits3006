@@ -2,7 +2,7 @@ version: "3.8"
 services:
   vuln-flask-server:
     container_name: sqli-lab-union-based
-    # Add -arm at the end if you are using an arm64 processor (eg. Mac M1/M2 laptops)
+    # M1/M2 users - change the image name to: uwacyber/cits3006:sqli-union-arm64
     image: uwacyber/cits3006:sqli-union
     depends_on:
       mysql:
