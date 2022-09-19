@@ -2,7 +2,7 @@ version: "3.8"
 services:
   vuln-flask-server:
     container_name: xss-lab-server
-    # M1/M2 users - change the image name to: uwacyber/cits3006:xss-server-no-csp-arm64
+    # M1/M2 users - change the image name to: uwacyber/cits3006:xss-server-no-csp-arm
     image: uwacyber/cits3006:xss-server-no-csp
     environment:
       - SQLALCHEMY_DATABASE_URI=mysql+pymysql://dbuser:wowthisissecure@mysql/vulndb
