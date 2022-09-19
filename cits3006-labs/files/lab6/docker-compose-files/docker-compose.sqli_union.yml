@@ -12,7 +12,9 @@ services:
 
   mysql:
     container_name: mysql
+    # M1/M2 users - change the image name to: arm64v8/mysql:8.0.30
     image: mysql:8.0.30
+    #M1/M2 users - change the platform to: linux/arm64
     platform: linux/amd64
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
