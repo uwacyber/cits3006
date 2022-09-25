@@ -314,7 +314,7 @@ You should be able to demonstrate the following tasks:
 **The flag has to match the correct case! So be careful how you construct your SQLi payload.**
 {% endhint %}
 
-## 6.2 XSS Attacks (NOT READY)
+## 6.2 XSS Attacks
 
 XSS attacks exploit an HTML injection vulnerability that executes malicious javascript that can access a victim's cookies, session tokens or other sensitive information from a trusted source. In this lab, we will explore exploiting client-side XSS vulnerabilities.
 
@@ -351,12 +351,22 @@ However, if the session cookies have `HttpOnly` attribute set to `true` you can 
 
 For this exercise, download [docker-compose.xss\_basic.yml](files/lab6/docker-compose-files/docker-compose.xss\_basic.yml).&#x20;
 
+{% hint style="warning" %}
+The bot (xss-bot service) is used to insert the flag as the document cookie via the chrome browser driver. So you are required to use the Chrome browser for this exercise.
+
+If you don't or cannot install Chrome browser (e.g., M1/M2 users), you can manually insert the cookie yourself to test the XSS attack working:
+
+* Right-click on the browser page -> inspect -> Storage -> Cookies -> Add item -> modify the name and value to something that you can recognise later.
+
+Similarly, if the bot isn't working as intended, you can insert the cookies manually.
+{% endhint %}
+
 ```
 wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_basic.yml
 ```
 
 {% hint style="info" %}
-M1/M2 users: you have to make four changes:
+M1/M2 users: you have to do the following 5 tasks:
 
 1\. Run the amd64 emulator - \
 `sudo docker run --privileged --rm tonistiigi/binfmt --install amd64` \
@@ -365,6 +375,8 @@ M1/M2 users: you have to make four changes:
 3\. Line 29 - change the image name to `arm64v8/mysql:8.0.30`
 
 4\. Line 31 - change the platform to `linux/arm64`
+
+5\. Remove the `xss-bot` service in the `yml` file (as described above, the bot works with the Chrome browser, which cannot be installed on ARM processors)
 {% endhint %}
 
 Run the Docker containers using the following command.
@@ -401,18 +413,18 @@ Below are a list of other XSS payloads using other HTML tags beside `<script>` a
 For this execise, download [docker-compose.xss\_alt\_tag.yml](files/lab6/docker-compose-files/docker-compose.xss\_alt\_tag.yml).&#x20;
 
 ```
-// Some code
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_alt_tag.yml
 ```
 
 {% hint style="info" %}
-
+M1/M2 users: make the same changes as you did in Section 6.2.2.
 {% endhint %}
 
 Run the Docker containers using the following command.
 
 <pre><code><strong>sudo docker-compose -f docker-compose.xss_alt_tag.yml up</strong></code></pre>
 
-To complete this exercise, demonstrate to the lab facilitator exfiltrating the admin's cookie by exploiting the XSS vulnerability without the `<script>` HTML tag.
+Now perform XSS  without the `<script>` HTML tag.
 
 ### 6.2.3 Bypassing Content Security Policy Protections
 
@@ -437,16 +449,16 @@ However, an attacker can bypass the above CSP since it does not specify exact Ja
 
 [HackTricks documents a large variety of methods for bypassing Content-Security-Policy headers using third-party endpoints.](https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass)
 
-### 6.2.5 Bypassing CSP Exercise
+### 6.2.5 Bypassing CSP Exercise (Enthusiastics only)
 
 For this exercise, download [docker-compose.xss\_csp.yml](files/lab6/docker-compose-files/docker-compose.xss\_csp.yml).
 
 ```
-// Some code
+wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_csp.yml
 ```
 
 {% hint style="info" %}
-
+M1/M2 users: make the same changes as you did in Section 6.2.2.
 {% endhint %}
 
 Run the Docker containers using the following command.
@@ -461,7 +473,7 @@ This exercise is a lot harder than the other XSS exercises. The website now uses
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://code.jquery.com/ https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com/; font-src https://fonts.googleapis.com https://fonts.gstatic.com/;">
 ```
 
-You need to research a method to exploit the XSS vulnerability with this CSP and demonstrate it to your lab facilitator. Below are some things to consider.
+You need to research a method to exploit the XSS vulnerability with this CSP. Below are some things to consider.
 
 1. The CSP prevents exfiltrating data using `fetch`.
 2. One of the allowed sources has a JSONP endpoint that you can use in your exploit.
