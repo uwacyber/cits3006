@@ -2,7 +2,7 @@ version: "3.8"
 services:
   vuln-flask-server:
     container_name: xss-lab-server
-    # Add -arm at the end if you are using an arm64 processor (eg. Mac M1/M2 laptops)
+    # M1/M2 users - change the image name to: uwacyber/cits3006:xss-server-csp-arm
     image: uwacyber/cits3006:xss-server-csp
     environment:
       - SQLALCHEMY_DATABASE_URI=mysql+pymysql://dbuser:wowthisissecure@mysql/vulndb
@@ -25,7 +25,9 @@ services:
 
   mysql:
     container_name: mysql
+    # M1/M2 users - change the image name to: arm64v8/mysql:8.0.30
     image: mysql:8.0.30
+    # M1/M2 users - change the platform to: linux/arm64
     platform: linux/amd64
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
