@@ -16,5 +16,5 @@ You will find lecture slides available here (you will be able to download the pd
 * 0B. Defence Techniques
 * 0C. Social Engineering
 * 0D. Cloud Security
-* 0E. Guest Lecture
+* ~~0E. Guest Lecture~~ (skipped)
 * 0F. Revision
