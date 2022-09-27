@@ -20,7 +20,11 @@ Please note that you will also be keeping records of individual contributions as
 
 Your team will be given a link to the box for you to exploit. You will have one week to exploit the given box. This means if you wish to demo in Tuesday's lab, you will receive your box on Tuesday, and if you wish to demo in Thursday's lab, you will receive your box on Thursday.
 
-There are no other details provided - you are free to demonstrate any penetration testing .skills on the given box.
+{% hint style="danger" %}
+You are not meant to share your box info with any other teams - this is an official assessment item that you cannot share with others other than your team members.
+{% endhint %}
+
+There are no other details provided - you are free to demonstrate any penetration testing skills on the given box.
 
 On your team report, write the penetration testing activities you have performed and the outcomes. More merit will be given to successful exploits (see rubrics for more details), but you will still be rewarded for various penetration testing activities you have done even if they were unsuccessful.
 
@@ -39,7 +43,7 @@ You are going to patch the box you are given. Two versions of patching are done:
 
 Both versions should be described in the report in detail.
 
-By the end of the week, you should export the partially patched box and share the link on the team channel.
+By the end of the week, you should export the partially patched box (.ova format) and send the link to the UC.
 
 ## Task 5: Exploit the new box (Week 11)
 
