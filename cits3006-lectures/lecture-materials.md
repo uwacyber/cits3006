@@ -13,7 +13,7 @@ You will find lecture slides available here (you will be able to download the pd
 * [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/08.Privilege\_Escalation.pdf)
 * [09. Active Directory](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/09.Active\_Directory.pdf)
 * [0A. Web Security](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/0A.Web\_Security.pdf)
-* 0B. Defence Techniques
+* [0B. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 * ~~0C. Social Engineering~~ (skipped)
 * 0D. Cloud Security
 * 0E. Guest Lecture
