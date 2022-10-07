@@ -15,6 +15,6 @@ You will find lecture slides available here (you will be able to download the pd
 * [0A. Web Security](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/0A.Web\_Security.pdf)
 * [0B. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 * ~~0C. Social Engineering~~ (skipped)
-* 0D. Cloud Security
+* [0D. Security Management](https://github.com/uwacyber/cits3006/raw/2022s2/cits3006-lectures/0D.Security\_Management.pdf)
 * 0E. Guest Lecture
-* 0F. Revision
+* 0F. Emerging Security Issues
