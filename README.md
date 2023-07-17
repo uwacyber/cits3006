@@ -26,4 +26,4 @@ Although the prerequisite for this unit is only 12 points of programming, you ar
 
 ### License Terms
 
-Copyright © Jin Hong 2022. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
+Copyright © Jin Hong 2023. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
