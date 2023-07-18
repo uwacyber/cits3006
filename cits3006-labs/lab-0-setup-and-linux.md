@@ -41,6 +41,16 @@ The process for installing Docker Desktop is straightforward and involves using 
 
 {% embed url="https://www.docker.com/get-started" %}
 
+{% hint style="warning" %}
+**Docker on Kali**
+
+If you are on Kali VM on M1 Macbook, you can type this in the terminal:
+```bash
+sudo apt-get update && sudo apt-get install -y docker.io
+```
+In general, following the official instructions should work just fine: [https://www.kali.org/docs/containers/installing-docker-on-kali/](https://www.kali.org/docs/containers/installing-docker-on-kali/). Please note that you will not have access to the Docker Desktop application, but you will instead be able to use the Docker CLI (command line interface). 
+{% endhint %}
+
 It is recommended to use Docker within your VM (e.g., Kali) if needed, especially when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
 
 ### 0.1.3. Transferring files between VMs
