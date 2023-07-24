@@ -57,7 +57,7 @@ So we have a basic understanding of using Bash and open ports from the above exa
 Download the portscan.sh script:
 
 ```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/portscan.sh
+wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/portscan.sh
 ```
 
 The code is also shown below, which you should read through and try to understand what it is trying to do.
@@ -90,7 +90,7 @@ done
 ```
 
 {% hint style="info" %}
-If the above code is hard to follow, please revise the scripting (e.g., CITS2003).
+If the above code is hard to follow, please revise the scripting materials (e.g., CITS2003).
 {% endhint %}
 
 Remember to add executable permission:
@@ -361,7 +361,7 @@ So now we understand the tool can create reverse shell payloads for various appl
 First, download the reverse shell files:
 
 ```
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/rshell.zip
+wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/rshell.zip
 ```
 
 ![](<../.gitbook/assets/image (4) (1) (1).png>)
