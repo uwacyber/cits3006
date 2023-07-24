@@ -53,7 +53,17 @@ In general, following the official instructions should work just fine: [https://
 
 It is recommended to use Docker within your VM (e.g., Kali) if needed, especially when handling malicious files, carrying out tasks that could damage your system, etc. You will be advised of such activities in the labs.
 
-### 0.1.3. Transferring files between VMs
+### 0.1.3. Sharing clipboard between host and VM
+
+If you are using the VirtualBox (i.e., AMD64), there is a feature called "Shared Clipboard" that you can enable to share clipboard between your host and VM. This is useful when you want to copy and paste commands from your host to VM, or vice versa. To enable this, go to the VM settings, then select "General" and "Advanced" tab. You can then select the clipboard type you want to share.
+
+For those using UTM (i.e., ARM64), once your Kali is installed, you can type this in the terminal to enable shared clipboard:
+```
+sudo apt install spice-vdagent spice-webdavd
+```
+Then restart the VM, and you should be able to copy and paste between your host and VM.
+
+### 0.1.4. Transferring files between VMs
 
 Often we will need to transfer files between VMs, most of the time from your attacker VM (Kali) to target hosts (Windows, Ubuntu, Metasploitable etc.). One of the easiest way is to enable web server on Kali:
 
