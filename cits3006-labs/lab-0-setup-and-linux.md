@@ -32,7 +32,7 @@ A typical issue people have running VMs on Windows machines are that you have Hy
 * You can also use other apps like [Parallels](https://www.parallels.com/au/products/desktop/) only if you prefer, but it would not be required.
 
 {% hint style="warning" %}
-Apple Silicon machines still have a lot of incompatibility issues, so not all functionalities may be available to use. Best efforts are made to do the labs on AS machines, but we may not be able to help you if you used different tools and face problems.
+Apple Silicon machines may have incompatibility issues, so not all functionalities may be available to use. Best efforts are made to do the labs on all types of machines, but we may not be able to help you if you used different tools and face problems.
 {% endhint %}
 
 ### 0.1.2. Docker setup
@@ -95,7 +95,7 @@ to install the Mozilla Firefox web browser. It will search the remote repositori
 {% hint style="info" %}
 `apt-get` is the package manager for Ubuntu. Fedora uses `dnf` (previously `yum`), Arch uses `pacman`, and Debian uses aptitude, etc. For instance:
 
-`yum install firefox`
+`dnf install firefox`
 
 will install Firefox on a Fedora machine. You can also install multiple package managers on any one distro, but as they say\_: too many cooks spoil the broth\_.
 {% endhint %}

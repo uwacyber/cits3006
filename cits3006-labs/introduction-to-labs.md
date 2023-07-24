@@ -2,7 +2,7 @@
 
 These labs are intended to provide a practical complement to the CITS3006 Penetration Testing unit. The materials are designed for you to complete individually, but you are welcome to work with your peers as well. However, please note that the lab quizzes are **individually assessed**, so it is essential that you fully understand the concepts and techniques covered in the labs to receive good marks.
 
-As always, please contact the lab facilitator if you are stuck. You will be asked to use the UWA Help Server to submit your question ticket, so that questions can be answered in the order of requests. The details are outlined in the welcome lecture slide, but you can also ask the lab facilitator on site or via their emails or through MS Teams. If nothing works, please contact the UC explaining your issue.
+As always, please contact the lab facilitator if you are stuck. You will be asked to use the UWA CSSE Help Server to submit your question ticket, so that questions can be answered in the order of requests. The details are outlined in the welcome lecture slide, but you can also ask the lab facilitator on site or via their emails or through MS Teams. If nothing works, please contact the UC explaining your issue.
 
 ## Laptop Requirement
 
