@@ -7,10 +7,10 @@ Note that materials Below the divider are yet to be updated.
 * [00. Introduction](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/00.Introduction.pdf)
 * [01. Ethics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/01.Ethics.pdf)
 * [02. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/02.Reconnaissance_vertical.pdf)
+* [03. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network_Exploits_vertical.pdf)
 
 -- To be updated --
 
-* [03. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network\_Exploits.pdf)
 * [04. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware\_Basics.pdf)
 * [05. More Malware](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/05.More\_Malware.pdf)
 * [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software\_Security.pdf)
