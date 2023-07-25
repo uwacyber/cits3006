@@ -18,10 +18,10 @@ def sniffer(interface):
 def process_packet(packet):
     if packet.haslayer(http.HTTPRequest):
         url = get_url(packet)
-        print('[+] HTTP Requests/URL Requested -> {}'.format(url), '\n')
+        print('[+] HTTP Requests/URL Requested -> {}'.format(url))
         cred = get_credentials(packet)
         if cred:
-            print('\n\n[+] Possible Credential Information -> {}'.format(cred), '\n\n')
+            print('\n[+] Possible Credential Information -> {}'.format(cred), '\n')
 
 def get_url(packet):
     return (packet[http.HTTPRequest].Host + packet[http.HTTPRequest].Path).decode('utf-8')
