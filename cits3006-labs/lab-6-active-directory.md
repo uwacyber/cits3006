@@ -463,7 +463,7 @@ change `ARCHS=amd64` to `ARCHS=arm64`
 {% endhint %}
 
 ```bash
-wget https://raw.githubusercontent.com/uwacyber/cits3006/2022s2/cits3006-labs/files/users.txt
+wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/users.txt
 ```
 
 Once installed, the binary will be available in the `dist` folder. Then, we can how run kerbrute as follows:
