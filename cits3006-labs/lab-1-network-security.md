@@ -408,5 +408,5 @@ In this lab, we covered two useful tools, Nmap and Metasploit. There were additi
 Next up, Malware.
 
 {% hint style="info" %}
-PREPARATION: the next lab uses a new VM - Windows. The ISO file is HUGE (\~6GB), so please download and set up the Windows VM before going to the lab.
+PREPARATION: the next lab uses a new VM - Windows. The ISO file is HUGE (\~10GB), so please download and set up the Windows VM before going to the lab.
 {% endhint %}
