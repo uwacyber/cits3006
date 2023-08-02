@@ -16,10 +16,10 @@ Note that materials Below the divider are yet to be updated.
 -- Week 03 --
 * [05. More Malware](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/05.More_malware_vertical.pdf)
 
--- To be updated --
-
 -- Week 04 --
-* [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software\_Security.pdf)
+* [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software_security_vertical.pdf)
+
+-- To be updated --
 
 -- Week 05 --
 * [07. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse\_Engineering.pdf)
