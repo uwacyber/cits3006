@@ -18,21 +18,21 @@ UTM copy is also available on Teams for this Linux VM.
 
 ### 4.1.1 Windows VM Setup
 
-If you haven't done already, setup a Windows VM (tested with Windows 11 preview version) as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
+If you haven't done already, setup a Windows VM (tested with Windows 11 preview version, but if issues, you should be able to do it with a Windows 7 VM) as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
 
 1. Login to the Windows VM using a user account that has administrator privileges.
-2. Ensure the Windows VM does not have a user account named 'hank'. If it exists, delete it.
+2. Ensure the Windows VM does not have a user account named 'hank'. If it exists, you can either delete it, or replace 'hank' below with your chosen username, and also replace it in the script in step 3 below.
 3.  Download the setup script on the Windows VM (the Desktop directory is fine).&#x20;
 
-    ```
+    ```powershell
     wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/wsetup.bat -o wsetup.bat
     ```
-4. Right click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will setup the Windows system for the subsequent exercises.
+4. Right-click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will set up the Windows system for the subsequent exercises.
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `hank` with password `password321`.
 
 <figure><img src="../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
 
-Restart the Windows VM and login to `hank`.
+Restart the Windows VM and log in to `hank`.
 
 ## 4.2 Windows Privilege Escalation
 
@@ -40,7 +40,7 @@ Restart the Windows VM and login to `hank`.
 
 Each service has an Access Control List (ACL) that specifies specific permissions to a certain service.
 
-Some permissions are pretty harmful like being:
+Some permissions are pretty harmful, such as:
 
 * able to query the configuration of the service: `sc qc <service>`
 * able to check the current status of the service: `sc query <service>`
@@ -48,14 +48,14 @@ Some permissions are pretty harmful like being:
 * and change the configuration of the service: `sc config <service> <option>= <value>`
 
 {% hint style="info" %}
-you might need to type `sc.exe` instead of just `sc`.
+you might need to type `sc.exe` instead of just `sc`. `sc` stands for Service Control, which is a command that you can use to interact with Windows Services.
 {% endhint %}
 
-If a user has permission to change the configuration of a service which runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. You will find an exhaustive list of services, one of which is the `daclsvc` service.
+If a user has permission to change the configuration of a service that runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. You will find an exhaustive list of services, one of which is the `daclsvc` service.
 
 <figure><img src="../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
-We'll need a tool named AccessChk, which you can download from the main site:
+We'll need a tool named `AccessChk`, which you can download from the official Microsoft site:
 
 ```
 https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
@@ -63,33 +63,35 @@ https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
 
 Or a copy from our github repo:
 
-```
+```powershell
 wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/AccessChk.zip -o accesschk.zip
 ```
 
 Once downloaded, extract the files.
 
+The tool `AccessChk` is used to check the permissions of user accounts, which is good for administrative tasks, but also could leak useful information for adversaries.
+
 Using the `accesschk.exe` tool, you can look at which services the user `hank` has permissions over (read the documentation to understand the meaning of flags):
 
-```
+```powershell
 .\accesschk64.exe -uwcqv "hank" *
 ```
 
 <figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
 
-We've confirmed that `hank` has RW (read-write) permissions over the `daclsvc` service, including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to the administrator through this misconfigured service. We first check our current group membership for `hank`:
+We've confirmed that `hank` has RW (read-write) permissions over the `daclsvc` service (in fact, this is the only service that `hank` has permission to do with), including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to the administrator through this misconfigured service. We first check our current group membership for `hank`:
 
 <figure><img src="../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
 We first have to stop the service we wish to modify:
 
-```
+```powershell
 net stop daclsvc
 ```
 
 Now we execute the command to add `hank` to the administrators group:
 
-```
+```powershell
 sc config daclsvc binPath= "net localgroup administrators hank /add"
 ```
 
@@ -125,7 +127,7 @@ We see that the binary path is missing the quotations around it. The path here i
 
 We are going to create a malicious executable that takes advantage of this vulnerability. This executable will perform a similar task to 4.2.1; it will grant the user administrator permissions. We will create this .exe in Kali with the command:
 
-```
+```bash
 msfvenom -p windows/exec CMD='net localgroup administrators hank /add' -f exe-service -o common.exe
 ```
 
@@ -143,7 +145,7 @@ Password mining refers to the process of searching for and enumerating encrypted
 
 One place we can check is the automatic login credentials. Windows allows a user to automate the logging in process by storing passwords and other pertinent information in the registry database. Locate the default credentials using these commands in cmd:
 
-```
+```powershell
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUsername
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
 ```
@@ -163,66 +165,99 @@ PasswordViewOnly: 2B27C004F36D46D0
 
 If you are on a Windows machine, check your own registry!
 
-## 4.3 Linux Privilege Escalation (NOT READY)
+{% hint style="info" %}
+We have seen a few different ways a privilege escalation could happen in Windows machines. These are just a few common ones, so you are encouraged to look at other ways that privilege escalation could happen in Windows for your learning purposes.
+{% endhint %}
 
-### 4.3.1 Password Mining (Memory)
+## 4.3 Linux Privilege Escalation&#x20;
 
-We can also similarly try to find passwords by digging into memory. First, let's establish an FTP server from our Kali to our Linux machines:
+For this, we will cover a couple of straightforward yet interesting privilege escalation exploits, which can easily be found still in today's world (even your own system) that could easily be go unnoticed until something goes wrong.
 
-```
-msfconsole
-use auxiliary/server/ftp
-set FTPUSER user
-set FTPPASS password321
-run
-```
+### 4.3.1 Exploiting sudo
 
-![](../.gitbook/assets/lab-4-assets/11.png)
+We often use sudo to elevate privileges to run certain programs as the root user. In a typical managed environment, you would restrict users from misusing this by only allowing certain programs to be used with sudo. But some programs may have vulnerabilities/misconfigurations that allow users to elevate privilege to gain root access. We will have a look at a simple one - vim.
 
-The `user` and `password321` here are the credentials to be used when connecting to the server. Note that they are also they user credentials of the Linux VM user account. We can then connect to this server on our Linux via:
+First, we check which programs could be run with sudo without passwords.
 
-```
-ftp [Kali VM IP Addr]
-user
-password321
+```bash
+sudo -l
 ```
 
-![](../.gitbook/assets/lab-4-assets/12.png)
+<figure><img src="../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
 
-After which, exit the ftp using ctrl+z or cmd+z. Let's now try to look at the heap of the ftp service we just engaged with and search inside of it for some credentials. Let's take a look at any running ftp services:
+We see a list, and in fact, many of those could be used to launch an elevated shell as a root. For simplicity, we will use vim.
+
+```bash
+sudo vim -c '!sh'
+```
+
+<figure><img src="../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
+
+This launches a shell within vim, allowing you to elevate the privilege!
+
+Now try to see what other programs you can use to elevate the privilege.
+
+### 4.3.2 Memory inspection
+
+Sometimes passwords are cached in memory, which could be revealed by inspecting the memory. For example, if the root user was accessing the mysql database just before you have logged on, and they logged into the database by specifying the credentials with the `-p` flag, then you could discover what the inputted password was. Let's have a look.
+
+We look at the current running processes on the target VM:
 
 ```
-ps -ef | grep ftp
+ps -ef
 ```
 
-![](../.gitbook/assets/lab-4-assets/13.png)
+<figure><img src="../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
 
-Make note of the PID of the ftp process. Now to get the memory dump:
+There are several processes running, we will inspect the bash process (in the above screenshot, the PID is 2554). Bash is a good choice because the main interaction is largely plaintext. You can look up other processes that could leak passwords in plaintext as well (e.g., telnet, ftp, etc.).
+
+Now to get the memory dump:
 
 ```
-gdb -p [FTP PID]
+gdb -p [PID]
 info proc mappings
 ```
 
-![](../.gitbook/assets/lab-4-assets/15.png)
+<figure><img src="../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
 
-Make note of the start and end memory addresses of the \[heap]. Press 'q' to return, then enter:
+Make note of the start and end memory addresses of the \[heap]. For the above screenshot, they are `0xbf4000` and `0xc3f000`.
+
+Press 'q' to return, then enter:
 
 ```
-dump memory /tmp/mem [Start Address] [End Address]
+dump memory <OUTPUT_FILE> <START_ADDRESS> <END_ADDRESS>
 ```
 
-This will dump the memory to a file - /tmp/mem. We can then inspect this file to see if there are any password related things in there:
+```
+#for us we will do
+dump mempry /tmp/mem 0xbf4000 0xc3f000
+```
+
+This will dump the memory to a file - `/tmp/mem`. The Heap is a dynamic memory used by applications to store global variables. So as long as the memory has not been overridden by another program, then the value that left in the memory could be retrieved.
+
+We can then inspect this file to see if there are any password related things in there:
 
 ```
 strings /tmp/mem | grep passw
 ```
 
-![](../.gitbook/assets/lab-4-assets/16.png)
+<figure><img src="../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
 
-We see the credentials `root` and `password123` in plaintext, which are the root credentials for the Linux VM.
+We see the credentials `root` and `password123` in plaintext used to login to `mysql`. We can check this, and quickly find that `mysql` isn't running on the host.
 
-### 4.3.2 File Permissions (SUID Binary - Environment Variables #1)
+<figure><img src="../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
+
+Instead, we try to switch the user to `root` (given the username was `root`), and find that it was successful.
+
+<figure><img src="../.gitbook/assets/image (45).png" alt=""><figcaption></figcaption></figure>
+
+Because ssh is also running, we can `ssh` into the target host from Kali.
+
+<figure><img src="../.gitbook/assets/image (43).png" alt=""><figcaption></figcaption></figure>
+
+Voila!
+
+Try to see if you can retrieve any other useful information from memory dumps (whether on the target host, or on your own machine).
 
 ## 4.4 Summary
 
