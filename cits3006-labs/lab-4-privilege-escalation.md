@@ -224,16 +224,10 @@ We see the credentials `root` and `password123` in plaintext, which are the root
 
 ### 4.3.2 File Permissions (SUID Binary - Environment Variables #1)
 
-## 4.X Summary
+## 4.4 Summary
 
-add summary...
+We discovered a few different methods for escalating privilege when you have gained access as a user on a machine. Regardless of which OS you are on, there are always vulnerabilities that can be exploited to gain higher privileges. Therefore, having proper security policies and security reviews is important (for example, misconfigurations are not typically picked up by anti-malware products or firewalls). Using the techniques above, you could also review if you have any misconfigurations that would allow malicious users who may gain access to your machine to elevate the privilege.
 
 Next up, web security.
 
 **Preparation**: We will be using docker to host web services for testing. It should be already loaded on Kali, but if it isn't please have it ready.
-
-{% hint style="warning" %}
-M1/M2 users: setting up the Windows Server 2019 is extremely slow due to emulation (\~2 hours), but it is a good learning exercise. So you should try doing this before coming to the lab.
-
-I also provide you a preconfigured Windows Server 2019 image for UTM that you can download (see Lab 5 for details), but please note the image size is 10GB.
-{% endhint %}
