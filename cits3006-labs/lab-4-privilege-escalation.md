@@ -6,21 +6,21 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 ## 4.1. Introduction
 
-You will need your Kali VM, Windows VM, and the below prebuilt Linux VM.&#x20;
+You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
 
-* [Pre-built Debian Linux VM](https://drive.google.com/file/d/0B6EDpYQYL72rQ2VuWS1QR2ZsUlU/view?resourcekey=0-JgB-ugTWuHTZqjHvKTM9yg)&#x20;
+* A copy of the DebLinux image (.ova) can be found here: [Pre-built Debian Linux VM](https://drive.google.com/file/d/0B6EDpYQYL72rQ2VuWS1QR2ZsUlU/view?resourcekey=0-JgB-ugTWuHTZqjHvKTM9yg)&#x20;
   * non-admin user: `user`:`password321`&#x20;
   * admin user.       : `root`:`password123`
 
 {% hint style="info" %}
-UTM copy is also available on Teams for this Linux VM.
+The OVA and UTM copies are also available on Teams for this DebLinux VM.
 {% endhint %}
 
 ### 4.1.1 Windows VM Setup
 
-If you haven't done already, setup a Windows VM (tested with Windows 11 preview version, but if issues, you should be able to do it with a Windows 7 VM) as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
+If you haven't done already, set up a Windows VM (tested with Windows 11 preview version, but if issues, you should be able to do it with a Windows 7 VM) as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
 
-1. Login to the Windows VM using a user account that has administrator privileges.
+1. Log in to the Windows VM using a user account that has administrator privileges.
 2. Ensure the Windows VM does not have a user account named 'hank'. If it exists, you can either delete it, or replace 'hank' below with your chosen username, and also replace it in the script in step 3 below.
 3.  Download the setup script on the Windows VM (the Desktop directory is fine).&#x20;
 
