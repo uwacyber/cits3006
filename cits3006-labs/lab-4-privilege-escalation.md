@@ -1,28 +1,18 @@
 # Lab 4: Privilege Escalation (NOT READY)
 
-{% hint style="danger" %}
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
-{% endhint %}
 
 ## 4.0. Introduction
 
-You will need your Kali VM, Metasploitable VM, and Windows 7 (not 10) VM. Refer to Lab 2 instructions if you haven't got those VMs already.
-
-{% hint style="info" %}
-We will use Windows 7 VM instead of Windows 10 VM, as it is much easier to turn off Windows Defender settings than on Windows 10 (especially for M1/M2 users). Also, some configurations are easier to set on Windows 7 to demonstrate the tasks done in this lab.
-{% endhint %}
+You will need your Kali VM, Metasploitable VM, and Windows VM. Refer to previous lab instructions if you haven't got those VMs already.
 
 ## 4.1. VM Setup
 
-You will need 3 VMs set up for this lab:
+You will need this VM set up for this lab:
 
-* [Pre-built Kali Linux VM](https://drive.google.com/file/d/0B6EDpYQYL72rOElKNGhiLUdzdlE/view?resourcekey=0-KShDADVs19oaL5k5JtqegQ) (username: `root` / password: `toor`)
 * [Pre-built Debian Linux VM](https://drive.google.com/file/d/0B6EDpYQYL72rQ2VuWS1QR2ZsUlU/view?resourcekey=0-JgB-ugTWuHTZqjHvKTM9yg) (username: `user` / password: `password321`, username: `root` / password: `password123`)
-* [Windows 7 VM](https://drive.google.com/file/d/1cOBZt3qBgVkMINPDJd-fyvx0HsvJNAqF/view) (from ISO)
 
-Find both the Kali and Debian VMs hyperlinked above and import them into your VM emulator. The Windows 7 ISO is also hyperlinked.
-
-### 4.1.1 Windows 7 VM Setup
+### 4.1.1 Windows VM Setup
 
 Install the Windows 7 VM via the ISO, similar to the Windows installation done previously in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
 
@@ -34,11 +24,12 @@ Install the Windows 7 VM via the ISO, similar to the Windows installation done p
     wget https://raw.githubusercontent.com/sagishahar/lpeworkshop/master/lpe_windows_setup.bat -o lpe_windows_setup
     ```
 4. Right click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will setup the Windows system for the subsequent exercises.
-5.  Take note of the resulting output. One of the executed tasks is to create a new user account `user` with password `password321`.
+5. Take note of the resulting output. One of the executed tasks is to create a new user account `hank` with password `password321`.
 
-    ![](../.gitbook/assets/lab-4-assets/1.png)
-6. Restart the Windows VM and login to `user`.
-7. Copy the following [Tools](https://drive.google.com/file/d/1Lgg3HXXltB7ZD3F5YSbRl6FX7h\_mPzFU/view) 7z archive to the Desktop and extract it. You may need to download [7-zip](https://www.7-zip.org/download.html) to perform the extraction. The password is `lpeworkshop`.
+<figure><img src="../.gitbook/assets/image (30).png" alt=""><figcaption></figcaption></figure>
+
+1. Restart the Windows VM and login to `hank`.
+2. Copy the following [Tools](https://drive.google.com/file/d/1Lgg3HXXltB7ZD3F5YSbRl6FX7h\_mPzFU/view) 7z archive to the Desktop and extract it. You may need to download [7-zip](https://www.7-zip.org/download.html) to perform the extraction. The password is `lpeworkshop`.
 
 {% hint style="info" %}
 If you have issues downloading 7-zip or WinRAR or otherwise have difficulty accessing certain webpages due to a `NET::ERR_CERT_DATE_INVALID` Error, you will need to perform the following:
@@ -49,7 +40,7 @@ If you have issues downloading 7-zip or WinRAR or otherwise have difficulty acce
 4. Restart your VM
 {% endhint %}
 
-Additionally, you may want to install the "Guest Additions/Tools" to improve your user experience (e.g. full resolution display, etc.). You will first need to download and install the [Windows 7 Service Pack 1](https://support.microsoft.com/en-us/windows/install-windows-7-service-pack-1-sp1-b3da2c0f-cdb6-0572-8596-bab972897f61), after which you can then install your emulator's guest additions equivalent. This step is not mandetory.
+Additionally, you may want to install the "Guest Additions/Tools" to improve your user experience (e.g. full resolution display, etc.). You will first need to download and install the [Windows 7 Service Pack 1](https://support.microsoft.com/en-us/windows/install-windows-7-service-pack-1-sp1-b3da2c0f-cdb6-0572-8596-bab972897f61), after which you can then install your emulator's guest additions equivalent. This step is not mandatory.
 
 ## 4.2 Windows Privilege Escalation
 
@@ -66,37 +57,65 @@ Some permissions are pretty harmful like being:
 
 If a user has permission to change the configuration of a service which runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. You will find an exhaustive list of services, one of which is the `daclsvc` service.
 
-Using the `accesschk.exe` tool that you downloaded in the `Tools` folder, you can look at which services the user `user` has permissions over:
+<figure><img src="../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
+
+We'll need a tool named AccessChk, which you can download from the main site:
 
 ```
-accesschk64.exe -uwcqv "user" *
+https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
 ```
 
-![](../.gitbook/assets/lab-4-assets/2.png)
-
-We've confirmed that `user` has RW (read-write) permissions over the `daclsvc` service, including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to administrator through this misconfigured service. This can be done via:
+Or a copy from our github repo:
 
 ```
-sc config daclsvc binPath= "net localgroup administrators user /add"
+wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/AccessChk.zip -o accesschk.zip
+```
+
+Once downloaded, extract the files.
+
+Using the `accesschk.exe` tool, you can look at which services the user `hank` has permissions over:
+
+```
+.\accesschk64.exe -uwcqv "hank" *
+```
+
+<figure><img src="../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
+
+We've confirmed that `user` has RW (read-write) permissions over the `daclsvc` service (the first line), including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to the administrator through this misconfigured service. We first check our current group membership for hank:
+
+<figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
+
+We first have to stop the service we wish to modify:
+
+```
+net stop daclsvc
+```
+
+Now we execute the command to add hank to the administrators group:
+
+```
+sc.exe config daclsvc binPath= "net localgroup administrators hank /add"
 ```
 
 {% hint style="info" %}
 Note the space after `binPath=`
 {% endhint %}
 
-Confirm that this user's permissions have been elevated via `net localgroup administrators`. You should see `user` in the administrators list.
+<figure><img src="../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
-![](../.gitbook/assets/lab-4-assets/3.png)
+Now restart the service and check whether hank has been added to the administrators group or not.
 
-Using the command `sc qc daclsvc`, we can also see the binary path that we have altered for the `daclsvc` service. Note the BINARY\_PATH\_NAME variable.
+<figure><img src="../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
 
-![](../.gitbook/assets/lab-4-assets/4.png)
+Using the command `sc.exe qc daclsvc`, we can also see the binary path that we have altered for the `daclsvc` service. Note the BINARY\_PATH\_NAME variable.
+
+<figure><img src="../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 With this service's misconfigured permissions, we can actually modify the binary path to contain whatever commands we want, such as the running of a reverse shell. You simply change the `binPath=` to be the path to a reverse shell executable, then the reverse shell will start whenever the service is called. You can manually start the service with `net start daclsvc`. Try this out as an exercise!
 {% endhint %}
 
-In an admin cmd, run the command `net localgroup administrators user /delete` to remove the user from the administrators list as preparation for the next exercises.
+In an admin cmd, run the command `net localgroup administrators hank /delete` to remove the user from the administrators list as a preparation for the next exercises.
 
 ### 4.2.2 Unquoted Service Path
 
