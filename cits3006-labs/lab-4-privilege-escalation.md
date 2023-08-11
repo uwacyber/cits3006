@@ -141,9 +141,9 @@ Once again, confirm that this user's permissions have been elevated via `net loc
 
 ### 4.2.3 Password Mining (Registry)
 
-Password mining refers to the process of searching for and enumerating encrypted or clear-text passwords stored in persistent or volatile memory on the target system. In this exercise, we'll try to discover passwords stored in registry keys which may or may not be encrypted. One of these credential sets may have elevated permissions...
+Password mining refers to the process of searching for and enumerating encrypted or clear-text passwords stored in persistent or volatile memory on the target system. In this exercise, we'll try to discover passwords stored in registry keys that may or may not be encrypted. One of these credential sets may have elevated permissions...
 
-One place we can check is the automatic login credentials. Windows allows a user to automate the logging in process by storing passwords and other pertinent information in the registry database. Locate the default credentials using these commands in cmd:
+One place we can check is the automatic login credentials. Windows allows a user to automate the logging-in process by storing passwords and other pertinent information in the registry database. Locate the default credentials using these commands in cmd:
 
 ```powershell
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUsername
@@ -171,7 +171,7 @@ We have seen a few different ways a privilege escalation could happen in Windows
 
 ## 4.3 Linux Privilege Escalation&#x20;
 
-For this, we will cover a couple of straightforward yet interesting privilege escalation exploits, which can easily be found still in today's world (even your own system) that could easily be go unnoticed until something goes wrong.
+For this, we will cover a couple of straightforward yet interesting privilege escalation exploits, which can easily be found still in today's world (even your own system) that could easily go unnoticed until something goes wrong.
 
 ### 4.3.1 Exploiting sudo
 
@@ -199,9 +199,9 @@ Now try to see what other programs you can use to elevate the privilege.
 
 ### 4.3.2 Memory inspection
 
-Sometimes passwords are cached in memory, which could be revealed by inspecting the memory. For example, if the root user was accessing the mysql database just before you have logged on, and they logged into the database by specifying the credentials with the `-p` flag, then you could discover what the inputted password was. Let's have a look.
+Sometimes passwords are cached in memory, which could be revealed by inspecting the memory. For example, if the root user was accessing the MySQL database just before you logged on, and they logged into the database by specifying the credentials with the `-p` flag, then you could discover what the inputted password was. Let's have a look.
 
-We look at the current running processes on the target VM:
+We look at the currently running processes on the target VM:
 
 ```
 ps -ef
@@ -233,9 +233,9 @@ dump memory <OUTPUT_FILE> <START_ADDRESS> <END_ADDRESS>
 dump mempry /tmp/mem 0xbf4000 0xc3f000
 ```
 
-This will dump the memory to a file - `/tmp/mem`. The Heap is a dynamic memory used by applications to store global variables. So as long as the memory has not been overridden by another program, then the value that left in the memory could be retrieved.
+This will dump the memory to a file - `/tmp/mem`. The Heap is a dynamic memory used by applications to store global variables. So as long as the memory has not been overridden by another program, then the value that is left in the memory could be retrieved.
 
-We can then inspect this file to see if there are any password related things in there:
+We can then inspect this file to see if there are any password-related things in there:
 
 ```
 strings /tmp/mem | grep passw
@@ -243,7 +243,7 @@ strings /tmp/mem | grep passw
 
 <figure><img src="../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
 
-We see the credentials `root` and `password123` in plaintext used to login to `mysql`. We can check this, and quickly find that `mysql` isn't running on the host.
+We see the credentials `root` and `password123` in plaintext used to log in to `mysql`. We can check this, and quickly find that `mysql` isn't running on the host.
 
 <figure><img src="../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
 
@@ -257,11 +257,15 @@ Because ssh is also running, we can `ssh` into the target host from Kali.
 
 Voila!
 
-Try to see if you can retrieve any other useful information from memory dumps (whether on the target host, or on your own machine).
+Try to see if you can retrieve any other useful information from memory dumps (whether on the target host or even on your own machine).
 
 ## 4.4 Summary
 
 We discovered a few different methods for escalating privilege when you have gained access as a user on a machine. Regardless of which OS you are on, there are always vulnerabilities that can be exploited to gain higher privileges. Therefore, having proper security policies and security reviews is important (for example, misconfigurations are not typically picked up by anti-malware products or firewalls). Using the techniques above, you could also review if you have any misconfigurations that would allow malicious users who may gain access to your machine to elevate the privilege.
+
+{% hint style="info" %}
+Credit for Sagi Shahar sagishahar@github, where much of the lab content has been adopted from.
+{% endhint %}
 
 Next up, web security.
 
