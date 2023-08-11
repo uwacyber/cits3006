@@ -215,7 +215,7 @@ set RHOST 192.168.64.5
 
 All options are set, so now we can run the exploit by simply typing `run`.
 
-![](<../.gitbook/assets/image (2) (1) (1) (1) (2).png>)
+![](<../.gitbook/assets/image (2) (1) (1) (1) (2) (1).png>)
 
 {% hint style="info" %}
 The exploit may fail (as shown above), but you can simply run it again.

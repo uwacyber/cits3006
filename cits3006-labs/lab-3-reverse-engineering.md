@@ -221,7 +221,7 @@ Next, import `crackme0x00` from the unzipped folder to Ghidra, you can either dr
 
 Open the analyser by double-clicking the binary. You will be prompted with the analyser, which you simply press "yes" (the pre-selected analysers are sufficient here). Then it will get you here:
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (3).png>)
 
 On the CodeBrowser console, you see a few windows:
 

@@ -14,10 +14,9 @@
 * [Lab 1: Network Security](cits3006-labs/lab-1-network-security.md)
 * [Lab 2: Malware](cits3006-labs/lab-2-malware.md)
 * [Lab 3: Reverse Engineering](cits3006-labs/lab-3-reverse-engineering.md)
-* [Lab 4: Privilege Escalation (NOT READY)](cits3006-labs/lab-4-privilege-escalation.md)
+* [Lab 4: Privilege Escalation](cits3006-labs/lab-4-privilege-escalation.md)
 * [Lab 5: Web Security](cits3006-labs/lab-5-web-security.md)
 * [Lab 6: Active Directory](cits3006-labs/lab-6-active-directory.md)
-
 
 ## CITS3006 Assessments
 
