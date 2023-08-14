@@ -8,12 +8,12 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
 
-* A copy of the DebLinux image (.ova) can be found here: [Pre-built Debian Linux VM](https://drive.google.com/file/d/0B6EDpYQYL72rQ2VuWS1QR2ZsUlU/view?resourcekey=0-JgB-ugTWuHTZqjHvKTM9yg)&#x20;
+* A copy of the DebLinux image (.ova) can be found from the Teams -> Labs -> Files. Some account details are below:&#x20;
   * non-admin user: `user`:`password321`&#x20;
   * admin user.       : `root`:`password123`
 
 {% hint style="info" %}
-The OVA and UTM copies are also available on Teams for this DebLinux VM.
+The UTM copy is also available on Teams for this DebLinux VM.
 {% endhint %}
 
 ### 4.1.1 Windows VM Setup
