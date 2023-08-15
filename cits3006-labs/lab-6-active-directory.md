@@ -21,25 +21,23 @@ If using VirtualBox is giving you errors during the setup steps, you are recomme
 You will need to use 3 VMs for this lab, one for each of the following:
 
 * [Windows Server 2019](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019)
-* [Windows 10 Enterprise](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise) / Windows 7 (see lab 2 instructions)
-* [Kali Linux](https://www.kali.org/get-kali/)
+* Windows 11 or Windows 7 (see lab 2 instructions)
+* Kali Linux
 
 You will already have Kali, so you can set up the Windows Server 2019. If you also need Windows 10 Enterprise, download the ISO from the link provided. You can type in junks in the required fields, it will still take you to the ISO downloads page.
 
 {% hint style="info" %}
 M1/M2 users:
 
-Because the time to set up the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM (do note thiat this is 10GB large!).
+Because the time to set up the Windows Server 2019 is very long due to emulation, I have provided the pre-configured image that can be loaded directly onto UTM (do note that this is 10GB large!). See the VM links from Teams to get it.
 
-[Download Link](https://uniwa-my.sharepoint.com/:f:/g/personal/00098638\_uwa\_edu\_au/EjGITY9wMORGrSk8R\_ccm3YBI41RDK7St5FR98j\_8-vz6Q?e=BzzVrn)
+Similarly, you can also download preconfigured Windows 11/7 and perform setup tasks below.
 
 You simply save it where you want, and double-click it, which should load onto the UTM. The credentials and accounts are listed in the notes. However, you are highly recommended to try setting up the DC yourself for learning purposes.
 {% endhint %}
 
 {% hint style="info" %}
-M1/M2 users:
-
-you can follow these steps:
+M1/M2 users - if you are setting up from ISO, you can follow these steps:
 
 1. Add a new VM in UTM and select Emulate
 2. Select Windows and insert ISO, also uncheck UEFI Boot
@@ -102,7 +100,7 @@ At this point, you can "Power Off" this VM and move on to setting up the Windows
 ### 6.1.2 Using an existing Windows VM for a workstation
 
 {% hint style="info" %}
-M1/M2 users: recommended to use Windows 7.
+M1/M2 users: note that this has been tested with Windows 7 and is working.
 {% endhint %}
 
 You can use your existing Windows VM. Do this by making a duplicate of your existing one (ensure you randomize the MAC address to get a new IP address). You can skip the next section 6.1.3 and move on to section [6.1.4](lab-6-active-directory.md#6.1.4-preparing-the-network-discovery).
@@ -195,7 +193,7 @@ Click "Next" until you reach "Share Name", leaving the defaults. Give a name (we
 
 ![](../.gitbook/assets/lab-5-assets/26.png)
 
-Next let's disable Windows Defender so we can focus on the learning basics of attacking Active Directory, not Anti-virus evasion. Close out of command prompt and search for “Group Policy Management” in the task bar and open that up. Expand the "Domains" submenu, then right-click your root domain name, click “Create a GPO in this Domain, and Link it here…”.
+Next let's disable Windows Defender so we can focus on the learning basics of attacking Active Directory, not Anti-virus evasion. Close out of command prompt and search for “Group Policy Management” in the taskbar and open that up. Expand the "Domains" submenu, then right-click your root domain name, click “Create a GPO in this Domain, and Link it here…”.
 
 ![](../.gitbook/assets/lab-5-assets/28.png)
 
@@ -343,7 +341,7 @@ hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt --force
 
 #### 6.5.1.3 `psexec` for remote access
 
-`psexec` is a Microsoft-developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access testadmin’s computer with our newly found credentials. You need to enter the Root domain name (dc.local), the username (testadmin), the password (password1!), then the IP address of testadmin machine (e.g., 192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
+`psexec` is a Microsoft-developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access `testadmin`’s computer with our newly found credentials. You need to enter the Root domain name (`dc.local`), the username (`testadmin`), the password (`password1!`), then the IP address of `testadmin` machine (e.g., 192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
 
 ```bash
 psexec.py dc.local/testadmin:'password1!'@192.168.86.132
@@ -354,7 +352,7 @@ if you get an error:
 
 `... Script 'scripts/psexec.py' not found in metadata ...`
 
-it means impacket isn't installed correctly. This is a good time to work in the Python's virtual environment so let's do that:
+it means impacket isn't installed correctly. This is a good time to work in Python's virtual environment so let's do that:
 
 <pre class="language-shell"><code class="lang-shell"><strong>git clone https://github.com/SecureAuthCorp/impacket.git
 </strong><strong>virtualenv impacket-venv
@@ -465,7 +463,7 @@ change `ARCHS=amd64` to `ARCHS=arm64`
 wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/users.txt
 ```
 
-Once installed, the binary will be available in the `dist` folder. Then, we can how run kerbrute as follows:
+Once installed, the binary will be available in the `dist` folder. Then, we can how run `kerbrute` as follows:
 
 {% tabs %}
 {% tab title="AMD64" %}
@@ -495,7 +493,7 @@ So you can see that this script is nothing but a pattern matching username from 
 
 Now that we have discovered users on the domain `dc.local`, it's time to try and find passwords. Of course, we can use attacks such as discussed in section [6.5.1](lab-6-active-directory.md#6.5.1-exploiting-a-windows-machine-with-responder), but there are many ways to do so, and so we shall do that.
 
-The Kerbrute tool has a password spraying function, which we will use here.
+The Kerbrute tool has a password-spraying function, which we will use here.
 
 ```bash
 ./kerbrute_linux_386 passwordspray -d dc.local --dc 192.168.86.134 users.txt password1!
