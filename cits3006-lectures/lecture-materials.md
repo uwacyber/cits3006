@@ -48,4 +48,5 @@ Note that materials Below the divider are yet to be updated.
 <!-- Command and Control -->
 
 -- Week 12 --
+<!-- just play CTF in class -->
 * 14. Guest Lecture and/or Unit Review
