@@ -35,16 +35,17 @@ Note that materials Below the divider are yet to be updated.
 * [09. Web Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/09.Web\_Security.pdf)
 
 -- Week 08 --
-* 0A. More Web Security
+* 10. More Web Security
 
 -- Week 09 --
-* [0B. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
+* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 
 -- Week 10 --
-* [0C. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
+* [12. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
 
 -- Week 11 --
-* 0D. (tbc)
+* 13. (tbc)
+<!-- Command and Control -->
 
 -- Week 12 --
-* 0E. Guest Lecture and/or Unit Review
+* 14. Guest Lecture and/or Unit Review
