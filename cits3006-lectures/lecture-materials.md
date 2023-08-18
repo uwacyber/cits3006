@@ -28,7 +28,7 @@ Note that materials are still being updated as noted below.
 <!-- * [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Privilege\_Escalation.pdf) -->
 
 
-> [!IMPORTANT] 
+> [!NOTE] 
 > Below to be updated...
 
 
