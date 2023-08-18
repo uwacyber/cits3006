@@ -45,8 +45,8 @@ Note that materials are still being updated as noted below.
 * [12. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
 
 ## Week 11 
-* 13. (tbc)
 <!-- Command and Control -->
+* 13. tbc
 
 ## Week 12 
 <!-- just play CTF in class -->
