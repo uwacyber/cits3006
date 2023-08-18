@@ -23,11 +23,13 @@ Note that materials Below the divider are yet to be updated.
 * [07. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse_engineering_vertical.pdf)
 
 
+-- Week 06 --
+[08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local_Privilege_Escalation_Linux.pdf)
+<!-- * [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Privilege\_Escalation.pdf) -->
+
+
 ------ To be updated ------
 
-
--- Week 06 --
-* [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Privilege\_Escalation.pdf)
 
 -- Week 07 --
 * [09. Web Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/09.Web\_Security.pdf)
