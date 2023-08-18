@@ -24,7 +24,7 @@ Note that materials Below the divider are yet to be updated.
 
 
 -- Week 06 --
-[08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local_Privilege_Escalation_Linux.pdf)
+* [08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local_Privilege_Escalation_Linux.pdf)
 <!-- * [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Privilege\_Escalation.pdf) -->
 
 
