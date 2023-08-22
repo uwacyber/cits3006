@@ -32,7 +32,11 @@ Note that materials are still being updated as noted below.
 
 * [08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local\_Privilege\_Escalation\_Linux.pdf)
 
-> \[!NOTE] Below to be updated...
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 ## Week 07
 
