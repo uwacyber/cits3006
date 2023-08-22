@@ -38,7 +38,7 @@ Note that materials are still being updated as noted below.
 * Lab Quiz 2 in this week
 
 ## Week 08 
-* /10. Command and Control (TBC)
+* \10. Command and Control (TBC)
 
 ## Week 09 (King's Bday)
 * No new lecture
@@ -52,4 +52,4 @@ Note that materials are still being updated as noted below.
 
 ## Week 12 
 <!-- just play CTF in class -->
-* /14. Guest Lecture and/or Unit Review
+* \14. Guest Lecture and/or Unit Review
