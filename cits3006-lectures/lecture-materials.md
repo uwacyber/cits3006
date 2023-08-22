@@ -38,18 +38,18 @@ Note that materials are still being updated as noted below.
 * Lab Quiz 2 in this week
 
 ## Week 08 
-* 10. Command and Control (TBC)
+* /10. Command and Control (TBC)
 
 ## Week 09 (King's Bday)
 * No new lecture
 
 ## Week 10 
-* [12. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
+* [11. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
 * Lab Quiz 3 in this week
 
 ## Week 11 
-* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
+* [12. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 
 ## Week 12 
 <!-- just play CTF in class -->
-* 14. Guest Lecture and/or Unit Review
+* /14. Guest Lecture and/or Unit Review
