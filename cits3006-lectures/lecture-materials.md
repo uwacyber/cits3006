@@ -5,51 +5,57 @@ You will find lecture slides available here (you will be able to download the pd
 Note that materials are still being updated as noted below.
 
 ## Week 01
+
 * [00. Introduction](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/00.Introduction.pdf)
 * [01. Ethics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/01.Ethics.pdf)
-* [02. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/02.Reconnaissance_vertical.pdf)
+* [02. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/02.Reconnaissance\_vertical.pdf)
 
 ## Week 02
-* [03. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network_Exploits_vertical.pdf)
-* [04. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware_Basics_vertical.pdf)
+
+* [03. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network\_Exploits\_vertical.pdf)
+* [04. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware\_Basics\_vertical.pdf)
 
 ## Week 03
-* [05. More Malware](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/05.More_malware_vertical.pdf)
+
+* [05. More Malware](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/05.More\_malware\_vertical.pdf)
 
 ## Week 04
-* [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software_security_vertical.pdf)
+
+* [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software\_security\_vertical.pdf)
 * Lab Quiz 1 in this week
 
 ## Week 05
-* [07. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse_engineering_vertical.pdf)
 
+* [07. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse\_engineering\_vertical.pdf)
 
-## Week 06 
-* [08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local_Privilege_Escalation_Linux.pdf)
-<!-- * [08. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Privilege\_Escalation.pdf) -->
+## Week 06
 
+* [08. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local\_Privilege\_Escalation\_Linux.pdf)
 
-> [!NOTE] 
-> Below to be updated...
+> \[!NOTE] Below to be updated...
 
+## Week 07
 
-## Week 07 
 * [09. Web Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/09.Web\_Security.pdf)
 * Lab Quiz 2 in this week
 
-## Week 08 
-* \10. Command and Control (TBC)
+## Week 08
+
+* 10\. Command and Control (TBC)
 
 ## Week 09 (King's Bday)
+
 * No new lecture
 
-## Week 10 
+## Week 10
+
 * [11. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
 * Lab Quiz 3 in this week
 
-## Week 11 
+## Week 11
+
 * [12. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 
-## Week 12 
-<!-- just play CTF in class -->
-* \14. Guest Lecture and/or Unit Review
+## Week 12
+
+* 14\. Guest Lecture and/or Unit Review
