@@ -18,6 +18,7 @@ Note that materials are still being updated as noted below.
 
 ## Week 04
 * [06. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/06.Software_security_vertical.pdf)
+* Lab Quiz 1 in this week
 
 ## Week 05
 * [07. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse_engineering_vertical.pdf)
@@ -34,19 +35,20 @@ Note that materials are still being updated as noted below.
 
 ## Week 07 
 * [09. Web Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/09.Web\_Security.pdf)
+* Lab Quiz 2 in this week
 
 ## Week 08 
-* 10. More Web Security
+* 10. Command and Control (TBC)
 
-## Week 09 
-* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
+## Week 09 (King's Bday)
+* No new lecture
 
 ## Week 10 
 * [12. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
+* Lab Quiz 3 in this week
 
 ## Week 11 
-<!-- Command and Control -->
-* 13. tbc
+* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
 
 ## Week 12 
 <!-- just play CTF in class -->
