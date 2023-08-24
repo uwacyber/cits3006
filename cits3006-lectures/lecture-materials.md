@@ -16,12 +16,12 @@ Note that materials are still being updated as noted below.
 
 * [02.a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network\_Exploits\_vertical.pdf)
 * [02.b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware\_Basics\_vertical.pdf)
-* Complete [lab 1](lab-1-network-security.md).
+* Complete [lab 1](../cits3006-labs/lab-1-network-security.md).
 
 ## Week 03
 
 * [03. More Malware](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/05.More\_malware\_vertical.pdf)
-* Complete [lab 2](lab-2-malware.md).
+* Complete [lab 2](../cits3006-labs/lab-2-malware.md).
 
 ## Week 04
 
@@ -32,12 +32,12 @@ Note that materials are still being updated as noted below.
 ## Week 05
 
 * [05. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.Reverse\_engineering\_vertical.pdf)
-* Complete [lab 3](lab-3-reverse-engineering.md).
+* Complete [lab 3](../cits3006-labs/lab-3-reverse-engineering.md).
 
 ## Week 06
 
 * [06. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local\_Privilege\_Escalation\_Linux.pdf)
-* Complete [lab 4](lab-4-privilege-escalation.md).
+* Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
 
 {% hint style="warning" %}
 The below has not been updated yet.
@@ -52,7 +52,7 @@ The below has not been updated yet.
 ## Week 08
 
 * [08. Web Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/09.Web\_Security.pdf)
-* Complete [lab 5](lab-5-web-security.md).
+* Complete [lab 5](../cits3006-labs/lab-5-web-security.md).
 * Project release this week (40%).
   * group formation.
 
@@ -60,7 +60,7 @@ The below has not been updated yet.
 
 * No new lecture.
 * No scheduled on the public holiday.
-* Complete [lab 6](lab-6-active-directory.md).
+* Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Friday 5pm.
 
 ## Week 10
