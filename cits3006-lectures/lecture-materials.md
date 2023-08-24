@@ -6,16 +6,16 @@ Note that materials are still being updated as noted below.
 
 ## Week 01
 
-* [01.a. Introduction](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/00.Introduction.pdf)
-* [01.b. Ethics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/01.Ethics.pdf)
-* [01.c. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/02.Reconnaissance\_vertical.pdf)
+* [01a. Introduction](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/00.Introduction.pdf)
+* [01b. Ethics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/01.Ethics.pdf)
+* [01c. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/02.Reconnaissance\_vertical.pdf)
 * Complete [lab 0](../cits3006-labs/lab-0-setup-and-linux.md).
 * (Optional) Complete [Networks 101](../cits3006-labs/network-101.md).
 
 ## Week 02
 
-* [02.a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network\_Exploits\_vertical.pdf)
-* [02.b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware\_Basics\_vertical.pdf)
+* [02a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/03.Network\_Exploits\_vertical.pdf)
+* [02b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Malware\_Basics\_vertical.pdf)
 * Complete [lab 1](../cits3006-labs/lab-1-network-security.md).
 
 ## Week 03
