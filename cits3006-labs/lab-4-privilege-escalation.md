@@ -34,6 +34,14 @@ If you haven't done already, set up a Windows VM (tested with Windows 11 preview
 
 Restart the Windows VM and log in to `hank`.
 
+
+{% hint style="info" %}
+If you encounter an issue where the wsetup.bat script does not attempt the configuration of Exercises 1-9, and then loops the output “[\*] Creating final configuration task to run upon restart..”, as shown in the image below, then you can fix this by copy and pasting the wsetup.bat contents into your own separate file and executing this instead. This resolves an issue where Unix LF line endings are used instead of Windows CRLF line endings.
+
+<figure><img src="../.gitbook/assets/lab-4-assets/17.png" alt=""><figcaption></figcaption></figure>
+
+{% endhint %}
+
 ## 4.2 Windows Privilege Escalation
 
 ### 4.2.1 Insecure Service Permissions
