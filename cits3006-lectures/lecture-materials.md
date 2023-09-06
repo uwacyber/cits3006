@@ -39,15 +39,17 @@ Note that materials are still being updated as noted below.
 * [06. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/08.Local\_Privilege\_Escalation\_Linux.pdf)
 * Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
 
+## Week 07
+
+* [07. Command and Control](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/07.c2_vertical.pdf)
+* Lab Quiz 2 this week (20%).
+* No new lab this week.
+
+
 {% hint style="warning" %}
 The below has not been updated yet.
 {% endhint %}
 
-## Week 07
-
-* 07\. Command and Control (TBC)
-* Lab Quiz 2 this week (20%).
-* No new lab this week.
 
 ## Week 08
 
