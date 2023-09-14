@@ -21,4 +21,4 @@
 ## CITS3006 Assessments
 
 * [Lab Quizzes](cits3006-assessments/lab-quizzes.md)
-* [Project](cits3006-assessments/project.md)
+* [Project (NOT READY)](cits3006-assessments/project.md)
