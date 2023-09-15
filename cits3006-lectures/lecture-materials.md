@@ -52,20 +52,18 @@ Note that materials are still being updated as noted below.
 * Project release this week (40%).
   * group formation.
 
-
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
-
-
 ## Week 09 (King's Bday)
 
 * No new lecture.
 * No scheduled on the public holiday.
 * Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Friday 5pm.
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
+
 
 ## Week 10
 
