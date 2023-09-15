@@ -15,7 +15,7 @@ This project is to be carried out as a team.
 
 You are free to form your own team, but your team must meet the following requirements:
 
-* The team's average grade from LQ1 and LQ2 must not exceed 73 (i.e., add all LQ marks, divide it by 2 (i.e., there are 2 LQs), then divide by the number of members).
+* The team's average grade from LQ1 and LQ2 must not exceed 73 (i.e., add all LQ marks, divide it by 2 (i.e., there are 2 LQs), then divide by the number of members). If you don't want to reveal your marks, you can form the team first and contact me to check whether your team meets this eligibility or not.
 * Ensure that at least one member has VirtualBox available on an AMD platform, as the provided boxes will be in `.ova` format (i.e., Apple Silicon support is not required. Apple Silicon users could emulate the provided box if you wish to).
 
 The number of members should be 5 (4 or 6 may be considered - requires approval).
@@ -119,7 +119,7 @@ The live demo will be no longer than 30 mins, you should aim it to be around 20 
     <tbody>
         <tr>
             <td>Configuring a vulnerable web server (T1, T2)</td>
-            <td>30%</td>
+            <td>25%</td>
             <td>(1) Failed to implement the four types of vulnerability attributes.<br><br>(2) Demo failed to demonstrate the implemented vulnerabilities.<br><br>(3) Report is not aligned with the demo.</td>
             <td>(1) Implemented each of the four types of vulnerability attributes.<br><br>(2) Demo demonstrated the implemented vulnerabilities.<br><br>(3) Report aligns with the demo but is lacking details.</td>
             <td>(1) Implemented each of the four types of vulnerability attributes, with at least 8 vulnerabilities in total.<br><br>(2) Demo demonstrated the implemented vulnerabilities clearly.<br><br>(3) Report aligns with the demo with adequate details.</td>
@@ -128,25 +128,25 @@ The live demo will be no longer than 30 mins, you should aim it to be around 20 
         </tr>
         <tr>
             <td>Pen testing (T3, T4)</td>
-            <td>30%</td>
-            <td>(1) Much of the vulnerabilities were not exploited in the provided exercise boxes.<br><br>(2) Demo failed to demonstrate the implemented vulnerabilities.<br><br>(3) Report is not aligned with the demo.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities.<br><br>(3) Report aligns with the demo but is lacking details.</td>
-            <td>(1) Various vulnerabilities were exploited in provided exercise boxes.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities clearly.<br><br>(3) Report aligns with the demo with adequate details.</td>
+            <td>25%</td>
+            <td>(1) Much of the vulnerabilities were not exploited in the provided exercise boxes.<br><br>(2) Demo failed to demonstrate the implemented vulnerabilities.<br><br>(3) Report is not aligned with the demo.</td>
+            <td>(1) Various vulnerabilities were exploited in provided exercise boxes.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities.<br><br>(3) Report aligns with the demo but is lacking details.</td>
             <td>(1) Many vulnerabilities were exploited in many of the provided exercise boxes.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities clearly.<br><br>(3) Report aligns with the demo with adequate details.</td>
             <td>(1) Many vulnerabilities were exploited, with some boxes completely compromised with all vulnerabilities exposed.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities clearly.<br><br>(3) Report aligns with the demo and is formatted well.</td>
             <td>(1) Many vulnerabilities were exploited, with many (if not most) boxes completely compromised with all vulnerabilities exposed.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities at a professional level.<br><br>(3) Report aligns with the demo and is formatted professionally.</td>
         </tr>
         <tr>
             <td>Difficulty of compromising the configured web server (T3)</td>
-            <td>10%</td>
-            <td>All teams have rated the box supplied as easy (i.e., ratings mostly 1).</td>
-            <td>Many teams have rated the box supplied as easy (i.e., ratings 1-2).</td>
-            <td>Many teams have rated the box supplied as moderate (i.e., ratings around 3).</td>
-            <td>Many teams have rated the box supplied as moderately hard (i.e., ratings around 4-5).</td>
-            <td>Most teams have rated the box supplied as hard (i.e., raitings mostly 5).</td>
+            <td>25%</td>
+            <td>Many teams have rated the box supplied as easy (i.e., ratings mostly 1).</td>
+            <td>Many teams have rated the box supplied as moderately easy (i.e., ratings mostly 2).</td>
+            <td>Many teams have rated the box supplied as moderate (i.e., ratings mostly 3).</td>
+            <td>Many teams have rated the box supplied as moderately hard (i.e., ratings mostly 4).</td>
+            <td>Most teams have rated the box supplied as hard (i.e., ratings mostly 5).</td>
         </tr>
         <tr>
-            <td>Individual report (T3)</td>
-            <td>30%</td>
+            <td>Individual report (T1, T3)</td>
+            <td>25%</td>
             <td>No or nearly none evidence of contributions made to the project.</td>
             <td>Made some contribution to the project, demonstrating some penetration testing skills.</td>
             <td>Made some key contributions to the project, demonstrating a variety of penetration testing skills.</td>
