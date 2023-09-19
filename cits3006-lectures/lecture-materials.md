@@ -55,7 +55,7 @@ Note that materials are still being updated as noted below.
 ## Week 09 (King's Bday)
 
 * No new lecture.
-* No scheduled on the public holiday.
+* No lab scheduled on the public holiday.
 * Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Friday 5pm.
 

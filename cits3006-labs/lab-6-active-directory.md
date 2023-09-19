@@ -211,13 +211,17 @@ Click “Enabled”, “Apply”, “OK”. We are done configuring our (vulnera
 
 ## 6.4 Connecting Users to the Domain
 
-### 6.4.1 On Windows 10 WS
+### 6.4.1 On Windows 10/11 WS
 
 {% hint style="info" %}
 How to do this for Windows 7 WS is shown in section [6.4.2](lab-6-active-directory.md#5.4.2-windows-7-ws) below.
 {% endhint %}
 
-We will start with the Windows 10 workstation we created in [6.1.2](lab-6-active-directory.md#5.1.2-using-an-existing-windows-vm-for-a-workstation). Open up this VM and log in. Go to the C Drive and create a new folder (we'll call it "Shares" here). This folder will be acting as our share drive in our AD system, perform the following actions to set it up:
+{% hint style="info" %}
+The instructions are the same for Windows 10 and 11, but the location and how they look may differ a bit. You should still be able to find those and proceed, but do let the facilitator know if you are having troubles.
+{% endhint %}
+
+We will start with the Windows 10 workstation we created in [6.1.2](lab-6-active-directory.md#5.1.2-using-an-existing-windows-vm-for-a-workstation). Open up this VM and log in. Go to the C Drive and create a new folder (we'll call it "Shares" here). This folder will be acting as our share drive in our AD system, perform the following actions to set it up on the Windows Server 2019:
 
 * Right click → "Properties" → "Sharing" → "Share"
 * Select your user and click "Share"
