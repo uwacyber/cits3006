@@ -59,16 +59,19 @@ Note that materials are still being updated as noted below.
 * Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Friday 5pm.
 
+## Week 10
+
+* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/10.Active_Directory_vertical.pdf)
+* Project task 2 (demo/live session in scheduled labs).
+
+
+
 
 {% hint style="warning" %}
 The below has not been updated yet.
 {% endhint %}
 
 
-## Week 10
-
-* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0C.Active\_Directory.pdf)
-* Project task 2 (demo/live session in scheduled labs).
 
 ## Week 11
 
