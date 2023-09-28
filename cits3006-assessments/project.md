@@ -100,9 +100,14 @@ Your team will demonstrate live the exploitation of boxes you have completed in 
 The live demo will be no longer than 30 mins, you should aim it to be around 20 mins.
 {% endhint %}
 
+
+## Bonus Marks: Complete the survey
+
+You can complete the survey to receive a bonus mark of 5%. Make sure to enter your student ID correctly.
+Link: https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform
+
+
 ## Marking Rubrics
-
-
 
 <table>
     <thead>
