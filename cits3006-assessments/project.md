@@ -103,9 +103,13 @@ The live demo will be no longer than 30 mins, you should aim it to be around 20 
 
 ## Bonus Marks: Complete the survey
 
-You can complete the survey to receive a bonus mark of 5%. Make sure to enter your student ID correctly.
+You can complete the survey to receive a bonus mark of 5%. Make sure to enter your student ID correctly (on the first page).
 Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform](https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform)
 
+{% hint style="info" %}
+1. You must complete the survey by Monday 9 October 5pm to receive the bonus marks.
+2. The game server is not built for scalability, so if it isn't working, please try again a bit later. If it still doesn't work after a while, please let me know.
+{% endhint %}
 
 ## Marking Rubrics
 
