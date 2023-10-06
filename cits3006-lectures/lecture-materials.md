@@ -64,6 +64,11 @@ Note that materials are still being updated as noted below.
 * [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/10.Active_Directory_vertical.pdf)
 * Project task 2 (demo/live session in scheduled labs).
 
+## Week 11
+
+* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/11.Defence_Techniques_vertical.pdf)
+* Lab Quiz 3 this week (20%).
+* Project task 3 due Friday 5pm.
 
 
 
@@ -72,12 +77,6 @@ The below has not been updated yet.
 {% endhint %}
 
 
-
-## Week 11
-
-* [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/0B.Defence\_Techniques.pdf)
-* Lab Quiz 3 this week (20%).
-* Project task 3 due Friday 5pm.
 
 ## Week 12
 
