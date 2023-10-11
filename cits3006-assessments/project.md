@@ -157,10 +157,10 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
             <td>Individual report (T1, T3)</td>
             <td>25%</td>
             <td>No or nearly none evidence of contributions made to the project.</td>
-            <td>Made some contribution to the project, demonstrating some penetration testing skills.</td>
-            <td>Made some key contributions to the project, demonstrating a variety of penetration testing skills.</td>
-            <td>Made major contributions in the project, demonstrating a variety of penetration testing skills.</td>
-            <td>Made major contributions in the project, demonstrating advanced penetration testing skills.</td>
+            <td>(1) Made some contribution to the project, demonstrating some penetration testing skills.<br><br>(2) Shows some indication of research done, exploring new penetration testing skills not covered in the class.</td>
+            <td>(1) Made some key contributions to the project, demonstrating a variety of penetration testing skills.<br><br>(2) Shows a reasonable amount of research done, exploring new penetration testing skills not covered in the class.</td>
+            <td>(1) Made major contributions in the project, demonstrating a variety of penetration testing skills.<br><br>(2) Shows a high level of research done, exploring new and advanced penetration testing skills not covered in the class.</td>
+            <td>(1) Made major contributions in the project, demonstrating advanced penetration testing skills.<br><br>(2) Shows a comprehensive level of research done, exploring new and advanced penetration testing skills not covered in the class.</td>
         </tr>
     </tbody>
 </table>
