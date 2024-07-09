@@ -31,7 +31,7 @@ The below has not been updated yet.
 * Complete [lab 2](../cits3006-labs/lab-2-malware.md).
 
 ## Week 04
-
+<!-- This needs to be updated -->
 * [04. Software Security](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/04.Software\_security\_vertical.pdf)
 * Lab Quiz 1 this week (20%).
 * No new lab this week.
@@ -72,7 +72,7 @@ The below has not been updated yet.
 * Project task 2 (demo/live session in scheduled labs).
 
 ## Week 11
-
+<!-- This needs to be updated -->
 * [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/11.Defence_Techniques_vertical.pdf)
 * Lab Quiz 3 this week (20%).
 * Project task 3 due Friday 5pm.
@@ -80,6 +80,6 @@ The below has not been updated yet.
 
 
 ## Week 12
-
+<!-- This needs to be updated -->
 * 12\. Guest Lecture and/or Unit Review (TBC)
 * Project task 4 (demo/live session in scheduled labs).
