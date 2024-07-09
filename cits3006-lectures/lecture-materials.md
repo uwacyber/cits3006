@@ -4,6 +4,13 @@ You will find lecture slides available here (you will be able to download the pd
 
 Note that materials are still being updated as noted below.
 
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
+
+
+
 ## Week 01
 
 * [01a. Introduction](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/01a.Introduction.pdf)
@@ -69,12 +76,6 @@ Note that materials are still being updated as noted below.
 * [11. Defence Techniques](https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-lectures/11.Defence_Techniques_vertical.pdf)
 * Lab Quiz 3 this week (20%).
 * Project task 3 due Friday 5pm.
-
-
-
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
 
 
 
