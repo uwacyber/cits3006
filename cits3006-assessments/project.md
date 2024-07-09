@@ -1,6 +1,8 @@
-# Project
+# Project 2024
 
-In this project, you will be working as a team to perform penetration testing techniques. 
+Coming soon...
+
+<!-- In this project, you will be working as a team to perform penetration testing techniques. 
 Please note, you are expected to conduct further research to learn more about various penetration testing techniques and use them in this project.
 
 More details are as follows.
@@ -164,7 +166,7 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
         </tr>
     </tbody>
 </table>
-
+ -->
 
 
 
