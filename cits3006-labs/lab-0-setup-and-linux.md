@@ -65,21 +65,15 @@ Then restart the VM, and you should be able to copy and paste between your host 
 
 ### 0.1.4. Transferring files between VMs
 
-Often we will need to transfer files between VMs, most of the time from your attacker VM (Kali) to target hosts (Windows, Ubuntu, Metasploitable etc.). One of the easiest way is to enable web server on Kali:
+Often we will need to transfer files between VMs, most of the time from your attacker VM (Kali) to target hosts (Windows, Ubuntu, Metasploitable etc.). One of the easiest way is to run a web file server from the directory by running:
 
 ```
-sudo service apache2 start
+sudo python3 -m http.server 8000
 ```
 
-This will let you start a web server from your Kali VM, which you can access by typing the IP address of Kali on the browser. Since it is a web server, you can also use `wget` command to retrieve files if you don't have GUI enabled on the VM.
+This will let you start a web server from your Kali VM from the directory where you have executed the command, which you can access by typing the IP address of Kali on the browser. Since it is a web server, you can also use `wget` command to retrieve files if you don't have GUI enabled on the VM.
 
-To share, create a share folder located at `/var/www/html/`:
-
-```
-sudo mkdir /var/www/html/share
-```
-
-Now you can place files you want to share in the share folder, then it should appear when you access the web server.
+You can start the web server from any directory you have files to be shared with. Once completed, you can stop the server by pressing `Ctrl + C`.
 
 Another way is to create a shared folder in the cloud (e.g., Dropbox, OneDrive, Google Drive etc.) and transfer between the VMs that way. Make sure not to use your personal account as we will be moving malicious files, which may be synced to your host drive if that is enabled.
 

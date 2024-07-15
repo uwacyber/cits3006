@@ -25,7 +25,7 @@ If you haven't done already, set up a Windows VM (tested with Windows 11 preview
 3.  Download the setup script on the Windows VM (the Desktop directory is fine).&#x20;
 
     ```powershell
-    wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/wsetup.bat -o wsetup.bat
+    wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/wsetup.bat -o wsetup.bat
     ```
 4. Right-click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will set up the Windows system for the subsequent exercises.
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `hank` with password `password321`.
@@ -72,7 +72,7 @@ https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
 Or a copy from our github repo:
 
 ```powershell
-wget https://github.com/uwacyber/cits3006/raw/2023S2/cits3006-labs/files/AccessChk.zip -o accesschk.zip
+wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/AccessChk.zip -o accesschk.zip
 ```
 
 Once downloaded, extract the files.
