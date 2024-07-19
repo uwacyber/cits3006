@@ -5,10 +5,6 @@ You will find lecture slides available here (you will be able to download the pd
 Note that materials are still being updated as noted below.
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
 
 
 ## Week 01
@@ -25,6 +21,11 @@ The below has not been updated yet.
 * [02a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02a.Network\_Exploits\_vertical.pdf)
 * [02b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02b.Malware\_Basics\_vertical.pdf)
 * Complete [lab 1](../cits3006-labs/lab-1-network-security.md).
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 ## Week 03
