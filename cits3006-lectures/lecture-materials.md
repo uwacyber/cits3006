@@ -36,7 +36,7 @@ The below has not been updated yet.
 
 ## Week 04
 
-* [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/05.Reverse\_engineering\_vertical.pdf)
+* [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/04.Reverse\_engineering\_vertical.pdf)
 * Complete [lab 3](../cits3006-labs/lab-3-reverse-engineering.md).
 * Lab Quiz 1 report due (covers weeks 1-3).
 
