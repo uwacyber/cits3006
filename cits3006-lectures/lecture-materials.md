@@ -23,15 +23,15 @@ Note that materials are still being updated as noted below.
 * Complete [lab 1](../cits3006-labs/lab-1-network-security.md).
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 03
 
 * [03. More Malware](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/03.More\_malware\_vertical.pdf)
 * Complete [lab 2](../cits3006-labs/lab-2-malware.md).
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 ## Week 04
@@ -70,7 +70,7 @@ The below has not been updated yet.
 
 
 ## Week 09 (King's Bday)
-
+<!-- This needs to be created -->
 * Lecture TBD.
 * No lab scheduled on the public holiday.
 * Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
