@@ -29,16 +29,16 @@ Note that materials are still being updated as noted below.
 * Complete [lab 2](../cits3006-labs/lab-2-malware.md).
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 04
 
 * [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/04.Reverse\_engineering\_vertical.pdf)
 * Complete [lab 3](../cits3006-labs/lab-3-reverse-engineering.md).
 * Lab Quiz 1 report due (covers weeks 1-3).
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 ## Week 05

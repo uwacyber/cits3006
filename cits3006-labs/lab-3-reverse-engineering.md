@@ -31,9 +31,9 @@ One of the most interesting stories about reverse engineering is the story about
 In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM AMD64 chip users.
 
 {% hint style="warning" %}
-This section of the lab does not work on Apple Silicon computers or any other ARM-based architectures, because the instruction sets are vastly different between the AMD and ARM architectures when you compile codes.
+You can still do this section of the lab, but may face issues using the Apple Silicon machine.
 
-Alternate ways to do this section is to work with others in the lab (suggested), or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work also (but can cost you if you don't have free credit).
+Alternate ways to do this section is to work with others in the lab, or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work also (but can cost you if you don't have free credit).
 {% endhint %}
 
 ```
@@ -67,6 +67,12 @@ This is where we start looking at the assembly code of the ransomware. Run:
 ```
 objdump -d free_bitcoin
 ```
+
+{% hint style="warning" %}
+Apple Silicon users, use llvm-objdump instead.
+
+For the srand_test function, the instruction will look different due to being on a different architecture. However, you can still find key information from the assembly code.
+{% endhint %}
 
 Ignoring the included functions from libraries, we find that the malware has the functions `main`, `encrypt_file`, `decrypt_file` and `gen_key`. Let us take a closer look at the `gen_key` function since this is most likely where the key is created to be used for encryption. Below is the assembly code of this function.
 
@@ -109,6 +115,12 @@ git clone https://github.com/longld/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
 ```
 
+{% hint style="warning" %}
+Apple Silicon users, install peda-arm instead ([peda-arm link](https://github.com/alset0326/peda-arm)).
+
+The peda function is the same.
+{% endhint %}
+
 Also install OpenSSL library:
 
 ```
@@ -138,6 +150,10 @@ cd test/
 chmod 500 free_bitcoin
 gdb free_bitcoin
 ```
+
+{% hint style="warning" %}
+Apple Silicon users, to run the program, use free_bitcoin_arm file instead. But for inspecting the binary, using free_bitcoin will be easier (e.g., run two terminals).
+{% endhint %}
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
 
