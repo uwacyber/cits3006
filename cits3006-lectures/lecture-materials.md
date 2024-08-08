@@ -36,16 +36,15 @@ Note that materials are still being updated as noted below.
 * Lab Quiz 1 report due (covers weeks 1-3).
 
 
+## Week 05
+* [05. Rowhammer](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/05.Rowhammer.pdf)
+* Lab Quiz 1 demo.
+* No new lab this week.
+
+
 {% hint style="warning" %}
 The below has not been updated yet.
 {% endhint %}
-
-
-## Week 05
-<!-- This needs to be updated -->
-* [05. tbc](tbc)
-* Lab Quiz 1 demo.
-* No new lab this week.
 
 
 ## Week 06
