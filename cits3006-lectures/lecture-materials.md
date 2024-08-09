@@ -42,15 +42,15 @@ Note that materials are still being updated as noted below.
 * No new lab this week.
 
 
+## Week 06
+
+* [06. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/06.Privilege\_Escalation\_vertical.pdf)
+* Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
+
+
 {% hint style="warning" %}
 The below has not been updated yet.
 {% endhint %}
-
-
-## Week 06
-
-* [06. Linux Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/06.Local\_Privilege\_Escalation\_Linux.pdf)
-* Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
 
 
 ## Week 07
