@@ -48,16 +48,16 @@ Note that materials are still being updated as noted below.
 * Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 07
 
 * [07. Command and Control](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/07.c2_vertical.pdf)
 * Lab Quiz 2 in-person test & demo (covers weeks 4-6).
 * No new lab this week.
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 ## Week 08
