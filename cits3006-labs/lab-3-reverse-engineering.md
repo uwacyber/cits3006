@@ -105,8 +105,7 @@ sudo apt-get install gdb -y
 Next, install `peda` (line by line):
 
 ```
-sudo apt install python3-six
-git clone https://github.com/jsun1590/peda.git ~/peda
+git clone https://github.com/longld/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
 ```
 
