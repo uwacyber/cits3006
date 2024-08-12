@@ -305,7 +305,7 @@ whetherAnyway, let's inspect the function test to see whether this is indeed the
 
 ![](<../.gitbook/assets/image (3) (1) (2).png>)
 
-de the test function, it is showing some shift functions, which aren't conventional c functions so it must be doing something, possibly shifting. So let us try shifting the letters.
+Decompiling the test function, it is showing some shift functions, which aren't conventional c functions so it must be doing something, possibly shifting. So let us try shifting the letters.
 
 ![](<../.gitbook/assets/image (19) (1).png>)
 
