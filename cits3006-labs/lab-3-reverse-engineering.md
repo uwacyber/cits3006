@@ -111,7 +111,8 @@ sudo apt-get install gdb -y
 Next, install `peda` (line by line):
 
 ```
-git clone https://github.com/longld/peda.git ~/peda
+sudo apt install python3-six
+git clone https://github.com/jsun1590/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
 ```
 
@@ -129,13 +130,13 @@ sudo apt-get install libssl-dev
 
 Below we list some useful commands for inside the `gdb-peda` shell to help you reverse engineer the ransomware.
 
-* `gdb-peda$ info func` : Prints out all the functions inside of the program.
-* `gdb-peda$ disas <function name>` : Print the assembly code and machine instruction number of a function.
-* `gdb-peda$ b *<machine instruction address>` : Pauses the program's execution at the machine instruction address and prints the program's state.
-* `gdb-peda$ x/2x $esp` **:** Prints the first 2\*4=8 bytes from the start of the stack ($esp)
-* `gdb-peda$ r` : Starts the program's execution from the very start.
-* `gdb-peda$ c` **:** Continue the program's execution to the next breakpoint or until completion.
-* `gdb-peda$ si` : Execute the next machine instruction and then print the state of the program.
+- `gdb-peda$ info func` : Prints out all the functions inside of the program.
+- `gdb-peda$ disas <function name>` : Print the assembly code and machine instruction number of a function.
+- `gdb-peda$ b *<machine instruction address>` : Pauses the program's execution at the machine instruction address and prints the program's state.
+- `gdb-peda$ x/2x $esp` **:** Prints the first 2\*4=8 bytes from the start of the stack ($esp)
+- `gdb-peda$ r` : Starts the program's execution from the very start.
+- `gdb-peda$ c` **:** Continue the program's execution to the next breakpoint or until completion.
+- `gdb-peda$ si` : Execute the next machine instruction and then print the state of the program.
 
 For a list of more commands to use gdb, take a look at [https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf).
 
@@ -169,8 +170,8 @@ We will start running the program to see the state of the registers and stack at
 
 The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
 
-* Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
-* The second observation is that the character `e` is stored inside the `EDX` register, as shown as `RDX`, (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is possibly (and most likely) the first character of the encryption key.
+- Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
+- The second observation is that the character `e` is stored inside the `EDX` register, as shown as `RDX`, (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is possibly (and most likely) the first character of the encryption key.
 
 To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012aa` and step through the program’s execution by machine instruction (`c`, then using the `si` command) until we find something interesting in the registers or the stack. At every step (after each `si` command), try to inspect the registers, code and stack to see if you can find any useful information. Once you reach the code `movzx`, you will see the below state.
 
@@ -205,18 +206,21 @@ Download the files we will be using for this section.
 
 {% tabs %}
 {% tab title="Intel (AMD64)" %}
+
 ```
 wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/crackme-linux.zip
 ```
 {% endtab %}
 
 {% tab title="Apple Silicon (ARM64)" %}
+
 ```
 wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/crackme-arm.zip
 ```
 {% endtab %}
 
 {% tab title="Source (if none of them works)" %}
+
 ```
 wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/crackme-source.zip
 ```
@@ -241,11 +245,11 @@ Open the analyser by double-clicking the binary. You will be prompted with the a
 
 On the CodeBrowser console, you see a few windows:
 
-* **Program Trees**: This window displays the code sections of the binary.
-* **Symbol Tree**: This window displays the import, export, functions, labels, classes and namespaces of the binary.
-* **Data Type Manager**: This window displays all specific types, including built-in ones, specific for the binary file and other types included in Ghidra.
-* **Listing**: This window displays the reverse-engineered code.
-* **Decompiler**: This window displays the high-level code generated by Ghidra from the assembly code shown in the Listing window. To see, scroll down in the Listing window, and select some functions to see their code representations.
+- **Program Trees**: This window displays the code sections of the binary.
+- **Symbol Tree**: This window displays the import, export, functions, labels, classes and namespaces of the binary.
+- **Data Type Manager**: This window displays all specific types, including built-in ones, specific for the binary file and other types included in Ghidra.
+- **Listing**: This window displays the reverse-engineered code.
+- **Decompiler**: This window displays the high-level code generated by Ghidra from the assembly code shown in the Listing window. To see, scroll down in the Listing window, and select some functions to see their code representations.
 
 Now we will inspect our binary file. The behaviour we observed was that it prompts for the password, checks the password, and then responds based on the user input provided.
 
@@ -287,7 +291,7 @@ We start off similar to the previous questions, but obviously, this won't have t
 
 The main function can be inspected from here, and indeed the way the password check is done is different. Instead of checking the password in the main, it calls another function `test`, with two variables passed in.
 
-![](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F7fBivtRyeRgCSUaXucCZ%2Fuploads%2FhJxypjT3OcenDqdfxvmr%2Fimage.png?alt=media\&token=32248987-87b3-46f6-8c65-02fc5ac4b7ca)
+![](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F7fBivtRyeRgCSUaXucCZ%2Fuploads%2FhJxypjT3OcenDqdfxvmr%2Fimage.png?alt=media&token=32248987-87b3-46f6-8c65-02fc5ac4b7ca)
 
 But at this point, you probably guessed that the second arg 0x52b24 is probably the password we are looking for. If you try that as is, it will fail because of course the representation is in hex. You have to convert it to decimal first, and this is already done for you - right-click on the variable and it will show you other commonly used conversion values. The decimal value 338724 seems like a good candidate, so try that as a password.
 
@@ -311,9 +315,9 @@ Function called `shift` is being used, this isn't any built-in function so is a 
 
 If you read the function carefully, the operation is quite simple. To make the readability better, let's rename some variables (you can press "`L`", or right-click to see the option):
 
-* `local_80` -> `i`
-* `local_7c` -> `output`
-* `sVar1` -> `str_len`
+- `local_80` -> `i`
+- `local_7c` -> `output`
+- `sVar1` -> `str_len`
 
 Then we have:
 
