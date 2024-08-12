@@ -153,7 +153,7 @@ gdb free_bitcoin
 ```
 
 {% hint style="warning" %}
-Apple Silicon users, to run the program, use free_bitcoin_arm file instead. But for inspecting the binary, using free_bitcoin will be easier (e.g., run two terminals).
+Apple Silicon users, to run the program, use free_bitcoin_arm file instead. You can inspect the AMD binary (free_bitcoin), but you cannot run it in gdb. You can still follow the instructions below, but the code layout and registry used will differ from what is shown below based on AMD.
 {% endhint %}
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
