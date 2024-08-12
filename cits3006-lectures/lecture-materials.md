@@ -20,19 +20,19 @@ Note that materials are still being updated as noted below.
 
 * [02a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02a.Network\_Exploits\_vertical.pdf)
 * [02b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02b.Malware\_Basics\_vertical.pdf)
-* Complete [lab 1](../cits3006-labs/lab-1-network-security.md).
+* Complete [lab 1: Network Security](../cits3006-labs/lab-1-network-security.md).
 
 
 ## Week 03
 
 * [03. More Malware](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/03.More\_malware\_vertical.pdf)
-* Complete [lab 2](../cits3006-labs/lab-2-malware.md).
+* Complete [lab 2: Malware](../cits3006-labs/lab-2-malware.md).
 
 
 ## Week 04
 
 * [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/04.Reverse\_engineering\_vertical.pdf)
-* Complete [lab 3](../cits3006-labs/lab-3-reverse-engineering.md).
+* Complete [lab 3: Reverse Engineering](../cits3006-labs/lab-3-reverse-engineering.md).
 * Lab Quiz 1 report due (covers weeks 1-3).
 
 
@@ -45,7 +45,7 @@ Note that materials are still being updated as noted below.
 ## Week 06
 
 * [06. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/06.Privilege\_Escalation\_vertical.pdf)
-* Complete [lab 4](../cits3006-labs/lab-4-privilege-escalation.md).
+* Complete [lab 4: Privilege Escalation](../cits3006-labs/lab-4-privilege-escalation.md).
 
 
 ## Week 07
@@ -63,7 +63,7 @@ The below has not been updated yet.
 ## Week 08
 
 * [08. Web Security](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/08.Web_Security_vertical.pdf)
-* Complete [lab 5](../cits3006-labs/lab-5-web-security.md).
+* Complete [lab 5: Web Security](../cits3006-labs/lab-5-web-security.md).
 * Project release this week (40%).
   * group formation.
 
@@ -72,7 +72,7 @@ The below has not been updated yet.
 <!-- This needs to be created -->
 * Lecture TBD.
 * No lab scheduled on the public holiday.
-* Complete [lab 6](../cits3006-labs/lab-6-active-directory.md).
+* Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Thursday 11.59pm.
 
 
