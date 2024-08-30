@@ -55,11 +55,6 @@ Note that materials are still being updated as noted below.
 * No new lab this week.
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 08
 
 * [08. Web Security](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/08.Web_Security_vertical.pdf)
@@ -74,6 +69,11 @@ The below has not been updated yet.
 * No lab scheduled on the public holiday.
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
 * Project task 1 due Thursday 11.59pm.
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 ## Week 10
