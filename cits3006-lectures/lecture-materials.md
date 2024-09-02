@@ -53,14 +53,15 @@ Note that materials are still being updated as noted below.
 * [07. Command and Control](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/07.c2_vertical.pdf)
 * Lab Quiz 2 in-person test & demo (covers weeks 4-6).
 * No new lab this week.
+* Project release this week (40%).
+  * group formation.
 
 
 ## Week 08
 
 * [08. Web Security](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/08.Web_Security_vertical.pdf)
 * Complete [lab 5: Web Security](../cits3006-labs/lab-5-web-security.md).
-* Project release this week (40%).
-  * group formation.
+* Project: Complete task 1 (due week 9).
 
 
 ## Week 09 (King's Bday)
@@ -68,7 +69,7 @@ Note that materials are still being updated as noted below.
 * Lecture TBD.
 * No lab scheduled on the public holiday.
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
-* Project task 1 due Thursday 11.59pm.
+* Project: Task 1 due Thursday 11.59pm.
 
 
 {% hint style="warning" %}
@@ -79,7 +80,7 @@ The below has not been updated yet.
 ## Week 10
 
 * [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/10.Active_Directory_vertical.pdf)
-* Project task 2 (demo/live session in scheduled labs).
+* Project: Task 1 demo (in scheduled timeslots). 
 * Lab Quiz 3 report due (covers weeks 8-10).
 
 
@@ -87,10 +88,10 @@ The below has not been updated yet.
 <!-- This needs to be created -->
 * [11. Pentesting in the Era of AI]()
 * Lab Quiz 3 demo.
-* Project task 3 due Thursday 11.59pm.
+* Project: Task 2 due Thursday 11.59pm.
 
 
 ## Week 12
 <!-- This needs to be updated -->
 * 12\. Guest Lecture and/or Unit Review (TBC)
-* Project task 4 (demo/live session in scheduled labs).
+* Project: Task 2 demo (in scheduled timeslots).
