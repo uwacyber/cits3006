@@ -162,6 +162,8 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Defaul
 
 We see the credentials of our user with non-administrator permissions in plaintext.&#x20;
 
+### 4.2.4 Password Cracking
+
 If there are other services running (e.g., PuTTY, TightVNC, etc.), you could also check the registry entries to see if there are any credentials. Sometimes they may be hashed, but you can use various hash crackers to retrieve the plaintext, if the credentials used are weak!
 
 For example, crack the following credentials:
@@ -170,6 +172,10 @@ For example, crack the following credentials:
 Password: EC84DB8BE7861E4D
 PasswordViewOnly: 2B27C004F36D46D0
 ```
+
+{% hint style="info" %}
+Password cracking is one of the essential skills in cybersecurity. It is important to understand how to crack passwords, as it is a common way to gain access to systems. There are many tools available to crack passwords, such as John the Ripper, Hashcat, etc. You should practice cracking these passwords using these tools, as well as see how you can gather hashed passwords from different OSes.
+{% endhint %}
 
 If you are on a Windows machine, check your own registry!
 
