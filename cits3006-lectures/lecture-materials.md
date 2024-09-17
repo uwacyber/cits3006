@@ -69,7 +69,7 @@ Note that materials are still being updated as noted below.
 * Lecture TBD.
 * No lab scheduled on the public holiday.
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
-* Project: Task 1 due Thursday 11.59pm.
+* Project: Task 1 due Friday 11.59pm.
 
 
 {% hint style="warning" %}
@@ -88,7 +88,7 @@ The below has not been updated yet.
 <!-- This needs to be created -->
 * [11. Pentesting in the Era of AI]()
 * Lab Quiz 3 demo.
-* Project: Task 2 due Thursday 11.59pm.
+* Project: Task 2 due Friday 11.59pm.
 
 
 ## Week 12
