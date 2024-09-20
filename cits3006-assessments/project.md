@@ -50,15 +50,14 @@ Later in Task 2, your server will be exploited by the pen testers (i.e., other t
 ### Task 1 todo:
 
 1. Remember, when configuring the web server, the vulnerabilities are not easily exploitable.
-2. By Friday 11:59pm of week 9, your team leader must submit the group report on LMS outlining the vulnerabilities implemented and how they are exploited to provide at least 3 different ways to gain root access, along with other vulnerabilities. This report will be used during the live demo as a guideline for the marker, and any new vulnerabilities not in the report will not be counted toward the grade. 
-3. You must also submit your individual report on LMS (by 11:59pm). This should outline your contribution to the group project clearly and concisely. Remember, quality over quantity.
-4. The team leader must share the `.ova` file of your vulnerable web server via email to me (e.g., a link is sufficient). Acknowledgement will be made once received.
-5. The team leader must schedule your demo slot from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Task 1 Demo booking (week 10).
+2. By Friday 11:59pm of week 9, your team leader must submit the group report on LMS outlining the vulnerabilities implemented and how they are exploited to provide at least 3 different ways to gain root access, along with other vulnerabilities. This report will be used during the live demo as a guideline for the marker, and any new vulnerabilities not in the report will not be counted toward the grade. Also, the report must explicitly and clearly state individual contributions. This will be used to assess the individual contribution to the project.
+3. The team leader must share the `.ova` file of your vulnerable web server via email to me (e.g., a link is sufficient). Acknowledgement will be made once received.
+4. The team leader must schedule your demo slot from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Task 1 Demo booking (week 10).
 
 {% hint style="warning" %}
 DON'T do everything yourself. This is not a race among the team members. If you read the rubric on individual reports, the marks are based on your ability to demonstrate penetration testing skills, which means QUALITY over QUANTITY (i.e., you don't have to get full marks in other tasks to receive full marks for your individual report).
 
-What does "Quality" mean? In the context of this project, it means that you are able to not only demonstrate skills you have learned in the unit, but have also researched and applied more advanced skills derived from further research into the topic. That is, you are expected to conduct further research to learn more about various penetration testing techniques and use them in this project.
+What does "Quality" mean? In the context of this project, it means that you are able to not only demonstrate skills you have learned in the unit, but have also researched and applied more advanced skills derived from further research into the topic, with an in-depth understanding and explanation of skills and techniques demonstrated. That is, you are expected to conduct further research to learn more about various penetration testing techniques and use them in this project as appropriate.
 
 Of course, you will need to meet all requirements to receive marks for other tasks, which means your contributions may vary (i.e., you might have to cover for other members if needed).
 {% endhint %}
@@ -83,10 +82,9 @@ Exploit as many vulnerabilities as you can in all available exercise boxes.
 
 ### Task 2 todo:
 
-1. By Friday 11:59pm of week 11, your team leader must submit the group report outlining the exploits conducted to exploit the exercise boxes. This report will be used during the live demo as a guideline for the marker, and any new exploits not in the report will not be counted toward the grade.
+1. By Friday 11:59pm of week 11, your team leader must submit the group report outlining the exploits conducted to exploit the exercise boxes. This report will be used during the live demo as a guideline for the marker, and any new exploits not in the report will not be counted toward the grade. You must also state individual contributions explicitly and clearly. Remember, quality over quantity.
 2. You will also rate the boxes you attempt to exploit (the rating should be noted in your group report explicitly). For rating, use a scale of 1 to 10, where 1 is being very easy, and 10 being very hard. You only have to rate the ones you have attempted.
-3. You must also submit your individual report (by 11:59pm). This should outline your contribution to the group project clearly and concisely. Remember, quality over quantity.
-4. Your team leader must schedule your demo from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Task 2 Demo booking (week 12).
+3. Your team leader should have scheduled your demo from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Task 2 Demo booking (week 12).
 
 
 ## Task 2 Live Demo (Presentation) of Exploiting Other Boxes (Week 12)
@@ -156,7 +154,7 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
             <td>Most teams have rated the box supplied as hard (i.e., ratings mostly 9~10).</td>
         </tr>
         <tr>
-            <td>Individual report (T1 and T2)</td>
+            <td>Individual contributions (from T1 and T2)</td>
             <td>25%</td>
             <td>No or nearly none evidence of contributions made to the project.</td>
             <td>(1) Made some contribution to the project, demonstrating some penetration testing skills.<br><br>(2) Shows some indication of research done, exploring new penetration testing skills not covered in the class.</td>
