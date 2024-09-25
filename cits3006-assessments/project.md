@@ -83,7 +83,7 @@ Exploit as many vulnerabilities as you can in all available exercise boxes.
 ### Task 2 todo:
 
 1. By Friday 11:59pm of week 11, your team leader must submit the group report outlining the exploits conducted to exploit the exercise boxes. This report will be used during the live demo as a guideline for the marker, and any new exploits not in the report will not be counted toward the grade. You must also state individual contributions explicitly and clearly. Remember, quality over quantity.
-2. You will also rate the boxes you attempt to exploit (the rating should be noted in your group report explicitly). For rating, use a scale of 1 to 10, where 1 is being very easy, and 10 being very hard. You only have to rate the ones you have attempted.
+2. You will also rate the boxes you attempt to exploit (the rating should be noted in your group report explicitly). For rating, use a scale of 1 to 10, where 1 is being very easy, and 10 being very hard. You only have to rate the ones you have attempted. In your ratings, only rate the vulnerability, not the defence mechanisms in place.
 3. Your team leader should have scheduled your demo from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Task 2 Demo booking (week 12).
 
 
