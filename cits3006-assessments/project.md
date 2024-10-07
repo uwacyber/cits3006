@@ -139,24 +139,24 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
 ***
 ### 25%: Pen testing (T2)
 #### N
-1. Much of the vulnerabilities were not exploited in the provided exercise boxes.
-2. Demo failed to demonstrate the implemented vulnerabilities.
+1. Much of the vulnerabilities were not exploited in the provided boxes.
+2. Demo failed to demonstrate the exploitation of vulnerabilities.
 3. Report is not aligned with the demo.
 #### P
-1. Various vulnerabilities were exploited in provided exercise boxes.
+1. Various vulnerabilities were exploited in some of the provided boxes.
 2. Demo demonstrated the exploitation of vulnerabilities.
 3. Report aligns with the demo but is lacking details.
 #### CR
-1. Many vulnerabilities were exploited in many of the provided exercise boxes.
+1. Various vulnerabilities were exploited in many of the provided boxes.
 2. Demo demonstrated the exploitation of vulnerabilities clearly.
 3. Report aligns with the demo with adequate details.
 #### D 
-1. Many vulnerabilities were exploited, with some boxes completely compromised with all vulnerabilities exposed.
-2. Demo demonstrated the exploitation of vulnerabilities clearly.
+1. Many vulnerabilities were exploited, and some boxes completely compromised.
+2. Demo demonstrated the exploitation of vulnerabilities with good technical details.
 3. Report aligns with the demo and is formatted well.
 #### HD
-1. Many vulnerabilities were exploited, with many (if not most) boxes completely compromised with all vulnerabilities exposed.
-2. Demo demonstrated the exploitation of vulnerabilities at a professional level.
+1. Many advanced vulnerabilities were exploited, and many (if not most) boxes completely compromised.
+2. Demo demonstrated the exploitation of vulnerabilities at a professional level with high technical details and knowledge.
 3. Report aligns with the demo and is formatted professionally.
 ***
 ### 25%: Box difficulties (T2)
