@@ -5,6 +5,9 @@ You will find lecture slides available here (you will be able to download the pd
 Note that materials are still being updated as noted below.
 
 
+<!-- {% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %} -->
 
 
 ## Week 01
@@ -72,11 +75,6 @@ Note that materials are still being updated as noted below.
 * Project: Task 1 due Friday 11.59pm.
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 10
 
 * [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/10.Active_Directory_vertical.pdf)
@@ -85,13 +83,12 @@ The below has not been updated yet.
 
 
 ## Week 11
-<!-- This needs to be created -->
-* [11. Pentesting in the Era of AI]()
+* [11. Pentesting with AI](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/11.Pentesting_with_ai.pdf)
 * Lab Quiz 3 demo.
 * Project: Task 2 due Friday 11.59pm.
 
 
 ## Week 12
 <!-- This needs to be updated -->
-* 12\. Guest Lecture and/or Unit Review (TBC)
+* 12\. Guest Lecture (NOT RECORDED!)
 * Project: Task 2 demo (in scheduled timeslots).
