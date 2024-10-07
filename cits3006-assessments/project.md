@@ -170,7 +170,46 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
 3. Report aligns with the demo and is formatted professionally.
 
 
+### 25%: Box difficulties (T2)
+#### N
+- Many teams have rated the box supplied as easy (i.e., ratings mostly 1~2).
 
+#### P
+- Many teams have rated the box supplied as moderately easy (i.e., ratings mostly 3~4).
+
+#### CR
+- Many teams have rated the box supplied as moderate (i.e., ratings mostly 5~6).
+
+#### D 
+- Many teams have rated the box supplied as moderately hard (i.e., ratings mostly 7~8).
+
+#### HD
+- Most teams have rated the box supplied as hard (i.e., ratings mostly 9~10).
+
+
+### 25%: Individual contributions (T1, T2)
+#### N
+1. No or nearly none evidence of contributions made to the project.
+
+#### P
+1. Made some contribution to the project, demonstrating some penetration testing skills.
+2. Shows some indication of research done, exploring new penetration testing skills not covered in the class.
+
+#### CR
+1. Made some key contributions to the project, demonstrating a variety of penetration testing skills.
+2. Shows a reasonable amount of research done, exploring new penetration testing skills not covered in the class.
+
+#### D 
+1. Made major contributions in the project, demonstrating a variety of penetration testing skills.
+2. Shows a high level of research done, exploring new and advanced penetration testing skills not covered in the class.
+
+#### HD
+1. Made major contributions in the project, demonstrating advanced penetration testing skills.
+2. Shows a comprehensive level of research done, exploring new and advanced penetration testing skills not covered in the class.
+
+
+
+<!-- 
 <table>
     <thead>
         <tr>
@@ -184,7 +223,7 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
         </tr>
     </thead>
     <tbody>
-        <!-- <tr>
+        <tr>
             <td>Configuring a vulnerable web server (T1)</td>
             <td>25%</td>
             <td>(1) Failed to implement the four types of vulnerability attributes.<br><br>(2) Demo failed to demonstrate the implemented vulnerabilities.<br><br>(3) Report is not aligned with the demo.</td>
@@ -192,8 +231,8 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
             <td>(1) Implemented each of the four types of vulnerability attributes, with at least 8 vulnerabilities in total.<br><br>(2) Demo demonstrated the implemented vulnerabilities clearly.<br><br>(3) Report aligns with the demo with adequate details.</td>
             <td>(1) Implemented all required vulnerabilities.<br><br>(2) Demo demonstrated the implemented vulnerabilities clearly.<br><br>(3) Report aligns with the demo and is formatted well.</td>
             <td>(1) Implemented all required vulnerabilities.<br><br>(2) Demo demonstrated the implemented vulnerabilities at a professional level.<br><br>(3) Report aligns with the demo and is formatted professionally.</td>
-        </tr> -->
-        <!-- <tr>
+        </tr>
+        <tr>
             <td>Pen testing (T2)</td>
             <td>25%</td>
             <td>(1) Much of the vulnerabilities were not exploited in the provided exercise boxes.<br><br>(2) Demo failed to demonstrate the implemented vulnerabilities.<br><br>(3) Report is not aligned with the demo.</td>
@@ -201,7 +240,7 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
             <td>(1) Many vulnerabilities were exploited in many of the provided exercise boxes.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities clearly.<br><br>(3) Report aligns with the demo with adequate details.</td>
             <td>(1) Many vulnerabilities were exploited, with some boxes completely compromised with all vulnerabilities exposed.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities clearly.<br><br>(3) Report aligns with the demo and is formatted well.</td>
             <td>(1) Many vulnerabilities were exploited, with many (if not most) boxes completely compromised with all vulnerabilities exposed.<br><br>(2) Demo demonstrated the exploitation of vulnerabilities at a professional level.<br><br>(3) Report aligns with the demo and is formatted professionally.</td>
-        </tr> -->
+        </tr>
         <tr>
             <td>Difficulty of compromising the configured web server</td>
             <td>25%</td>
@@ -221,7 +260,7 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
             <td>(1) Made major contributions in the project, demonstrating advanced penetration testing skills.<br><br>(2) Shows a comprehensive level of research done, exploring new and advanced penetration testing skills not covered in the class.</td>
         </tr>
     </tbody>
-</table>
+</table> -->
  
 
 
