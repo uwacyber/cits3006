@@ -45,7 +45,8 @@ The below attributes will attract bonus marks as indicated if implemented:
 
 * Kernel vulnerabilities (2%)
 * Cryptographic vulnerabilities (no classical ciphers accepted) (2%)
-* Side-channel vulnerabilities (2%)
+* Side-channel vulnerabilities (excluding time-based SQLi) (2%)
+* Windows-based vulnerabilities (2%)
 
 Later in Task 2, your server will be exploited by the pen testers (i.e., other teams). To ensure you train your pen testers to the highest quality, make sure the vulnerabilities are not easily exploitable.&#x20;
 
@@ -120,44 +121,54 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
 1. Failed to implement the four types of vulnerability attributes.
 2. Demo failed to demonstrate the implemented vulnerabilities.
 3. Report is not aligned with the demo.
+4. Q&A answers are poor with lack of technical details.
 #### P
 1. Implemented each of the four types of vulnerability attributes.
 2. Demo demonstrated the implemented vulnerabilities.
 3. Report aligns with the demo but is lacking details.
+4. Q&A answers are reasonable with some technical details.
 #### CR
 1. Implemented each of the four types of vulnerability attributes, with at least 8 vulnerabilities in total.
 2. Demo demonstrated the implemented vulnerabilities clearly.
 3. Report aligns with the demo with adequate details.
+4. Q&A answers are good with technical details.
 #### D 
 1. Implemented all required vulnerabilities.
 2. Demo demonstrated the implemented vulnerabilities clearly.
 3. Report aligns with the demo and is formatted well.
+4. Q&A answers are excellent with high technical details.
 #### HD
 1. Implemented all required vulnerabilities.
 2. Demo demonstrated the implemented vulnerabilities at a professional level.
 3. Report aligns with the demo and is formatted professionally.
+4. Q&A answers are excellent with high technical details.
 ***
 ### 25%: Pen testing (T2)
 #### N
 1. Much of the vulnerabilities were not exploited in the provided boxes.
 2. Demo failed to demonstrate the exploitation of vulnerabilities.
 3. Report is not aligned with the demo.
+4. Q&A answers are poor with lack of technical details.
 #### P
 1. Various vulnerabilities were exploited in some of the provided boxes.
 2. Demo demonstrated the exploitation of vulnerabilities.
 3. Report aligns with the demo but is lacking details.
+4. Q&A answers are reasonable with some technical details.
 #### CR
 1. Various vulnerabilities were exploited in many of the provided boxes.
 2. Demo demonstrated the exploitation of vulnerabilities clearly.
 3. Report aligns with the demo with adequate details.
+4. Q&A answers are good with technical details.
 #### D 
 1. Many vulnerabilities were exploited, and some boxes completely compromised.
 2. Demo demonstrated the exploitation of vulnerabilities with good technical details.
 3. Report aligns with the demo and is formatted well.
+4. Q&A answers are excellent with high technical details.
 #### HD
 1. Many advanced vulnerabilities were exploited, and many (if not most) boxes completely compromised.
 2. Demo demonstrated the exploitation of vulnerabilities at a professional level with high technical details and knowledge.
 3. Report aligns with the demo and is formatted professionally.
+4. Q&A answers are excellent with high technical details and knowledge.
 ***
 ### 25%: Box difficulties (T2)
 #### N
@@ -174,18 +185,24 @@ Link: [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6f
 ### 25%: Individual contributions (T1, T2)
 #### N
 1. No or nearly none evidence of contributions made to the project.
+2. Shows no indication of research done, exploring new penetration testing skills not covered in the class.
+3. Q&A during demo is poor with lack of technical details.
 #### P
 1. Made some contribution to the project, demonstrating some penetration testing skills.
 2. Shows some indication of research done, exploring new penetration testing skills not covered in the class.
+3. Q&A during demo is reasonable with some technical details.
 #### CR
 1. Made some key contributions to the project, demonstrating a variety of penetration testing skills.
 2. Shows a reasonable amount of research done, exploring new penetration testing skills not covered in the class.
+3. Q&A during demo is good with technical details.
 #### D 
 1. Made major contributions in the project, demonstrating a variety of penetration testing skills.
 2. Shows a high level of research done, exploring new and advanced penetration testing skills not covered in the class.
+3. Q&A during demo is excellent with high technical details.
 #### HD
 1. Made major contributions in the project, demonstrating advanced penetration testing skills.
 2. Shows a comprehensive level of research done, exploring new and advanced penetration testing skills not covered in the class.
+3. Q&A during demo is excellent with high technical details.
 ***
 
 
