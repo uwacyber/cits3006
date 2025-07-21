@@ -13,7 +13,7 @@ The below has not been updated yet.
 ## Week 01
 
 * [01a. Introduction](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/01a.Introduction.pdf)
-* [01b. Ethics](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/01b.Ethics.pdf)
+* [01b. Ethics](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/01b.Ethics.pdf)
 * [01c. Reconnaissance](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/01c.Reconnaissance\_vertical.pdf)
 * Complete [lab 0](../cits3006-labs/lab-0-setup-and-linux.md).
 * (Optional) Complete [Networks 101](../cits3006-labs/network-101.md).
