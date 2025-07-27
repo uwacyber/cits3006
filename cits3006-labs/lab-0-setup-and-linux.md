@@ -39,7 +39,7 @@ Apple Silicon machines may have incompatibility issues, so not all functionaliti
 
 The process for installing Docker Desktop is straightforward and involves using the installer for the particular operating system you have (from the drop-down menu, select the appropriate OS):
 
-{% embed url="https://www.docker.com/get-started" %}
+[Get started with Docker](https://www.docker.com/get-started)
 
 {% hint style="warning" %}
 **Docker on Kali**
