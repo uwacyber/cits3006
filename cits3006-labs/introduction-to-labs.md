@@ -15,3 +15,17 @@ You may also request a loan laptop from the student office. Please contact the S
 {% hint style="info" %}
 It is essential that you reserve at least 10GB of additional disk space to store the lab files (e.g., docker images). You can free disk space by removing completed lab files later.
 {% endhint %}
+
+## Lab Sessions
+
+Most weeks (i.e., when there is no lab quiz), you can drop in on any lab session you like.
+
+You can see a list of all timetabled sessions at <https://timetable.applications.uwa.edu.au/?selectunits=CITS3006>
+
+Our lab facilitators this year are:
+
+- Mon 3-5pm	Mitchell Otley
+- Tues 9-11am	Torry Hogan
+- Tues 12-2pm	Torry Hogan
+
+
