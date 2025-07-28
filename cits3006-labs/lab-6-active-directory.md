@@ -14,6 +14,11 @@ This lab requires running 3 VMs (Windows server (1vCPU, 1GB Ram, 32GB Storage), 
 If you are an online student without sufficient computing power, you can read through the lab and ask our lab facilitators if you have any questions.
 {% endhint %}
 
+<!--
+  tmp comment
+-->
+<span id="tmp2">&nbsp;</span>
+
 {% hint style="warning" %}
 If using VirtualBox is giving you errors during the setup steps, you could try VMware Workstation pro instead -- see [Lab 0 setup](../cits3006-labs/lab-0-setup-and-linux). Many setup issues are resolved by using the VMWare workstation based on experience.
 {% endhint %}
