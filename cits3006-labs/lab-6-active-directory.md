@@ -15,7 +15,7 @@ If you are an online student without sufficient computing power, you can read th
 {% endhint %}
 
 {% hint style="warning" %}
-If using VirtualBox is giving you errors during the setup steps, you are recommended to try [VMware Workstation](https://www.vmware.com/au/products/workstation-player.html) instead. Most of the setup issues were resolved using the VMWare workstation based on the experience.
+If using VirtualBox is giving you errors during the setup steps, you could try VMware Workstation pro instead -- see [Lab 0 setup](../cits3006-labs/lab-0-setup-and-linux). Many setup issues are resolved by using the VMWare workstation based on experience.
 {% endhint %}
 
 You will need to use 3 VMs for this lab, one for each of the following:

@@ -19,8 +19,8 @@ In general, you are expected to troubleshoot your setup issues yourself (we alre
 #### Windows, Linux or Mac using Intel chips AMD64
 
 * You should be good using [VirtualBox](https://www.virtualbox.org/) - all instructions for AMD64 will be based on using VirtualBox.
-* If it doesn't work well, you can try using [VMware Workstation Player](https://www.vmware.com/au/products/workstation-player.html).
-* If the above two fail, please contact the lab facilitator.
+* If it doesn't work well, you could try using VMWare Workstation Pro, which is free to use. Read the articles [here](https://knowledge.broadcom.com/external/article?articleNumber=387947) and [here](http://knowledge.broadcom.com/external/article/344595/downloading-and-installing-vmware-workst.html) for details on how to install VMWare Workstation Pro -- you will need to register an account on the Broadcom support portal.
+* If the above two fail, please discuss with the lab facilitator.
 
 {% hint style="warning" %}
 A typical issue people have running VMs on Windows machines are that you have Hyper-V on. You should research and turn it off if your VMs have issues.
