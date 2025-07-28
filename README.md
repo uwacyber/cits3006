@@ -1,5 +1,7 @@
 # CITS3006 Penetration Testing
 
+CITS3006 GitBook hosted at <https://uwacyber.gitbook.io/cits3006/>.
+
 ### Content
 
 This unit introduces students to ethical hacking concepts and knowledge. We will explore some of the common and fundamental tactics and techniques to enable students to better understand the wide field of ethical hacking and its implications today. In parallel, methods to mitigate attacks will be explored as necessary.
@@ -26,4 +28,4 @@ Although the prerequisite for this unit is only 12 points of programming, you ar
 
 ### License Terms
 
-Copyright © Jin Hong 2024. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
+Copyright © Jin Hong 2024, Arran Stewart 2025. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
