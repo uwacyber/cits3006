@@ -108,7 +108,7 @@ We will be using `docker compose` for running the servers during this lab. If yo
 To start this exercise, download [docker-compose.sqli\_union.yml](files/lab6/docker-compose-files/docker-compose.sqli\_union.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_union.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_union.yml
 ```
 
 {% hint style="info" %}
@@ -155,7 +155,7 @@ For MySQL servers, the **`updatexml`** is a useful function for causing an SQL e
 For this exercise, download [docker-compose.sqli\_error.yml](files/lab6/docker-compose-files/docker-compose.sqli\_error.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_error.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_error.yml
 ```
 
 {% hint style="info" %}
@@ -239,7 +239,7 @@ There is one issue with this approach. For MySQL, string searches for non-binary
 For this exercise, download [docker-compose.sqli\_blind.yml](files/lab6/docker-compose-files/docker-compose.sqli\_blind.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_blind.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_blind.yml
 ```
 
 {% hint style="info" %}
@@ -283,7 +283,7 @@ In SQL you can write an **if** statement using the MySQL function `IF`. The belo
 For this exercise, download [docker-compose.sqli\_time.yml](files/lab6/docker-compose-files/docker-compose.sqli\_time.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_time.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.sqli_time.yml
 ```
 
 {% hint style="info" %}
@@ -360,7 +360,7 @@ Similarly, if the bot isn't working as intended, you can insert the cookies manu
 {% endhint %}
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_basic.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_basic.yml
 ```
 
 {% hint style="info" %}
@@ -412,7 +412,7 @@ Below are a list of other XSS payloads using other HTML tags beside `<script>` a
 For this execise, download [docker-compose.xss\_alt\_tag.yml](files/lab6/docker-compose-files/docker-compose.xss\_alt\_tag.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_alt_tag.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_alt_tag.yml
 ```
 
 {% hint style="info" %}
@@ -454,7 +454,7 @@ However, an attacker can bypass the above CSP since it does not specify exact Ja
 For this exercise, download [docker-compose.xss\_csp.yml](files/lab6/docker-compose-files/docker-compose.xss\_csp.yml).
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_csp.yml
+wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/lab6/docker-compose-files/docker-compose.xss_csp.yml
 ```
 
 {% hint style="info" %}
