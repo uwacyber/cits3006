@@ -21,40 +21,40 @@ The below has not been updated yet.
 
 ## Week 02
 
-* [02a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02a.Network\_Exploits\_vertical.pdf)
-* [02b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/02b.Malware\_Basics\_vertical.pdf)
+* [02a. Network Exploits](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/02a.Network\_Exploits\_vertical.pdf)
+* [02b. Malware Basics](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/02b.Malware\_Basics\_vertical.pdf)
 * Attend lab, complete [lab 0](../cits3006-labs/lab-0-setup-and-linux.md) with assistance from
   facilitators if needed.
 
 
 ## Week 03
 
-* [03. More Malware](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/03.More\_malware\_vertical.pdf)
+* [03. More Malware](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/03.More\_malware\_vertical.pdf)
 * Complete [lab 1: Network Security](../cits3006-labs/lab-1-network-security.md).
 
 
 ## Week 04
 
-* [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/04.Reverse\_engineering\_vertical.pdf)
+* [04. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/04.Reverse\_engineering\_vertical.pdf)
 * Complete [lab 2: Malware](../cits3006-labs/lab-2-malware.md).
 * Lab Quiz 1 report due (covers weeks 1-3).
 
 
 ## Week 05
-* [05. Rowhammer](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/05.Rowhammer.pdf)
+* [05. Rowhammer](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/05.Rowhammer.pdf)
 * Lab Quiz 1 demo.
 * No new lab this week.
 
 
 ## Week 06
 
-* [06. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/06.Privilege\_Escalation\_vertical.pdf)
+* [06. Privilege Escalation](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/06.Privilege\_Escalation\_vertical.pdf)
 * Complete [lab 3: Reverse Engineering](../cits3006-labs/lab-3-reverse-engineering.md).
 
 
 ## Week 07
 
-* [07. Command and Control](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/07.c2_vertical.pdf)
+* [07. Command and Control](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/07.c2_vertical.pdf)
 * Lab Quiz 2 in-person test & demo (covers weeks 4-6).
 * Project release this week (40%).
   * group formation.
@@ -62,7 +62,7 @@ The below has not been updated yet.
 
 ## Week 08
 
-* [08. Web Security](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/08.Web_Security_vertical.pdf)
+* [08. Web Security](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/08.Web_Security_vertical.pdf)
 * Complete [lab 4: Privilege Escalation](../cits3006-labs/lab-4-privilege-escalation.md).
 * Project: Complete task 1 (due week 9).
 
@@ -77,7 +77,7 @@ The below has not been updated yet.
 
 ## Week 10
 
-* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/10.Active_Directory_vertical.pdf)
+* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/10.Active_Directory_vertical.pdf)
 * Project: Task 1 demo (in scheduled timeslots). 
 * Lab Quiz 3 report due (covers weeks 8-10).
 
@@ -87,7 +87,7 @@ The below has not been updated yet.
 
 
 ## Week 11
-* [11. Pentesting with AI](https://github.com/uwacyber/cits3006/raw/2024s2/cits3006-lectures/11.Pentesting_with_ai.pdf)
+* [11. Pentesting with AI](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/11.Pentesting_with_ai.pdf)
 * Lab Quiz 3 demo.
 * Project: Task 2 due Friday 11.59pm.
 
