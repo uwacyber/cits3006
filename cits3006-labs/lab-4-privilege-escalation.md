@@ -10,10 +10,10 @@ You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
 
 * A copy of the DebLinux image (.ova) can be found from the Teams -> Labs -> Files. Some account details are below:&#x20;
   * non-admin user: `user`:`password321`&#x20;
-  * admin user.       : `root`:`password123`
+  * admin user: `root`:`password123`
 
 {% hint style="info" %}
-The UTM copy is also available on Teams for this DebLinux VM.
+Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa.sharepoint.com/:f:/t/WRK-cits3006files/Ejqwl0pt1TBJqE4gc-RA-GABnjckuu_SV6yt1u6A3z-o2w?e=eq7Ggc">here</a>.
 {% endhint %}
 
 ### 4.1.1 Windows VM Setup
@@ -141,7 +141,8 @@ msfvenom -p windows/exec CMD='net localgroup administrators hank /add' -f exe-se
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-The name `common.exe` is innocuous enough. Copy this .exe over to the Windows VM and place it within the `C:\Program Files\Unquoted Path Service` directory. In cmd, restart the service via `net stop/start unquotedsvc`.
+The name `common.exe` is innocuous enough. Copy this .exe over to the Windows VM and place it within the `C:\Program Files\Unquoted Path Service` directory. In cmd, restart the service by running `net stop unquotedsvc` and then `net start unquotedsvc`.
+
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
@@ -227,6 +228,16 @@ There are several processes running, we will inspect the bash process (in the ab
 
 Now to get the memory dump:
 
+{% hint style="info" %}
+Note: You may need to run as root or set `sudo sysctl -w kernel.yama.ptrace_scope=0` to allow `gdb -p <PID>` to attach.
+
+Most mainstream Linux distros (Ubuntu, Debian, Fedora, etc.) ship the Yama
+[Linux security module](https://en.wikipedia.org/wiki/Linux_Security_Modules)
+security module, which tightens the default kernel rules about when one process can
+attach to another for debugging. Under Yama, only the parent of some process can attach
+to it for debugging, in the absence of special privileges.
+{% endhint %}
+
 ```
 gdb -p [PID]
 info proc mappings
@@ -244,7 +255,9 @@ dump memory <OUTPUT_FILE> <START_ADDRESS> <END_ADDRESS>
 
 ```
 #for us we will do
-dump mempry /tmp/mem 0xbf4000 0xc3f000
+
+dump memory /tmp/mem 0xbf4000 0xc3f000
+
 ```
 
 This will dump the memory to a file - `/tmp/mem`. The Heap is a dynamic memory used by applications to store global variables. So as long as the memory has not been overridden by another program, then the value that is left in the memory could be retrieved.
@@ -281,6 +294,6 @@ We discovered a few different methods for escalating privilege when you have gai
 Credit for Sagi Shahar sagishahar@github, where much of the lab content has been adopted from.
 {% endhint %}
 
-Next up, web security.
+The next topic we will look at is **web security**.
 
-**Preparation**: We will be using docker to host web services for testing. It should be already loaded on Kali, but if it isn't please have it ready.
+**Preparation**: We will be using docker to host web services for testing. It should be already available on Kali, but if it isn't you will need to install it.
