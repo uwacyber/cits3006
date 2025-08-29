@@ -6,7 +6,7 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 ## 5. Introduction
 
-SQL injection (SQLi) and Cross-Site Scripting (XSS) are a type of **injection (AS03:2021)** vulnerabilities that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
+SQL injection (SQLi) and Cross-Site Scripting (XSS) are a type of **injection (A03:2021)** vulnerabilities that have been listed as one of the top 10 web application security risks by OWASP ([OWASP Top 10](https://owasp.org/www-project-top-ten/)). This lab will explore these two types of vulnerabilities on vulnerable web applications and explain how to detect these vulnerabilities via source code review and black box testing.
 
 You will need to use your Kali VM, and we will be using docker to run SQL and XSS servers.
 
@@ -18,7 +18,8 @@ In this lab, we will expand on the materials covered in the lectures and provide
 
 #### **5.1.1.1 Detecting an SQLi attack vector**
 
-The easiest way to see if some input is not properly santised for a SQL query is by sending a single `'` or `"` character. If the website crashes (sends a 500 HTTP status code) then it is a strong indication that the malicious input has caused a SQL syntax error, which caused the website to crash.
+The easiest way to see if some input is not properly santised for a SQL query is by sending a single `'` or `"` character. If the website crashes (HTTP 500), that strongly indicates a SQL syntax error.
+
 
 However, if the web application properly handles errors the page would not return a 500 HTTP status code, making the SQLi attack vector harder to detect. Therefore, a more effective way to detect if an input is vulnerable to SQLi is to first discover an input that always returns a result, then try injecting a SQL conditional and see if the same result returns.
 
