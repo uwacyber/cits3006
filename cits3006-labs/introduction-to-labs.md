@@ -16,6 +16,12 @@ You may also request a loan laptop from the student office. Please contact the S
 It is essential that you reserve at least 10GB of additional disk space to store the lab files (e.g., docker images). You can free disk space by removing completed lab files later.
 {% endhint %}
 
+{% hint style="info" %}
+It can be helpful to bring a [powerboard](https://www.bunnings.com.au/products/lighting-electrical/electrical/powerboards) to
+labs – lab venues sometimes don't have a power socket for every student that attends the lab and needs
+access to one.
+{% endhint %}
+
 ## Lab Sessions
 
 Most weeks (i.e., when there is no lab quiz), you can drop in on any lab session you like.

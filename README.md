@@ -26,6 +26,13 @@ There are 3 lab quizzes that are worth a total of 60% of unit marks. There will 
 
 Although the prerequisite for this unit is only 12 points of programming, you are advised to take this unit in the third year so that you can obtain various computer science knowledge (especially computer systems and networks) to ensure that you have a comprehensive understanding of computer systems and networks to do well in this unit. Some essential background knowledge are also provided in the labs section, such as the [Networks 101 module](cits3006-labs/network-101.md).
 
+### Laptop requirements
+
+Make sure you read through the section on "Laptop requirements" in the
+[Introduction to Labs](./cits3006-labs/introduction-to-labs.md#laptop-requirement).
+For in-class assessments, you will need to attend labs with a working laptop, and the ability to complete
+assessment tasks in virtual machines (VMs) running on that laptop.
+
 ### License Terms
 
 Copyright © Jin Hong 2024, Arran Stewart 2025. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
