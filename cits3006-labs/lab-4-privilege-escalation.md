@@ -25,7 +25,7 @@ If you haven't done already, set up a Windows VM (tested with Windows 11 preview
 3.  Download the setup script on the Windows VM (the Desktop directory is fine).&#x20;
 
     ```powershell
-    wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/wsetup.bat -o wsetup.bat
+    Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/wsetup.bat" -OutFile "wsetup.bat"
     ```
 4. Right-click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will set up the Windows system for the subsequent exercises.
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `hank` with password `password321`.
@@ -37,6 +37,12 @@ Restart the Windows VM and log in to `hank`.
 
 {% hint style="info" %}
 If you encounter an issue where the wsetup.bat script does not attempt the configuration of Exercises 1-9, and then loops the output “[\*] Creating final configuration task to run upon restart..”, as shown in the image below, then you can fix this by copy and pasting the wsetup.bat contents into your own separate file and executing this instead. This resolves an issue where Unix LF line endings are used instead of Windows CRLF line endings.
+
+PowerShell fix if needed: re-download via IWR and normalise CRLF
+  ```powershell
+  Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/wsetup.bat" -OutFile wsetup.bat
+  (Get-Content wsetup.bat -Raw) -replace "`n","`r`n" | Set-Content wsetup.bat -NoNewline
+  ```
 
 <figure><img src="../.gitbook/assets/lab-4-assets/17.png" alt=""><figcaption></figcaption></figure>
 
@@ -72,7 +78,7 @@ https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
 Or a copy from our github repo:
 
 ```powershell
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/AccessChk.zip -o accesschk.zip
+Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/AccessChk.zip" -OutFile "accesschk.zip"
 ```
 
 Once downloaded, extract the files.
@@ -100,11 +106,11 @@ net stop daclsvc
 Now we execute the command to add `hank` to the administrators group:
 
 ```powershell
-sc config daclsvc binPath= "net localgroup administrators hank /add"
+sc.exe config daclsvc binPath= "C:\Windows\System32\cmd.exe /c net localgroup administrators hank /add"
 ```
 
 {% hint style="info" %}
-Note the space after `binPath=`
+Note the space after `binPath=`, and use a fully qualified executable path (e.g., `C:\Windows\System32\cmd.exe /c …`) to avoid “System error 2 (The system cannot find the file specified)”.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
