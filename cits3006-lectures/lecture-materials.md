@@ -67,19 +67,19 @@ The below has not been updated yet.
 * Project: Complete task 1 (due week 9).
 
 
-## Week 09 (King's Bday)
-<!-- This needs to be created -->
-* Lecture TBD.
-* No lab scheduled on the public holiday.
-* Complete [lab 5: Web Security](../cits3006-labs/lab-5-web-security.md).
-* Project: Task 1 due Friday 11.59pm.
-
-
-## Week 10
+## Week 09
 
 * [10. Active Directory](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/10.Active_Directory_vertical.pdf)
-* Project: Task 1 demo (in scheduled timeslots). 
-* Lab Quiz 3 report due (covers weeks 8-10).
+* No lab scheduled on the public holiday.
+* Complete [lab 5: Web Security](../cits3006-labs/lab-5-web-security.md).
+
+
+## Week 10 (King's Bday)
+
+* Lecture: no lecture
+* Lab: no scheduled lab work; feel free to attend a Tuesday lab to do project work.
+* Assessment: no assessment scheduled.
+* Project: Task 1 due Friday 11.59pm.
 
 <!--
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
@@ -87,11 +87,19 @@ The below has not been updated yet.
 
 
 ## Week 11
+
 * [11. Pentesting with AI](https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-lectures/11.Pentesting_with_ai.pdf)
-* Lab Quiz 3 demo.
+* Lab Quiz 3 in-class during labs.
+
+<!--
 * Project: Task 2 due Friday 11.59pm.
+*
+-->
 
 
 ## Week 12
 
 * Revision
+
+ 
+
