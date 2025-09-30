@@ -78,7 +78,7 @@ The below has not been updated yet.
 
 * Lecture: no lecture
 * Lab: no scheduled lab work; feel free to attend a Tuesday lab to do project work.
-* Assessment: no assessment scheduled.
+* Quizzes: no quiz assessment scheduled.
 * Project: Task 1 due Friday 11.59pm.
 
 <!--
