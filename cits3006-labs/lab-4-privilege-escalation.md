@@ -25,7 +25,7 @@ If you haven't done already, set up a Windows VM (tested with Windows 11 preview
 3.  Download the setup script on the Windows VM (the Desktop directory is fine).&#x20;
 
     ```powershell
-    Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/wsetup.bat" -OutFile "wsetup.bat"
+    Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/wsetup.bat" -OutFile "wsetup.bat"
     ```
 4. Right-click on the copied setup file and ensure to select from the pop-up menu 'run as Administrator'. This will set up the Windows system for the subsequent exercises.
 5. Take note of the resulting output. One of the executed tasks is to create a new user account `hank` with password `password321`.
@@ -40,7 +40,7 @@ If you encounter an issue where the wsetup.bat script does not attempt the confi
 
 PowerShell fix if needed: re-download via IWR and normalise CRLF
   ```powershell
-  Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/wsetup.bat" -OutFile wsetup.bat
+  Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/wsetup.bat" -OutFile wsetup.bat
   (Get-Content wsetup.bat -Raw) -replace "`n","`r`n" | Set-Content wsetup.bat -NoNewline
   ```
 
@@ -78,7 +78,7 @@ https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk
 Or a copy from our github repo:
 
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/AccessChk.zip" -OutFile "accesschk.zip"
+Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/AccessChk.zip" -OutFile "accesschk.zip"
 ```
 
 Once downloaded, extract the files.

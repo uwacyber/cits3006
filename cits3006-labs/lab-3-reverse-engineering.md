@@ -37,7 +37,7 @@ Alternate ways to do this section is to work with others in the lab, or you can 
 {% endhint %}
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/free_bitcoin
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/free_bitcoin
 ```
 
 It was reported that a victim tried to get free bitcoin by running the program, but instead encrypted everything in the working directory. We will try and reverse engineer the malware to retrieve the encryption key used to encrypt the victim’s files.
@@ -81,7 +81,7 @@ Ignoring the included functions from libraries, we find that the malware has the
 Of interest is that the function calls `srand` (at line 7, address `40128b`), which is the C function for setting the seed for the random number generator. To try and figure out what is the value of the seed, we will compile our own test program and compare the assembly code. We have provided you with the test code `srand_test.c`.
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/srand_test.c
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/srand_test.c
 gcc -o srand_test srand_test.c
 ```
 
@@ -208,21 +208,21 @@ Download the files we will be using for this section.
 {% tab title="Intel (AMD64)" %}
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/crackme-linux.zip
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-linux.zip
 ```
 {% endtab %}
 
 {% tab title="Apple Silicon (ARM64)" %}
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/crackme-arm.zip
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-arm.zip
 ```
 {% endtab %}
 
 {% tab title="Source (if none of them works)" %}
 
 ```
-wget https://github.com/uwacyber/cits3006/raw/2025s2/cits3006-labs/files/crackme-source.zip
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-source.zip
 ```
 
 Once downloaded, compile codes using the makefile provided.
