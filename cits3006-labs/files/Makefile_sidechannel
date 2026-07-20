@@ -1,0 +1,34 @@
+CC     = cc
+CFLAGS = -O2 -Wall -Wextra
+# POSIX only — builds on Linux (Kali) and macOS. Modern glibc needs no -lrt.
+
+# Three-program demo: a vulnerable target, its constant-time twin, and a
+# separate attacker that only talks to them over a pipe.
+all: login login_safe attack
+
+login: login.c
+	$(CC) $(CFLAGS) -o login login.c
+
+login_safe: login.c
+	$(CC) $(CFLAGS) -DCONSTANT_TIME -o login_safe login.c
+
+attack: attack.c
+	$(CC) $(CFLAGS) -o attack attack.c
+
+# ── convenience runners ─────────────────────────────────────────────────────
+run: login attack          ## run the demo — manual mode (the default) vs the vulnerable login
+	./attack ./login
+
+auto: login attack          ## run the whole recovery automatically vs the vulnerable login
+	./attack ./login auto
+
+manual: login attack        ## step through the attack by hand (same as the default)
+	./attack ./login manual
+
+fixed: login_safe attack    ## the SAME attack against the constant-time login — it fails
+	./attack ./login_safe
+
+clean:
+	rm -f login login_safe attack
+
+.PHONY: all run auto manual fixed clean
