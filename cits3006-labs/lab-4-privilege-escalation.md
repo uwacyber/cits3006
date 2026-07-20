@@ -13,7 +13,7 @@ You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
   * admin user: `root`:`password123`
 
 {% hint style="info" %}
-Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa.sharepoint.com/:f:/t/WRK-cits3006files/Ejqwl0pt1TBJqE4gc-RA-GABnjckuu_SV6yt1u6A3z-o2w?e=eq7Ggc">here</a>.
+Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa.sharepoint.com/:f:/r/teams/CITS3006SEM-22026/Shared%20Documents/Labs?csf=1&#x26;web=1&#x26;e=ZRuPlW">here</a>.
 {% endhint %}
 
 ### 4.1.1 Windows VM Setup
