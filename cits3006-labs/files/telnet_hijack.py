@@ -99,7 +99,6 @@ def main():
          iface=a.iface, verbose=0, count=3)
 
     print("[+] Done -- the server ran our command inside the victim's session.")
-    print(r"[!] Prove it: -c 'id > /tmp/pwned\n'  then check /tmp/pwned on the server.")
 
 
 if __name__ == "__main__":
