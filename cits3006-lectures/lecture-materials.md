@@ -24,17 +24,19 @@ Note that materials are still being updated as noted below.
 * Complete [lab 1: Network Security](../cits3006-labs/lab-1-network-security.md).
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
 ## Week 03
 
 * [03. More Malware](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/03.More\_malware\_vertical.pdf)
 * Complete [lab 2: Malware](../cits3006-labs/lab-2-malware.md).
 * Project release this week (40%).
   * group formation.
+
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
+
 
 
 ## Week 04
