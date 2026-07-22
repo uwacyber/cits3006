@@ -20,7 +20,6 @@ This project is to be carried out as a group.
 You are free to form your own group, but your group must meet the following requirements:
 
 * Ensure that the group has access to both AMD and ARM architecture computers/laptops, as challenges may be architecture-specific.
-* 
 
 The number of members should be 5 (4 or 6 may be considered for late groups, requires approval).
 
@@ -119,107 +118,54 @@ Other groups vote for the most "fun" CTF challenge in their Task 2 report (see T
 ## Marking Rubrics
 ***
 ### 25%: Creating CTF Challenges (T1)
-#### N
-1. Did not implement the required vulnerability categories (network, web, privilege escalation, reverse engineering), or implemented fewer than the required number in each.
-2. Fewer than 2 working paths to root, or challenges do not run as documented.
-3. Vulnerabilities are trivial / solvable by automated tools alone.
-4. Report, sample solutions, and setup instructions are missing or unusable.
-#### P
-1. Implemented each of the four required vulnerability categories.
-2. At least 2 working paths to root; at least one advanced challenge attempted.
-3. Vulnerabilities function but are mostly straightforward to exploit.
-4. Report, sample solutions, and setup instructions are provided but lacking detail.
-#### CR
-1. Implemented all four required categories at the required counts, plus both advanced challenges.
-2. At least 3 distinct, working root paths, some combining multiple vulnerabilities.
-3. Vulnerabilities require moderate effort and are not solvable by automated tools alone.
-4. Report includes an exploit map with adequate sample solutions and setup documentation; all challenges are reproducible.
-#### D
-1. All required and both advanced challenges implemented, with variety and a coherent theme.
-2. Multiple non-trivial root paths requiring chained exploitation.
-3. Vulnerabilities are challenging and reflect research beyond the unit material.
-4. Report, sample solutions, and setup instructions are clear, complete, and well formatted.
-#### HD
-1. All required and advanced challenges implemented to a professional standard, with original and creative design.
-2. Numerous well-designed root paths requiring sophisticated chaining.
-3. Vulnerabilities are difficult, realistic, and demonstrate advanced, researched techniques that resist trivial/automated exploitation.
-4. Documentation is professional and complete — a marker could reproduce every challenge from it.
+
+| Grade | Criteria |
+| --- | --- |
+| **N** | Required categories missing or below the required count; fewer than 2 working root paths, or challenges do not run as documented; vulnerabilities trivial or solvable by automated tools alone; report, sample solutions, and setup instructions missing or unusable. |
+| **P** | Each of the four required categories implemented; at least 2 working root paths and at least one advanced challenge attempted; vulnerabilities function but are mostly straightforward to exploit; report, sample solutions, and setup instructions provided but lacking detail. |
+| **CR** | All four categories at the required counts, plus both advanced challenges; at least 3 distinct working root paths, some combining multiple vulnerabilities; vulnerabilities require moderate effort and are not solvable by automated tools alone; report includes an exploit map with adequate sample solutions and setup docs, and all challenges are reproducible. |
+| **D** | All required and both advanced challenges implemented, with variety and a coherent theme; multiple non-trivial root paths requiring chained exploitation; vulnerabilities are challenging and reflect research beyond the unit material; report, sample solutions, and setup instructions are clear, complete, and well formatted. |
+| **HD** | All required and advanced challenges implemented to a professional standard with original, creative design; numerous well-designed root paths requiring sophisticated chaining; vulnerabilities are difficult, realistic, and use advanced, researched techniques that resist trivial or automated exploitation; documentation is professional and complete — a marker could reproduce every challenge from it. |
+
+**Note on difficulty:** "Difficulty" means well-designed, solvable challenges that resist easy or automated exploitation. A challenge that cannot be solved because it is broken, unreachable, or undocumented does **not** count as difficult and will score low on this criterion.
 ***
 ### 10%: Solving CTF Challenges Live (T2-1)
-#### N
-1. Few or no flags captured during the live session.
-2. Little evidence of a working approach under time pressure.
-#### P
-1. Captured some flags during the live session, mostly from easier challenges.
-2. Attempted a limited range of challenges.
-#### CR
-1. Captured a reasonable number of flags across several challenges during the live session.
-2. Covered more than one vulnerability class.
-#### D
-1. Captured many flags during the live session, including some difficult challenges.
-2. Worked effectively across a range of vulnerability classes under time pressure.
-#### HD
-1. Captured most available flags during the live session, including the hardest challenges.
-2. Demonstrated strong, efficient skills across many vulnerability classes under time pressure.
+
+| Grade | Criteria |
+| --- | --- |
+| **N** | Few or no flags captured during the live session; little evidence of a working approach under time pressure. |
+| **P** | Some flags captured, mostly from easier challenges; a limited range of challenges attempted. |
+| **CR** | A reasonable number of flags captured across several challenges; more than one vulnerability class covered. |
+| **D** | Many flags captured, including some difficult challenges; worked effectively across a range of vulnerability classes under time pressure. |
+| **HD** | Most available flags captured, including the hardest challenges; strong, efficient skills demonstrated across many vulnerability classes under time pressure. |
 ***
 ### 15%: Solving all CTF Challenges (T2-2)
-#### N
-1. Few flags captured across the available challenges before the deadline.
-2. Report missing, or does not describe the techniques used.
-#### P
-1. Captured flags in some challenges.
-2. Report describes the vulnerabilities exploited but lacks technical detail and reflection.
-#### CR
-1. Captured flags across many challenges and several vulnerability classes.
-2. Report clearly documents the techniques and tools used, with adequate detail.
-#### D
-1. Captured many flags, including difficult challenges, with some challenge sets fully solved.
-2. Report is detailed and documents techniques, tools, and reflection on unsolved challenges.
-#### HD
-1. Captured most or all flags across the available challenges, including the most difficult.
-2. Report is professional and thorough — advanced techniques, clear reasoning, and insightful reflection on both solved and unsolved challenges.
+
+| Grade | Criteria |
+| --- | --- |
+| **N** | Few flags captured across the available challenges before the deadline; report missing or does not describe the techniques used. |
+| **P** | Flags captured in some challenges; report describes the vulnerabilities exploited but lacks technical detail and reflection. |
+| **CR** | Flags captured across many challenges and several vulnerability classes; report clearly documents the techniques and tools used, with adequate detail. |
+| **D** | Many flags captured, including difficult challenges, with some challenge sets fully solved; report is detailed and documents techniques, tools, and reflection on unsolved challenges. |
+| **HD** | Most or all flags captured across the available challenges, including the most difficult; report is professional and thorough — advanced techniques, clear reasoning, and insightful reflection on both solved and unsolved challenges. |
 ***
 ### 30%: Live Demo (T3)
-#### N
-1. Demo did not clearly demonstrate the created challenges or the solving of others' challenges.
-2. Poorly structured; one or more members did not present.
-3. Q&A answers are poor and lack technical detail.
-#### P
-1. Demo demonstrated some created and/or solved challenges.
-2. Reasonably structured; most members presented their contributions.
-3. Q&A answers are reasonable with some technical detail.
-#### CR
-1. Demo clearly demonstrated both created and solved challenges.
-2. Well structured and within time; all members presented their contributions.
-3. Q&A answers are good with technical detail.
-#### D
-1. Demo clearly and effectively demonstrated created and solved challenges with good technical depth.
-2. Well organised and paced; all members demonstrated their contributions clearly.
-3. Q&A answers are excellent with high technical detail.
-#### HD
-1. Demo demonstrated created and solved challenges at a professional level with high technical depth.
-2. Professionally organised and paced; every member demonstrated substantial contributions seamlessly.
-3. Q&A answers are excellent, showing deep understanding and knowledge.
+
+| Grade | Criteria |
+| --- | --- |
+| **N** | Demo did not clearly demonstrate the created or solved challenges; poorly structured, with one or more members not presenting; Q&A answers poor and lacking technical detail. |
+| **P** | Demo demonstrated some created and/or solved challenges; reasonably structured, with most members presenting their contributions; Q&A answers reasonable with some technical detail. |
+| **CR** | Demo clearly demonstrated both created and solved challenges; well structured and within time, with all members presenting their contributions; Q&A answers good with technical detail. |
+| **D** | Demo clearly and effectively demonstrated created and solved challenges with good technical depth; well organised and paced, with all members demonstrating their contributions clearly; Q&A answers excellent with high technical detail. |
+| **HD** | Demo demonstrated created and solved challenges at a professional level with high technical depth; professionally organised and paced, with every member demonstrating substantial contributions seamlessly; Q&A answers excellent, showing deep understanding and knowledge. |
 ***
 ### 20%: Individual contributions (T1, T2, T3)
-#### N
-1. No or nearly no evidence of contribution to the project (report and/or peer evaluation indicate minimal involvement).
-2. Shows no indication of independent research beyond the class material.
-3. Unable to demonstrate or answer questions on any contributed work during the demo.
-#### P
-1. Made some contribution across the tasks, demonstrating some penetration testing skills.
-2. Shows some independent research beyond the class material.
-3. Demonstrates and answers questions on their contribution at a reasonable level.
-#### CR
-1. Made some key contributions, demonstrating a variety of penetration testing skills.
-2. Shows a reasonable amount of independent research beyond the class material.
-3. Demonstrates and answers questions on their contribution well, with technical detail.
-#### D
-1. Made major contributions, demonstrating a variety of penetration testing skills.
-2. Shows a high level of independent research into new and advanced techniques.
-3. Demonstrates and answers questions on their contribution excellently, with high technical detail.
-#### HD
-1. Made major contributions, demonstrating advanced penetration testing skills.
-2. Shows a comprehensive level of independent research into new and advanced techniques.
-3. Demonstrates and answers questions on their contribution excellently, with deep understanding.
+
+| Grade | Criteria |
+| --- | --- |
+| **N** | No or nearly no evidence of contribution (report and/or peer evaluation indicate minimal involvement); no indication of independent research beyond the class material; unable to demonstrate or answer questions on any contributed work. |
+| **P** | Some contribution across the tasks, demonstrating some penetration testing skills; some independent research beyond the class material; demonstrates and answers questions on their contribution at a reasonable level. |
+| **CR** | Some key contributions, demonstrating a variety of penetration testing skills; a reasonable amount of independent research beyond the class material; demonstrates and answers questions on their contribution well, with technical detail. |
+| **D** | Major contributions, demonstrating a variety of penetration testing skills; a high level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with high technical detail. |
+| **HD** | Major contributions, demonstrating advanced penetration testing skills; a comprehensive level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with deep understanding. |
 ***
