@@ -41,4 +41,4 @@ see [here](./cits3006-lectures/lecture-materials.md).
 
 ### License Terms
 
-Copyright © Jin Hong 2024, Arran Stewart 2025. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
+Copyright © 2026 Jin Hong. Except where otherwise specified, the text in this course is licensed under the Creative Commons Attribution-ShareAlike License 4.0 (International) (CC-BY-SA 4.0).
