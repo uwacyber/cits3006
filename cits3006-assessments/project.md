@@ -53,7 +53,7 @@ In addition to above, you must create two advanced CTF challenges from the below
 
 The total number of challenges you need to create is not set, which means you can individually present each vulnerability, or combine them to create a more complex challenge. However, you must ensure that the vulnerabilities are not easily exploitable, as this will be used to assess the difficulty of your CTF challenges (please refer to the marking rubric below for more details).
 
-There will be bonus marks for "fun" components of your CTF challenges, which will be based on the votes from other groups. Please note that any defense mechanisms you implement will NOT count towards your grade. There is a mark for difficulty of your CTF challenges, but this is based on the quality of vulnerabilities themselves, not the defense mechanisms in place.
+There will be bonus marks for the most "fun" CTF challenge (applied to your Task 1 mark), based on votes from other groups; see Bonus Marks below. Please note that any defense mechanisms you implement will NOT count towards your grade. There is a mark for difficulty of your CTF challenges, but this is based on the quality of vulnerabilities themselves, not the defense mechanisms in place.
 
 Later in Task 2, your challenges will be completed by the pen testers (i.e., other groups). To ensure you train your pen testers to the highest quality, make sure the vulnerabilities are not easily exploitable.&#x20;
 
@@ -100,18 +100,15 @@ The live demo will be an hour, you should think about how the demo should be str
 {% endhint %}
 
 
-## Bonus Marks: Complete the survey
+## Bonus Marks
 
-You can complete the survey to receive a bonus mark of 5%. Make sure to enter your student ID correctly (on the first page).
-Link: TBC 
+Bonus marks are not added on top of your overall project mark. Each bonus is applied only to the component named below and is capped at that component's maximum (so it cannot raise your overall mark beyond 100%).
+
+**Most fun challenge — applied to Task 1 (Creating CTF Challenges).** Other groups vote for the most "fun" CTF challenge in their Task 2 report (see Task 2 todo). The group whose challenge receives the most votes gets +5% on their Task 1 mark, and the runner-up group gets +3% — capped at the Task 1 maximum.
+
+**Survey — applied to Individual contributions.** You can complete the survey to receive +5% on your Individual contributions mark (capped at that component's maximum). Make sure to enter your student ID correctly (on the first page). Link: TBC.
 <!-- [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform](https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform) -->
-
-Please note, you must complete the survey by (insert date here) to receive the bonus marks.
-
-
-## Bonus Marks: Most fun challenge
-
-Other groups vote for the most "fun" CTF challenge in their Task 2 report (see Task 2 todo). The group whose challenge receives the most votes will receive a bonus of 5%, and the runner-up group will receive 3%.
+You must complete the survey by (insert date here) to receive the bonus.
 
 
 
@@ -119,53 +116,63 @@ Other groups vote for the most "fun" CTF challenge in their Task 2 report (see T
 ***
 ### 25%: Creating CTF Challenges (T1)
 
-| Grade | Criteria |
-| --- | --- |
-| **N** | Required categories missing or below the required count; fewer than 2 working root paths, or challenges do not run as documented; vulnerabilities trivial or solvable by automated tools alone; report, sample solutions, and setup instructions missing or unusable. |
-| **P** | Each of the four required categories implemented; at least 2 working root paths and at least one advanced challenge attempted; vulnerabilities function but are mostly straightforward to exploit; report, sample solutions, and setup instructions provided but lacking detail. |
-| **CR** | All four categories at the required counts, plus both advanced challenges; at least 3 distinct working root paths, some combining multiple vulnerabilities; vulnerabilities require moderate effort and are not solvable by automated tools alone; report includes an exploit map with adequate sample solutions and setup docs, and all challenges are reproducible. |
-| **D** | All required and both advanced challenges implemented, with variety and a coherent theme; multiple non-trivial root paths requiring chained exploitation; vulnerabilities are challenging and reflect research beyond the unit material; report, sample solutions, and setup instructions are clear, complete, and well formatted. |
-| **HD** | All required and advanced challenges implemented to a professional standard with original, creative design; numerous well-designed root paths requiring sophisticated chaining; vulnerabilities are difficult, realistic, and use advanced, researched techniques that resist trivial or automated exploitation; documentation is professional and complete — a marker could reproduce every challenge from it. |
+**N** — Required categories missing or below the required count; fewer than 2 working root paths, or challenges do not run as documented; vulnerabilities trivial or solvable by automated tools alone; report, sample solutions, and setup instructions missing or unusable.
+
+**P** — Each of the four required categories implemented; at least 2 working root paths and at least one advanced challenge attempted; vulnerabilities function but are mostly straightforward to exploit; report, sample solutions, and setup instructions provided but lacking detail.
+
+**CR** — All four categories at the required counts, plus both advanced challenges; at least 3 distinct working root paths, some combining multiple vulnerabilities; vulnerabilities require moderate effort and are not solvable by automated tools alone; report includes an exploit map with adequate sample solutions and setup docs, and all challenges are reproducible.
+
+**D** — All required and both advanced challenges implemented, with variety and a coherent theme; multiple non-trivial root paths requiring chained exploitation; vulnerabilities are challenging and reflect research beyond the unit material; report, sample solutions, and setup instructions are clear, complete, and well formatted.
+
+**HD** — All required and advanced challenges implemented to a professional standard with original, creative design; numerous well-designed root paths requiring sophisticated chaining; vulnerabilities are difficult, realistic, and use advanced, researched techniques that resist trivial or automated exploitation; documentation is professional and complete — a marker could reproduce every challenge from it.
 
 **Note on difficulty:** "Difficulty" means well-designed, solvable challenges that resist easy or automated exploitation. A challenge that cannot be solved because it is broken, unreachable, or undocumented does **not** count as difficult and will score low on this criterion.
 ***
 ### 10%: Solving CTF Challenges Live (T2-1)
 
-| Grade | Criteria |
-| --- | --- |
-| **N** | Few or no flags captured during the live session; little evidence of a working approach under time pressure. |
-| **P** | Some flags captured, mostly from easier challenges; a limited range of challenges attempted. |
-| **CR** | A reasonable number of flags captured across several challenges; more than one vulnerability class covered. |
-| **D** | Many flags captured, including some difficult challenges; worked effectively across a range of vulnerability classes under time pressure. |
-| **HD** | Most available flags captured, including the hardest challenges; strong, efficient skills demonstrated across many vulnerability classes under time pressure. |
+**N** — Few or no flags captured during the live session; little evidence of a working approach under time pressure.
+
+**P** — Some flags captured, mostly from easier challenges; a limited range of challenges attempted.
+
+**CR** — A reasonable number of flags captured across several challenges; more than one vulnerability class covered.
+
+**D** — Many flags captured, including some difficult challenges; worked effectively across a range of vulnerability classes under time pressure.
+
+**HD** — Most available flags captured, including the hardest challenges; strong, efficient skills demonstrated across many vulnerability classes under time pressure.
 ***
 ### 15%: Solving all CTF Challenges (T2-2)
 
-| Grade | Criteria |
-| --- | --- |
-| **N** | Few flags captured across the available challenges before the deadline; report missing or does not describe the techniques used. |
-| **P** | Flags captured in some challenges; report describes the vulnerabilities exploited but lacks technical detail and reflection. |
-| **CR** | Flags captured across many challenges and several vulnerability classes; report clearly documents the techniques and tools used, with adequate detail. |
-| **D** | Many flags captured, including difficult challenges, with some challenge sets fully solved; report is detailed and documents techniques, tools, and reflection on unsolved challenges. |
-| **HD** | Most or all flags captured across the available challenges, including the most difficult; report is professional and thorough — advanced techniques, clear reasoning, and insightful reflection on both solved and unsolved challenges. |
-***
-### 30%: Live Demo (T3)
+**N** — Few flags captured across the available challenges before the deadline; report missing or does not describe the techniques used.
 
-| Grade | Criteria |
-| --- | --- |
-| **N** | Demo did not clearly demonstrate the created or solved challenges; poorly structured, with one or more members not presenting; Q&A answers poor and lacking technical detail. |
-| **P** | Demo demonstrated some created and/or solved challenges; reasonably structured, with most members presenting their contributions; Q&A answers reasonable with some technical detail. |
-| **CR** | Demo clearly demonstrated both created and solved challenges; well structured and within time, with all members presenting their contributions; Q&A answers good with technical detail. |
-| **D** | Demo clearly and effectively demonstrated created and solved challenges with good technical depth; well organised and paced, with all members demonstrating their contributions clearly; Q&A answers excellent with high technical detail. |
-| **HD** | Demo demonstrated created and solved challenges at a professional level with high technical depth; professionally organised and paced, with every member demonstrating substantial contributions seamlessly; Q&A answers excellent, showing deep understanding and knowledge. |
-***
-### 20%: Individual contributions (T1, T2, T3)
+**P** — Flags captured in some challenges; report describes the vulnerabilities exploited but lacks technical detail and reflection.
 
-| Grade | Criteria |
-| --- | --- |
-| **N** | No or nearly no evidence of contribution (report and/or peer evaluation indicate minimal involvement); no indication of independent research beyond the class material; unable to demonstrate or answer questions on any contributed work. |
-| **P** | Some contribution across the tasks, demonstrating some penetration testing skills; some independent research beyond the class material; demonstrates and answers questions on their contribution at a reasonable level. |
-| **CR** | Some key contributions, demonstrating a variety of penetration testing skills; a reasonable amount of independent research beyond the class material; demonstrates and answers questions on their contribution well, with technical detail. |
-| **D** | Major contributions, demonstrating a variety of penetration testing skills; a high level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with high technical detail. |
-| **HD** | Major contributions, demonstrating advanced penetration testing skills; a comprehensive level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with deep understanding. |
+**CR** — Flags captured across many challenges and several vulnerability classes; report clearly documents the techniques and tools used, with adequate detail.
+
+**D** — Many flags captured, including difficult challenges, with some challenge sets fully solved; report is detailed and documents techniques, tools, and reflection on unsolved challenges.
+
+**HD** — Most or all flags captured across the available challenges, including the most difficult; report is professional and thorough — advanced techniques, clear reasoning, and insightful reflection on both solved and unsolved challenges.
+***
+### 25%: Live Demo (T3)
+
+**N** — Demo did not clearly demonstrate the created or solved challenges; poorly structured, with one or more members not presenting; Q&A answers poor and lacking technical detail.
+
+**P** — Demo demonstrated some created and/or solved challenges; reasonably structured, with most members presenting their contributions; Q&A answers reasonable with some technical detail.
+
+**CR** — Demo clearly demonstrated both created and solved challenges; well structured and within time, with all members presenting their contributions; Q&A answers good with technical detail.
+
+**D** — Demo clearly and effectively demonstrated created and solved challenges with good technical depth; well organised and paced, with all members demonstrating their contributions clearly; Q&A answers excellent with high technical detail.
+
+**HD** — Demo demonstrated created and solved challenges at a professional level with high technical depth; professionally organised and paced, with every member demonstrating substantial contributions seamlessly; Q&A answers excellent, showing deep understanding and knowledge.
+***
+### 25%: Individual contributions (T1, T2, T3)
+
+**N** — No or nearly no evidence of contribution (report and/or peer evaluation indicate minimal involvement); no indication of independent research beyond the class material; unable to demonstrate or answer questions on any contributed work.
+
+**P** — Some contribution across the tasks, demonstrating some penetration testing skills; some independent research beyond the class material; demonstrates and answers questions on their contribution at a reasonable level.
+
+**CR** — Some key contributions, demonstrating a variety of penetration testing skills; a reasonable amount of independent research beyond the class material; demonstrates and answers questions on their contribution well, with technical detail.
+
+**D** — Major contributions, demonstrating a variety of penetration testing skills; a high level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with high technical detail.
+
+**HD** — Major contributions, demonstrating advanced penetration testing skills; a comprehensive level of independent research into new and advanced techniques; demonstrates and answers questions on their contribution excellently, with deep understanding.
 ***
