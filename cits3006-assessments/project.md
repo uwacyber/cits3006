@@ -1,7 +1,5 @@
 # Project
 
-Coming soon...
-
 In this project, you will be working in a group as cybersecurity experts who develop cybersecurity practical exercises for pen testers.  
 Please note, you are expected to conduct further research to learn more about various penetration testing techniques and use them in this project.
 
