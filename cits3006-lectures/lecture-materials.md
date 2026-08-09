@@ -36,7 +36,6 @@ Note that materials are still being updated as noted below.
 ## Week 04
 
 * [04. Software-based Hardware Attacks](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/04.Software\_based\_hardware\_attacks\_vertical.pdf)
-* [Side channel demo files](https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/side\_channel\_demo.zip) (used in the lecture).
 * Lab Quiz 1 in-person test & demo (covers weeks 1-3).
 
 
