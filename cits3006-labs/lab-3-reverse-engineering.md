@@ -93,7 +93,7 @@ When you run `objdump` on the compiled file, you should see the main function as
 
 ![](<../.gitbook/assets/image (1) (1) (2).png>)
 
-We can see that our seed value of `0x10` is pushed onto the stack directly before the program calls `srand`. Comparing this procedure to the assembly code from above, we can see that just before the `srand` call at the machine instruction address of `40129b` in `gen_key` the hexadecimal value of `0x4d2` is pushed to the stack. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
+We can see that our seed value of `0x10` is moved into the `edi` register directly before the program calls `srand` — on 64-bit x86, the first argument to a function is passed in `edi`/`rdi` rather than being pushed onto the stack. Comparing this procedure to the assembly code from above, we can see the same pattern in `gen_key`: at address `401286` the hexadecimal value `0x4d2` is moved into `edi`, and the `srand` call follows at `40128b`. This means that in `gen_key`, the seed is set to `1234` (i.e., 0x4d2 in decimal format).
 
 Now we are ready to debug our ransomware.
 
@@ -275,7 +275,11 @@ You will see that there is a `scanf` call after the reference to the `Password`,
 
 ![](<../.gitbook/assets/image (6) (1).png>)
 
-The entered password is saved to the `local_lc` variable. The string value 250382 has been stored in the `local_3c` variable (see the assembly code). The result from `strcmp` is then checked, with zero being the same string. Hence, the string `250382` is our password!
+The entered password is read into a local stack buffer, and the value `250382` is the string it is compared against — it appears as the other argument to `strcmp` (check the assembly code alongside the decompiled view). The result from `strcmp` is then checked, with zero meaning the two strings are identical. Hence, the string `250382` is our password!
+
+{% hint style="info" %}
+Ghidra invents names like `local_1c` for variables it cannot recover a real name for, and **those names change between Ghidra versions**. Yours may not match the screenshot. Read the structure — which value goes into `strcmp`, and what the return value is compared to — rather than matching names against the image.
+{% endhint %}
 
 ![](<../.gitbook/assets/image (12) (3).png>)
 
