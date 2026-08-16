@@ -40,16 +40,17 @@ Note that materials are still being updated as noted below.
 
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
-
 ## Week 05
 
 * [05. Reverse Engineering](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/05.Reverse\_engineering\_vertical.pdf)
 * Complete [lab 3: Reverse Engineering](../cits3006-labs/lab-3-reverse-engineering.md).
+
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
+
 
 
 ## Week 06
