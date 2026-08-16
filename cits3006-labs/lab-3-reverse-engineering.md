@@ -8,14 +8,34 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 Many malware use obfuscation techniques to try to hide the information about how they function. In this lab, we will try to uncover their mechanisms using reverse engineering techniques.
 
-You only need to use the Kali VM for this lab.
+You only need the Kali VM for this lab — except for section 3.1 on Apple Silicon, where you will use the `re_emulation_arm` UTM VM instead (explained at the start of that section).
 
 {% hint style="info" %}
-Later, we will use a tool named Ghidra, but it is a bit large. So install it now in a separate terminal:
+**Before installing anything in this lab, check whether you already have it.** Kali ships with many of these tools, and the VM provided for this unit has more preinstalled again, so several of the install steps below will be no-ops for you. `apt` is safe to re-run — if a package is already there it simply reports `is already the newest version` and changes nothing — so an unnecessary install costs you nothing but time. That time matters most inside the emulation VM, where everything runs slower.
+{% endhint %}
+
+{% hint style="info" %}
+Later, we will use a tool named Ghidra. It ships with Kali, so check whether you already have it:
+
+which ghidra
+
+If that prints a path, you are set — skip ahead. (If it prints nothing, also just try typing `ghidra`, since some installations live in `/opt` and are not on your `PATH`.) If you really do not have it, install it now in a separate terminal, because it is a large download:
 
 sudo apt-get update -y
 
 sudo apt-get install ghidra -y
+{% endhint %}
+
+{% hint style="info" %}
+**A note on architecture names.** Throughout this lab we say **x86** for the Intel/AMD instruction set, **x86-64** when a binary is specifically 64-bit, and **ARM64** for Apple Silicon machines. Your tools will not be so consistent — the same two things go by many names, and confusing them wastes a lot of time:
+
+| What a tool prints | What it means |
+| ------------------ | ------------- |
+| `x86_64`, `amd64`, `x64`, `Intel 64` | 64-bit x86 |
+| `i386`, `i686`, `IA-32` | 32-bit x86 |
+| `aarch64`, `arm64` | 64-bit ARM |
+
+For example, `file` describes a 32-bit binary as "Intel 80386", `uname -m` calls the same machine `i686`, and `apt` calls it `i386`. All three mean 32-bit x86. A binary only runs on the architecture it was built for, which is why this matters.
 {% endhint %}
 
 ## 3.1. Reverse Engineering using GDB
@@ -28,12 +48,29 @@ We will be using a malware code, so you should only conduct this lab within a VM
 
 One of the most interesting stories about reverse engineering is the story about the ransomware WannaCry. WannaCry propagated across the internet using the EternalBlue exploit, which was developed by the NSA and leaked by an anonymous hacker group called the Shadow Brokers. It was devastating computers across the world, until Marcus Hitchins reverse engineered the ransomware. Marcus found an unregistered domain within the malware and decided to register the domain. Consequently, he inadvertently found the kill switch for the ransomware, stopping one of the largest cyber-attacks known to this day.
 
-In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target the Kali VM AMD64 chip users.
+In this section, we will be reverse engineering a newly discovered ransomware called `free_bitcoin`, specifically designed to target x86 machines.
 
 {% hint style="warning" %}
-You can still do this section of the lab, but may face issues using the Apple Silicon machine.
+**Apple Silicon (M-series Mac) users:** `free_bitcoin` is an x86-64 binary, so it will not run on your ARM64 Kali VM. Use the **`re_emulation_arm` UTM VM** provided for this unit instead. It runs an emulated x86-64 Ubuntu, so the binary runs normally, GDB behaves exactly as described below, and every address you see will match the screenshots. Log in as `ubuntu` with the password `ubuntu`.
 
-Alternate ways to do this section is to work with others in the lab, or you can also start an Ubuntu VM in the cloud and follow the instructions there, which will work also (but can cost you if you don't have free credit).
+Emulating x86 on an ARM machine is noticeably slower than running natively, so expect the VM to feel sluggish. That is normal, and this section involves very little actual running — almost all of the work is reading.
+
+Do the whole of section 3.1 inside that VM. Section 3.2 (Ghidra) does **not** need it — Ghidra analyses x86 binaries perfectly well on an ARM64 machine, so run that part on your normal Kali VM.
+
+There is a second reason to use a VM here beyond the architecture: `free_bitcoin` is real ransomware and encrypts every file in its working directory. A disposable VM means a mistake costs you nothing.
+{% endhint %}
+
+{% hint style="info" %}
+**Tip: work over SSH if your machine can spare the memory.** Running the emulation VM alongside your Kali VM needs enough RAM for both, but if yours can manage it, connect to the emulation VM over SSH rather than typing into the UTM console window:
+
+```
+ip a                 # in the VM console: note the VM's address
+ssh ubuntu@<vm-ip>   # from Kali, or from your Mac's own terminal
+```
+
+You get proper copy and paste, scrollback and a resizable window, and you can keep your notes and Ghidra on Kali while the ransomware stays confined to the VM. Copy and paste matters more here than it sounds — this section is full of hexadecimal addresses that are easy to mistype.
+
+If the connection is refused, SSH may not be running in the VM; start it with `sudo systemctl enable --now ssh`. The UTM console works perfectly well either way, it is just less comfortable.
 {% endhint %}
 
 ```
@@ -52,7 +89,7 @@ We will begin our analysis of the ransomware by running the `strings` command on
 strings free_bitcoin | grep "EVP\|1234567890abcdef"
 ```
 
-![](<../.gitbook/assets/image (5) (3).png>)
+![](../.gitbook/assets/re_strings.png)
 
 The above screenshot shows that the malware uses the OpenSSL Crypto library. The ransomware is also using the AES 128-bit encryption with the CBC mode, which means that the key used to encrypt the files is 128 bits (16 bytes) long.
 
@@ -68,10 +105,8 @@ This is where we start looking at the assembly code of the ransomware. Run:
 objdump -d free_bitcoin
 ```
 
-{% hint style="warning" %}
-Apple Silicon users, use llvm-objdump instead.
-
-For the srand_test function, the instruction will look different due to being on a different architecture. However, you can still find key information from the assembly code.
+{% hint style="info" %}
+If you are following section 3.1 inside the `re_emulation_arm` VM as described above, plain `objdump` works and your output will match the screenshots exactly.
 {% endhint %}
 
 Ignoring the included functions from libraries, we find that the malware has the functions `main`, `encrypt_file`, `decrypt_file` and `gen_key`. Let us take a closer look at the `gen_key` function since this is most likely where the key is created to be used for encryption. Below is the assembly code of this function.
@@ -97,9 +132,13 @@ We can see that our seed value of `0x10` is moved into the `edi` register direct
 
 Now we are ready to debug our ransomware.
 
-### 3.1.3. Using GDB-peda
+### 3.1.3. Using GDB with GEF
 
-`GDB`, as described above, is a debugging tool. However, its interface is quite difficult to use without spending time learning more about it. To make your life (slightly) less miserable, we will install also the `peda`, a Python Exploit Development Assistant for `GDB` (which makes the presentation and usage a bit more novice-friendly).
+`GDB`, as described above, is a debugging tool. However, its interface is quite difficult to use without spending time learning more about it. To make your life (slightly) less miserable, we will also use `GEF` (GDB Enhanced Features), which displays the registers and the surrounding code automatically every time the program stops.
+
+{% hint style="info" %}
+**Using the provided emulation VM?** GDB and GEF are already installed and configured there — skip both installs below and carry straight on to the command list.
+{% endhint %}
 
 First, install GDB:
 
@@ -108,78 +147,90 @@ sudo apt-get update -y
 sudo apt-get install gdb -y
 ```
 
-Next, install `peda` (line by line):
+Next, install `GEF`:
 
 ```
-sudo apt install python3-six
-git clone https://github.com/jsun1590/peda.git ~/peda
-echo "source ~/peda/peda.py" >> ~/.gdbinit
+sudo apt install gef -y
 ```
+
+Once it is installed, start the debugger with `gef`. If your system has no `gef` command, use `gdb` instead — on some installations GEF is loaded into `gdb` automatically. Either way you should get a `gef➤` prompt rather than the usual `(gdb)` one, and that prompt is how you know GEF is running.
 
 {% hint style="warning" %}
-Apple Silicon users, install peda-arm instead ([peda-arm link](https://github.com/alset0326/peda-arm)).
+**If you installed GEF yourself, your display may not look exactly like the screenshots below.** The VM has a couple of settings changed so that the output fits on one screen. None of this changes the *information* GEF gives you — only how much of it is shown at once — but if you would like your terminal to match the screenshots, run these at the `gef➤` prompt:
 
-The peda function is the same.
+```
+gef config context.clear_screen 0
+gef config context.layout "legend regs code"
+gef config context.nb_lines_code 3
+gef config context.nb_lines_code_prev 2
+gef save
+```
+
+`gef save` writes them to `~/.gef.rc` so they persist, and deleting that file restores GEF's defaults.
+
+The setting worth understanding is `context.clear_screen 0`, which stops GEF from wiping your scrollback every time the program stops. You will be stepping with `si` repeatedly and comparing each state to the one before it, so keeping that history is genuinely useful.
 {% endhint %}
 
-Also install OpenSSL library:
+Below we list some useful commands to use inside GEF to help you reverse engineer the ransomware.
 
-```
-sudo apt-get install libssl-dev
-```
-
-Below we list some useful commands for inside the `gdb-peda` shell to help you reverse engineer the ransomware.
-
-- `gdb-peda$ info func` : Prints out all the functions inside of the program.
-- `gdb-peda$ disas <function name>` : Print the assembly code and machine instruction number of a function.
-- `gdb-peda$ b *<machine instruction address>` : Pauses the program's execution at the machine instruction address and prints the program's state.
-- `gdb-peda$ x/2x $esp` **:** Prints the first 2\*4=8 bytes from the start of the stack ($esp)
-- `gdb-peda$ r` : Starts the program's execution from the very start.
-- `gdb-peda$ c` **:** Continue the program's execution to the next breakpoint or until completion.
-- `gdb-peda$ si` : Execute the next machine instruction and then print the state of the program.
+- `gef➤ info func` : Prints out all the functions inside of the program.
+- `gef➤ disas <function name>` : Print the assembly code and machine instruction number of a function.
+- `gef➤ b *<machine instruction address>` : Pauses the program's execution at the machine instruction address and prints the program's state.
+- `gef➤ x/2x $rsp` **:** Prints the first 2\*4=8 bytes from the start of the stack (`$rsp`; on 32-bit binaries the stack pointer is called `$esp` instead)
+- `gef➤ r` : Starts the program's execution from the very start.
+- `gef➤ c` **:** Continue the program's execution to the next breakpoint or until completion.
+- `gef➤ si` : Execute the next machine instruction and then print the state of the program.
 
 For a list of more commands to use gdb, take a look at [https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf).
 
 Since the ransomware is poorly designed and only encrypts the files in the working directory, we will create a test folder to execute the malware from. Ideally, if you are doing real malware analysis you would want to completely isolate it inside a separate VM before executing it. However, for our purposes running it from inside an isolated directory should be sufficient since it only encrypts files inside the working directory.
 
-You can use the commands below to prepare your test folder and start `gdb-peda`.
+You can use the commands below to prepare your test folder and start the debugger.
 
 ```
 mkdir test
 cp free_bitcoin test/
 cd test/
 chmod 500 free_bitcoin
-gdb free_bitcoin
+gdb free_bitcoin      # or: gef free_bitcoin
 ```
 
 {% hint style="warning" %}
-Apple Silicon users, to run the program, use free_bitcoin_arm file instead. You can inspect the AMD binary (free_bitcoin), but you cannot run it in gdb. You can still follow the instructions below, but the code layout and registry used will differ from what is shown below based on AMD.
+Apple Silicon users: run this inside the `re_emulation_arm` VM (see the note at the start of section 3.1). Everything below then works exactly as written, with the same addresses and registers shown in the screenshots.
+{% endhint %}
+
+{% hint style="info" %}
+If the ransomware refuses to start with `error while loading shared libraries: libcrypto.so.3`, you are missing the OpenSSL 3 runtime — install `libssl3` on Kali, or `libssl3t64` on Ubuntu. You can always ask which shared libraries a binary needs with `ldd free_bitcoin`, which is a handy first move when any unfamiliar binary refuses to run.
 {% endhint %}
 
 We will begin our analysis by getting the machine instruction for when the function `rand` is called and set a breakpoint at that instruction so we can analyse the state of the program. We will also set another breakpoint directly after `gen_key` returns to the function `encrypt_file`, so that we can pause the program's execution before any files are encrypted. Below are the commands with snippets to help you set up the breakpoints before starting the program.
 
-![](<../.gitbook/assets/image (4) (2).png>)
+![](../.gitbook/assets/re_disas_gen_key.png)
 
-![](<../.gitbook/assets/image (7) (2).png>)
+![](../.gitbook/assets/re_disas_encrypt_file.png)
 
-![](<../.gitbook/assets/image (9) (4).png>)
+![](../.gitbook/assets/re_disas_encrypt_file2.png)
 
-We will start running the program to see the state of the registers and stack at each time the `rand` function is called. Run the program by entering `r`. Then you can continue running the program by entering `c`.
+We will start running the program to see the state of the registers each time the `rand` function is called. Run the program by entering `r`, then continue running it by entering `c` once.
 
-![](<../.gitbook/assets/image (13) (2).png>)
+![](../.gitbook/assets/re_gef_1.png)
 
 The screenshot above shows the state of the program after reaching the `rand` function a second time (continuing the execution of the program once). This snapshot of the program’s state tells us two important things about how the key is generated.
 
 - Firstly, the key is generated inside a loop since when the program continued after reaching the first breakpoint it paused at the same breakpoint a second time, instead of reaching the breakpoint in `encrypt_file`.
-- The second observation is that the character `e` is stored inside the `EDX` register, as shown as `RDX`, (i.e., line 4 in the registers section). This can mean that `e` is the result of some operations following the first `rand` call, and is possibly (and most likely) the first character of the encryption key.
+- The second observation is that the `RDX` register holds `0x65`, which is the ASCII code for the character `e`. You can see the same thing spelled out in the breakpoint line just above the registers, which reads `gen_key (str=... "e", size=16)` — the buffer the key is being built in already contains `e`. So `e` is the result of some operations following the first `rand` call, and is possibly (and most likely) the first character of the encryption key.
 
-To investigate this further, we will now set a breakpoint after the rand call at the machine instruction at the address of `0x4012aa` and step through the program’s execution by machine instruction (`c`, then using the `si` command) until we find something interesting in the registers or the stack. At every step (after each `si` command), try to inspect the registers, code and stack to see if you can find any useful information. Once you reach the code `movzx`, you will see the below state.
+To investigate this further, we will now set a breakpoint just after the `rand` call, at the machine instruction at address `0x4012aa`, and step through the program one machine instruction at a time until we find something interesting. Set the breakpoint with `b *0x4012aa`, reach it with `c`, and then step with `si` repeatedly. At every step, inspect what GEF prints — the registers in particular — to see if you can find anything useful. Once you reach the instruction `movzbl` (about nine steps later, at `0x4012c4`), you will see the state below.
 
-![](<../.gitbook/assets/image (1) (3).png>)
+{% hint style="info" %}
+If you would also like GEF to show the stack, add it to the layout with `gef config context.layout "legend regs stack code"`. It is not needed for this walkthrough, so the screenshots here do not show it.
+{% endhint %}
 
-At this stage, you can see that the address `0x402008` is being moved to `EDX` (it is noted as RDX in the registers), which contains a familiar string we found before. As soon as you step in (`si`), you will notice that letter '4' is now loaded onto `EDX`. This is shown below.
+![](../.gitbook/assets/re_gef_2.png)
 
-![](<../.gitbook/assets/image (5) (1) (1).png>)
+The instruction just executed (`lea`) loaded the address `0x402008` into `RDX`, and GEF helpfully shows what lives at that address: the familiar string `"1234567890abcdef"` we found earlier with `strings`. The `movzbl` about to run will pull a **single byte** out of that string, at the offset held in `RAX` — which is `3`. Counting from zero, character 3 of `1234567890abcdef` is `4`, so we can predict what will happen before it does. Step in with `si`, and indeed the letter `4` is now loaded into `EDX` (`RDX` shows `0x34`, the ASCII code for `4`).
+
+![](../.gitbook/assets/re_gef_3.png)
 
 So definitely, the string "`1234567890abcdef`" is used to generate the key string!
 
@@ -196,7 +247,7 @@ You can now either (1) continue debugging the ransomware to find the key (keep r
 
 Ghidra is a tool for reverse engineering, which has been used for many years by special services. Now it is available to everyone.
 
-By now, you should have completed installing Ghidra. Since the required JDK is already installed on Kali, your ghidra should be good to go (if using other OS VM, install necessary requirements yourselves).
+Ghidra should be ready by now — either it came with your Kali image, or you installed it at the start of the lab. Since the required JDK is already installed on Kali, your Ghidra should be good to go (if using another OS VM, install the necessary requirements yourself).
 
 Once you run ghidra (just type `ghidra` from the terminal), you will first be greeted with the agreement notice - press "agree". Then, you see the Ghidra Help - you can read this at your own time to get more familiar with Ghidra, but otherwise you can close it for now. Finally, you will see the main ghidra window and the tip window (close this also). Now we are ready to get started!
 
@@ -205,17 +256,10 @@ Once you run ghidra (just type `ghidra` from the terminal), you will first be gr
 Download the files we will be using for this section.
 
 {% tabs %}
-{% tab title="Intel (AMD64)" %}
+{% tab title="Linux (x86)" %}
 
 ```
 wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-linux.zip
-```
-{% endtab %}
-
-{% tab title="Apple Silicon (ARM64)" %}
-
-```
-wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-arm.zip
 ```
 {% endtab %}
 
@@ -230,7 +274,21 @@ Once downloaded, compile codes using the makefile provided.
 {% endtabs %}
 
 {% hint style="info" %}
-You can somewhat follow most of the steps on Apple Silicon, but because the instructions are different between AMD64 and ARM64, the displayed output differs. So, it is easiest to follow the Ghidra sample using the AMD64 example, but you can check the binary using the ARM64 example to run on your VM.
+**Everyone downloads the same `crackme-linux.zip`, including Apple Silicon users.** Ghidra analyses a binary without running it, and it does that identically no matter what architecture your own machine is — so your output will match the screenshots exactly. For the Ghidra work in section 3.2 you do not need the emulation VM; your normal Kali VM is fine.
+
+Finding the passwords is done by *reading* the binary in Ghidra, which works on any machine. But you will want to **run** each crackme to confirm the password you recovered is correct — and for that the architecture does matter. Apple Silicon users: run them inside the `re_emulation_arm` VM.
+{% endhint %}
+
+{% hint style="warning" %}
+These crackmes are **32-bit x86** binaries, so you need the 32-bit runtime libraries before they will start — on Kali *or* in the VM. You may well have them already, in which case `apt` will simply tell you so:
+
+```
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install libc6:i386
+```
+
+Without them the binary fails with `No such file or directory`, even though the file is plainly there. That message refers to the missing 32-bit program loader (`/lib/ld-linux.so.2`), not to the crackme itself — a confusing error worth recognising.
 {% endhint %}
 
 On Ghidra, create a new project (doesn't matter shared or not). You can name it `crackme0`.
@@ -257,7 +315,7 @@ Now we will inspect our binary file. The behaviour we observed was that it promp
 
 ### 3.2.2. `crackme0x00` walkthrough using Ghidra
 
-Let's start by inspecting the program strings: WIndow -> Defined Strings.
+Let's start by inspecting the program strings: Window -> Defined Strings.
 
 ![](<../.gitbook/assets/image (7) (3).png>)
 
@@ -305,7 +363,7 @@ Indeed, that was the password!
 
 ![](<../.gitbook/assets/image (4) (4).png>)
 
-whetherAnyway, let's inspect the function test to see whether this is indeed the place where the password is checked or not. From the decompiler window, double-click the function name `test`.
+Anyway, let's inspect the function test to see whether this is indeed the place where the password is checked or not. From the decompiler window, double-click the function name `test`.
 
 ![](<../.gitbook/assets/image (3) (1) (2).png>)
 
