@@ -8,9 +8,13 @@ READ: Any knowledge and techniques presented here are for your learning purposes
 
 You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
 
-* A copy of the DebLinux image (.ova) can be found from the Teams -> Labs -> Files. Some account details are below:&#x20;
+* A copy of the DebLinux image can be found from the Teams -> Labs -> Files, in two formats: **`DebLinux.utm`** for UTM (use this one on an Apple Silicon Mac) and `DebLinux.ova` for VirtualBox. Some account details are below:&#x20;
   * non-admin user: `user`:`password321`&#x20;
   * admin user: `root`:`password123`
+
+{% hint style="info" %}
+**Apple Silicon (M-series Mac) users:** you do not need to convert anything. The shared VM folder already contains UTM versions of every machine used in this unit — `DebLinux.utm`, `Metasploitable.utm`, `Windows 7.utm`, `Windows11.utm` and `WindowsServer2019.utm` — so download the `.utm` image rather than the `.ova`. The x86 ones run under emulation, which is slower than native but perfectly workable for this lab.
+{% endhint %}
 
 {% hint style="info" %}
 Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa.sharepoint.com/:f:/r/teams/CITS3006SEM-22026/Shared%20Documents/Labs?csf=1&#x26;web=1&#x26;e=ZRuPlW">here</a>.
@@ -18,7 +22,7 @@ Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa
 
 ### 4.1.1 Windows VM Setup
 
-If you haven't done already, set up a Windows VM (tested with Windows 11 preview version, but if issues, you should be able to do it with a Windows 7 VM) as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Once you have created an admin account and are now able to access the desktop, complete the following steps:
+If you haven't done already, set up a Windows VM as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Windows 11 is what these exercises were tested on; if you run into trouble, the Windows 7 image in the shared VM folder also works. Once you have created an admin account and are now able to access the desktop, complete the following steps:
 
 1. Log in to the Windows VM using a user account that has administrator privileges.
 2. Ensure the Windows VM does not have a user account named 'hank'. If it exists, you can either delete it, or replace 'hank' below with your chosen username, and also replace it in the script in step 3 below.
@@ -65,7 +69,7 @@ Some permissions are pretty harmful, such as:
 you might need to type `sc.exe` instead of just `sc`. `sc` stands for Service Control, which is a command that you can use to interact with Windows Services.
 {% endhint %}
 
-If a user has permission to change the configuration of a service that runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. You will find an exhaustive list of services, one of which is the `daclsvc` service.
+If a user has permission to change the configuration of a service that runs with SYSTEM privileges, we can change the executable the service uses to one of our own, including a reverse shell. Let's discover the running services with any service enumeration tool, such as [winPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS) or by typing `Get-Service`. (winPEAS and its Linux counterpart linPEAS are packaged on Kali as `peass-ng`, so `sudo apt install peass-ng` saves you fetching them from GitHub each time. linPEAS will be useful for section 4.3.) You will find an exhaustive list of services, one of which is the `daclsvc` service.
 
 <figure><img src="../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
@@ -88,8 +92,12 @@ The tool `AccessChk` is used to check the permissions of user accounts, which is
 Using the `accesschk.exe` tool, you can look at which services the user `hank` has permissions over (read the documentation to understand the meaning of flags):
 
 ```powershell
-.\accesschk64.exe -uwcqv "hank" *
+.\accesschk64.exe -accepteula -uwcqv "hank" *
 ```
+
+{% hint style="info" %}
+The `-accepteula` flag accepts the Sysinternals licence agreement on the command line. Without it, the first run pops up a dialog box and waits, which is easy to miss if you are working from a shell.
+{% endhint %}
 
 <figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
 
@@ -169,19 +177,32 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Defaul
 
 We see the credentials of our user with non-administrator permissions in plaintext.&#x20;
 
-### 4.2.4 Password Cracking
+### 4.2.4 Password Mining (VNC)
 
-If there are other services running (e.g., PuTTY, TightVNC, etc.), you could also check the registry entries to see if there are any credentials. Sometimes they may be hashed, but you can use various hash crackers to retrieve the plaintext, if the credentials used are weak!
+If there are other services running (e.g., PuTTY, TightVNC, etc.), you could also check the registry entries to see if there are any credentials. VNC servers are a good example: they store the connection password in the registry, and they store it **encrypted rather than hashed**.
 
-For example, crack the following credentials:
+For example, recover the plaintext of these two values, taken from a TightVNC server's registry entries:
 
 ```
 Password: EC84DB8BE7861E4D
 PasswordViewOnly: 2B27C004F36D46D0
 ```
 
+These are **not** password hashes, so John the Ripper and Hashcat will not help you here. Each is an 8-byte block encrypted with DES using a fixed key that is compiled into every copy of VNC and has been public for decades: `e84ad660c4721ae0`. Because the key is not a secret, whoever can read the registry value can read the password:
+
+```bash
+echo -n EC84DB8BE7861E4D | xxd -r -p | \
+  openssl enc -d -des-ecb -nopad -K e84ad660c4721ae0 -provider legacy -provider default
+```
+
+The `-provider legacy` flags are needed because OpenSSL 3 moved older ciphers such as DES out of the default set.
+
 {% hint style="info" %}
-Password cracking is one of the essential skills in cybersecurity. It is important to understand how to crack passwords, as it is a common way to gain access to systems. There are many tools available to crack passwords, such as John the Ripper, Hashcat, etc. You should practice cracking these passwords using these tools, as well as see how you can gather hashed passwords from different OSes.
+This is a good illustration of the difference between **encryption** and **hashing**, and why the distinction matters to an attacker. A hash is one-way, so recovering a password means guessing candidates until one matches. Encryption is reversible by design — so when the key is known, and here it ships inside the software itself, there is nothing to guess at all. Storing a password this way gives no protection at all against someone who can read the registry.
+{% endhint %}
+
+{% hint style="info" %}
+Password *cracking* is a separate and essential skill, worth practising on values that really are hashes — for example the entries in `/etc/shadow` on Linux, or NTLM hashes dumped from the Windows SAM. Tools such as John the Ripper and Hashcat are built for exactly that. A useful habit whenever you find a stored credential is to work out first which of the two you are looking at, because it decides whether your problem is a lookup or a search.
 {% endhint %}
 
 If you are on a Windows machine, check your own registry!
@@ -217,6 +238,14 @@ sudo vim -c '!sh'
 This launches a shell within vim, allowing you to elevate the privilege!
 
 Now try to see what other programs you can use to elevate the privilege.
+
+{% hint style="info" %}
+You do not have to work these out from first principles. [**GTFOBins**](https://gtfobins.github.io/) is a catalogue of standard Unix binaries that can be abused to break out of restricted shells or escalate privileges, organised by *how* the binary is available to you — via `sudo`, via a SUID bit, via file-read or file-write capability, and so on. Look up `vim` there and you will find exactly the trick used above, alongside several others.
+
+The Windows equivalent is [**LOLBAS**](https://lolbas-project.github.io/) (Living Off The Land Binaries And Scripts), which catalogues signed Microsoft binaries that can be repurposed for execution, download or bypassing controls — the same idea behind the trusted-binary techniques in section 4.2.
+
+Both are worth bookmarking. In a real engagement, the skill being tested is rarely inventing a novel technique; it is enumerating the system carefully enough to notice which known technique applies.
+{% endhint %}
 
 ### 4.3.2 Memory inspection
 
