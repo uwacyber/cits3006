@@ -267,6 +267,15 @@ wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-l
 ```
 {% endtab %}
 
+{% tab title="Apple Silicon (ARM64)" %}
+
+```
+wget https://github.com/uwacyber/cits3006/raw/live/cits3006-labs/files/crackme-arm.zip
+```
+
+The same crackmes, built for ARM64. These are for **running** the programs on your Kali VM — do the Ghidra analysis on the x86 build (see the note below).
+{% endtab %}
+
 {% tab title="Source (if none of them works)" %}
 
 ```
@@ -278,13 +287,22 @@ Once downloaded, compile codes using the makefile provided.
 {% endtabs %}
 
 {% hint style="info" %}
-**Everyone downloads the same `crackme-linux.zip`, including Apple Silicon users.** Ghidra analyses a binary without running it, and it does that identically no matter what architecture your own machine is — so your output will match the screenshots exactly. For the Ghidra work in section 3.2 you do not need the emulation VM; your normal Kali VM is fine.
+**Do the Ghidra analysis on `crackme-linux.zip`, whatever machine you are on.** Ghidra analyses a binary without running it, and it does so identically no matter what architecture your own machine is — so your output will match the screenshots exactly. For section 3.2 you do not need the emulation VM; your normal Kali VM is fine.
 
-Finding the passwords is done by *reading* the binary in Ghidra, which works on any machine. But you will want to **run** each crackme to confirm the password you recovered is correct — and for that the architecture does matter. Apple Silicon users: run them inside the `re_emulation_arm` VM.
+Actually *running* the crackmes is a different matter, because that does depend on architecture. Apple Silicon users have two options, and either is fine:
+
+- run the x86 binaries inside the `re_emulation_arm` VM, the same one used in section 3.1; or
+- download `crackme-arm.zip` above, which contains the same crackmes built for ARM64 and runs natively on your Kali VM.
+
+The passwords are the same either way, so a password you recover from the x86 binary in Ghidra will work on the ARM build.
 {% endhint %}
 
 {% hint style="warning" %}
-These crackmes are **32-bit x86** binaries, so you need the 32-bit runtime libraries before they will start — on Kali *or* in the VM. You may well have them already, in which case `apt` will simply tell you so:
+**Analyse the x86 build, not the ARM one.** The ARM binaries are provided so you can run the programs conveniently. If you load one into Ghidra, the instructions and addresses will look nothing like the screenshots in this section, because ARM64 is a completely different instruction set. Every walkthrough below assumes `crackme-linux.zip`.
+{% endhint %}
+
+{% hint style="warning" %}
+The crackmes in `crackme-linux.zip` are **32-bit x86** binaries, so you need the 32-bit runtime libraries before they will start — on Kali *or* in the VM. You may well have them already, in which case `apt` will simply tell you so (this does not apply to the ARM64 build, which needs nothing extra):
 
 ```
 sudo dpkg --add-architecture i386
