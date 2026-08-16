@@ -251,6 +251,10 @@ Ghidra should be ready by now — either it came with your Kali image, or you in
 
 Once you run ghidra (just type `ghidra` from the terminal), you will first be greeted with the agreement notice - press "agree". Then, you see the Ghidra Help - you can read this at your own time to get more familiar with Ghidra, but otherwise you can close it for now. Finally, you will see the main ghidra window and the tip window (close this also). Now we are ready to get started!
 
+{% hint style="warning" %}
+On Kali you may get an `Uncaught Exception! IllegalArgumentException - view is invalid` dialog instead of the help window. This is a known problem with the help **search index** in the packaged version of Ghidra, not with Ghidra itself. Press "Close" and carry on — the main window opens behind it and everything in this lab works normally. Only the built-in help search is affected, and the same documentation is available online at [https://ghidra-sre.org](https://ghidra-sre.org).
+{% endhint %}
+
 ### 3.2.1. Opening a project in Ghidra
 
 Download the files we will be using for this section.
