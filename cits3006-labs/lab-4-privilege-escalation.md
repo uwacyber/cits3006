@@ -4,7 +4,7 @@
 READ: Any knowledge and techniques presented here are for your learning purposes only. It is **ABSOLUTELY ILLEGAL** to apply the learned knowledge to others without proper consent/permission, and even then, you must check and comply with any regulatory restrictions and laws.
 {% endhint %}
 
-## 4.1. Introduction
+## 4.1 Introduction
 
 You will need your Kali VM, Windows VM, and the DebLinux VM.&#x20;
 
@@ -22,7 +22,11 @@ Some ISOs/VM images are available from MS Teams — click <a href="https://uniwa
 
 ### 4.1.1 Windows VM Setup
 
-If you haven't done already, set up a Windows VM as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#2.0.-setup-windows-vm). Windows 11 is what these exercises were tested on; if you run into trouble, the Windows 7 image in the shared VM folder also works. Once you have created an admin account and are now able to access the desktop, complete the following steps:
+If you haven't done already, set up a Windows VM as described in [Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#id-2.0.-setup-windows-vm). Windows 11 is what these exercises were tested on; if you run into trouble, the Windows 7 image in the shared VM folder also works. Once you have created an admin account and are now able to access the desktop, complete the following steps:
+
+{% hint style="warning" %}
+Make sure Windows Defender is still turned off before you go any further — the same [steps from Lab 2](https://uwacyber.gitbook.io/cits3006/cits3006-labs/lab-2-malware#id-2.0.-setup-windows-vm) apply here. The setup script writes several service executables to disk, and in 4.2.2 you will build a payload with `msfvenom` that Defender will certainly quarantine. If files start disappearing partway through an exercise, this is almost always why.
+{% endhint %}
 
 1. Log in to the Windows VM using a user account that has administrator privileges.
 2. Ensure the Windows VM does not have a user account named 'hank'. If it exists, you can either delete it, or replace 'hank' below with your chosen username, and also replace it in the script in step 3 below.
@@ -58,12 +62,14 @@ PowerShell fix if needed: re-download via IWR and normalise CRLF
 
 Each service has an Access Control List (ACL) that specifies specific permissions to a certain service.
 
-Some permissions are pretty harmful, such as:
+The permissions a user holds over a service determine what they can do to it:
 
-* able to query the configuration of the service: `sc qc <service>`
-* able to check the current status of the service: `sc query <service>`
-* able to start and stop the service: `net start/stop <service>`
-* and change the configuration of the service: `sc config <service> <option>= <value>`
+* query the configuration of the service: `sc qc <service>`
+* check the current status of the service: `sc query <service>`
+* start and stop the service: `net start <service>` and `net stop <service>`
+* change the configuration of the service: `sc config <service> <option>= <value>`
+
+The first two are read-only, and useful for reconnaissance. The last one is the dangerous one, because it lets the caller rewrite the executable that the service runs.
 
 {% hint style="info" %}
 you might need to type `sc.exe` instead of just `sc`. `sc` stands for Service Control, which is a command that you can use to interact with Windows Services.
@@ -87,6 +93,10 @@ Invoke-WebRequest -Uri "https://github.com/uwacyber/cits3006/raw/live/cits3006-l
 
 Once downloaded, extract the files.
 
+{% hint style="info" %}
+The archive contains three binaries: `accesschk.exe` (32-bit), `accesschk64.exe` (x64) and `accesschk64a.exe` (ARM64). If you are running an ARM64 Windows image under UTM on an Apple Silicon Mac, use `accesschk64a.exe` and substitute that name wherever `accesschk64.exe` appears below.
+{% endhint %}
+
 The tool `AccessChk` is used to check the permissions of user accounts, which is good for administrative tasks, but also could leak useful information for adversaries.
 
 Using the `accesschk.exe` tool, you can look at which services the user `hank` has permissions over (read the documentation to understand the meaning of flags):
@@ -101,7 +111,7 @@ The `-accepteula` flag accepts the Sysinternals licence agreement on the command
 
 <figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
 
-We've confirmed that `hank` has RW (read-write) permissions over the `daclsvc` service (in fact, this is the only service that `hank` has permission to do with), including the `SERVICE_CHANGE_CONFIG` permission which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to the administrator through this misconfigured service. We first check our current group membership for `hank`:
+We've confirmed that `hank` has RW (read-write) permissions over the `daclsvc` service. This is the only service `hank` is able to *reconfigure*, which is why the `-w` (write access) filter narrows the list down to this one alone — `hank` can start and stop several other services, but those rights on their own are not enough to escalate. The listing includes the `SERVICE_CHANGE_CONFIG` permission, which grants the caller the right to change the executable file that the system runs. Thus, this permission should be granted only to administrators. What we can do now is elevate the permissions of this user to the administrator through this misconfigured service. We first check our current group membership for `hank`:
 
 <figure><img src="../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
@@ -127,6 +137,10 @@ Now restart the service and check whether `hank` has been added to the administr
 
 <figure><img src="../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
+{% hint style="info" %}
+`net user hank` will show the new group membership straight away, but the session you are already logged into will not have the new privileges. Windows builds an access token when you log on and does not rebuild it when your group membership changes afterwards. Sign out and back in as `hank` before trying anything that actually requires administrator rights, and note that this is a general property of Windows privilege escalation, not a quirk of this exercise.
+{% endhint %}
+
 Using the command `sc qc daclsvc`, we can also see the binary path that we have altered for the `daclsvc` service. Note the BINARY\_PATH\_NAME variable.
 
 <figure><img src="../.gitbook/assets/image (37).png" alt=""><figcaption></figcaption></figure>
@@ -145,7 +159,23 @@ For this exercise, there will be a vulnerable service called `unquotedsvc` in yo
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-We see that the binary path is missing the quotations around it. The path here is to the service .exe. Take note of the directory path itself, as this is where we can drop our malicious executables.
+We see that the binary path is missing the quotations around it. The configured path is:
+
+```
+C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe
+```
+
+Without quotes, the Service Control Manager cannot tell where the executable name ends and its arguments begin, so it treats each space as a possible break and tries the candidates in turn, left to right, until one of them exists:
+
+```
+C:\Program.exe
+C:\Program Files\Unquoted.exe
+C:\Program Files\Unquoted Path.exe
+C:\Program Files\Unquoted Path Service\Common.exe
+C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe
+```
+
+Normally the first four do not exist, so the search falls through to the last one and the real service starts. But if we can write into any of the directories along that path, we can plant a file at one of the earlier candidates and the SCM will launch it instead — with the service's privileges, which here are SYSTEM. `C:\Program Files\Unquoted Path Service` is writable by us, so our target is the fourth candidate: `C:\Program Files\Unquoted Path Service\Common.exe`.
 
 We are going to create a malicious executable that takes advantage of this vulnerability. This executable will perform a similar task to 4.2.1; it will grant the user administrator permissions. We will create this .exe in Kali with the command:
 
@@ -155,12 +185,16 @@ msfvenom -p windows/exec CMD='net localgroup administrators hank /add' -f exe-se
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-The name `common.exe` is innocuous enough. Copy this .exe over to the Windows VM and place it within the `C:\Program Files\Unquoted Path Service` directory. In cmd, restart the service by running `net stop unquotedsvc` and then `net start unquotedsvc`.
+This is a Metasploit payload, so Defender will quarantine it on sight if it has crept back on. If the file vanishes after you copy it across, revisit the Lab 2 steps referenced in 4.1.1.
+
+The filename here is not a free choice: it has to match the candidate the SCM will look for, `Common.exe`. (Windows filenames are case-insensitive, so `common.exe` matches.) Copy this .exe over to the Windows VM and place it in the `C:\Program Files\Unquoted Path Service` directory — directly in that folder, **not** inside `Common Files`. In cmd, restart the service by running `net stop unquotedsvc` and then `net start unquotedsvc`.
 
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 Once again, confirm that this user's permissions have been elevated via `net localgroup administrators`. You should see `hank` in the administrators list. Of course, you could plant any .exe you wanted, including reverse shells, etc.
+
+As in 4.2.1, tidy up before moving on: run `net localgroup administrators hank /delete` from an admin cmd, and delete `C:\Program Files\Unquoted Path Service\Common.exe` so that the service starts its real binary again.
 
 ### 4.2.3 Password Mining (Registry)
 
@@ -249,7 +283,7 @@ Both are worth bookmarking. In a real engagement, the skill being tested is rare
 
 ### 4.3.2 Memory inspection
 
-Sometimes passwords are cached in memory, which could be revealed by inspecting the memory. For example, if the root user was accessing the MySQL database just before you logged on, and they logged into the database by specifying the credentials with the `-p` flag, then you could discover what the inputted password was. Let's have a look.
+Sometimes passwords are left behind in a process's memory, where they can be recovered by dumping and inspecting it. Anything typed at a shell is a good candidate: if someone logged into a database by putting the credentials on the command line — the `-p` flag of `mysql`, say — then that whole command string is sitting in the shell's memory, password included. Let's have a look.
 
 We look at the currently running processes on the target VM:
 
@@ -259,19 +293,24 @@ ps -ef
 
 <figure><img src="../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
 
-There are several processes running, we will inspect the bash process (in the above screenshot, the PID is 2554). Bash is a good choice because the main interaction is largely plaintext. You can look up other processes that could leak passwords in plaintext as well (e.g., telnet, ftp, etc.).
-
-Now to get the memory dump:
+There are several processes running. We will inspect a bash process — in the screenshot above, PID 2554, which is the login shell belonging to `user`. Bash is a good choice for two reasons: most of what passes through it is plaintext, and it reads `~/.bash_history` into memory when it starts, so its memory carries commands typed in *earlier* sessions as well as the current one. You can look up other processes that could leak passwords in plaintext as well (e.g., telnet, ftp, or `mysql` itself while it is running).
 
 {% hint style="info" %}
-Note: You may need to run as root or set `sudo sysctl -w kernel.yama.ptrace_scope=0` to allow `gdb -p <PID>` to attach.
+You should not need this on DebLinux, whose kernel predates the module described below — but you will hit it if you try the same technique on Kali or on your own machine, so it is worth knowing about.
 
-Most mainstream Linux distros (Ubuntu, Debian, Fedora, etc.) ship the Yama
-[Linux security module](https://en.wikipedia.org/wiki/Linux_Security_Modules)
-security module, which tightens the default kernel rules about when one process can
-attach to another for debugging. Under Yama, only the parent of some process can attach
-to it for debugging, in the absence of special privileges.
+Most mainstream Linux distros (Ubuntu, Debian, Fedora, etc.) now ship the Yama
+[Linux security module](https://en.wikipedia.org/wiki/Linux_Security_Modules),
+which tightens the default kernel rules about when one process can attach to another
+for debugging. Under Yama's default setting, and in the absence of special privileges,
+a process may only attach to its own descendants. The shell we are about to target is
+gdb's *ancestor* rather than its descendant, so that default would block the attach
+and you would need `sudo sysctl -w kernel.yama.ptrace_scope=0`, or to run gdb as root.
+
+Note that relaxing it requires root in the first place. It is a convenience for working
+on a machine you already control, not a step in an attack.
 {% endhint %}
+
+Attach to the process and list its memory map:
 
 ```
 gdb -p [PID]
@@ -280,9 +319,9 @@ info proc mappings
 
 <figure><img src="../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
 
-Make note of the start and end memory addresses of the \[heap]. For the above screenshot, they are `0xbf4000` and `0xc3f000`.
+The map is longer than one screen, so gdb pages it and pauses with `---Type <return> to continue, or q <return> to quit---`. Press `q` then Enter to dismiss the **pager**; this returns you to the `(gdb)` prompt with gdb still attached to the process. (Pressing `q` at the `(gdb)` prompt itself is different — that quits gdb.)
 
-Press 'q' to return, then enter:
+Make note of the start and end memory addresses of the \[heap] region. For the above screenshot, they are `0xbf4000` and `0xc3f000`. Then, at the `(gdb)` prompt:
 
 ```
 dump memory <OUTPUT_FILE> <START_ADDRESS> <END_ADDRESS>
@@ -295,12 +334,14 @@ dump memory /tmp/mem 0xbf4000 0xc3f000
 
 ```
 
-This will dump the memory to a file - `/tmp/mem`. The Heap is a dynamic memory used by applications to store global variables. So as long as the memory has not been overridden by another program, then the value that is left in the memory could be retrieved.
+This will dump the memory to a file - `/tmp/mem`. The heap is the region a program uses for memory it allocates as it runs, and bash keeps its command history and line-editing buffers there. Memory that a program has finished with is not wiped, only marked as available for reuse, so as long as nothing has since overwritten it, whatever was left behind can still be read out.
+
+You can now leave gdb: type `q` at the `(gdb)` prompt, then answer `y` to "Quit anyway?".
 
 We can then inspect this file to see if there are any password-related things in there:
 
 ```
-strings /tmp/mem | grep passw
+strings /tmp/mem | grep pass
 ```
 
 <figure><img src="../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
@@ -309,7 +350,7 @@ We see the credentials `root` and `password123` in plaintext used to log in to `
 
 <figure><img src="../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
 
-Instead, we try to switch the user to `root` (given the username was `root`), and find that it was successful.
+Instead, we try that password against the system's own `root` account — the MySQL username was `root`, and people reuse passwords across accounts — and find that it was successful.
 
 <figure><img src="../.gitbook/assets/image (45).png" alt=""><figcaption></figcaption></figure>
 
@@ -319,14 +360,54 @@ Because ssh is also running, we can `ssh` into the target host from Kali.
 
 Voila!
 
+{% hint style="info" %}
+The process we dumped was our own login shell, so the same string is also sitting in `~/.bash_history` — try `cat ~/.bash_history` and you will find it there. So why bother with gdb at all?
+
+Because memory holds things the history file does not. History is only flushed to disk when a shell exits cleanly; it can be disabled or scrubbed (`unset HISTFILE`, `HISTCONTROL=ignorespace`, or simply deleting the file); and it never records anything typed *into a program* rather than into the shell — a password entered at a `mysql`, `su` or `sudo` prompt, for instance. Reading process memory works on any process you have the rights to attach to, including one running right now, and does not depend on the target having chosen to write anything down.
+
+The habit worth forming is to check the cheap sources first — `~/.bash_history`, config files, `/etc/shadow` if it happens to be readable — and reach for memory when those come up empty.
+{% endhint %}
+
 Try to see if you can retrieve any other useful information from memory dumps (whether on the target host or even on your own machine).
 
-## 4.4 Summary
+## 4.4 Other Avenues to Explore
+
+The four Windows and two Linux techniques above are what fits comfortably into a two-hour lab, but they are a small sample of what is out there. The list below is for your own exploration — you are not expected to work through it, but trying a few of these is good preparation for the assessment and for real engagements.
+
+Several of the Windows ones need no extra setup: `wsetup.bat` already configured them on your VM when you ran it back in 4.1.1. Those are marked with a ★.
+
+**Windows**
+
+* ★ **Weak service binary permissions** (`filepermsvc`) — the service runs as SYSTEM and you are allowed to overwrite its `.exe` directly, no reconfiguration needed.
+* ★ **Weak service registry permissions** (`regsvc`) — you cannot use `sc config` here, but you can edit the service's `ImagePath` value in the registry, which amounts to the same thing.
+* ★ **DLL hijacking** (`dllsvc`) — the service loads a DLL from a directory you can write to.
+* ★ **AlwaysInstallElevated** — when both the HKLM and HKCU registry values are set, any `.msi` you run installs with SYSTEM privileges.
+* ★ **Credentials in configuration files** — look at `C:\Windows\Panther\Unattend.xml` and `C:\ProgramData\McAfee\Common Framework\SiteList.xml`. `findstr /si password *.xml *.ini *.txt` is a good way to go hunting.
+* ★ **Scheduled task with a missing binary** — a task points at a path under `C:\Missing Scheduled Binary` that does not exist and that you can write to.
+* ★ **Writable startup folder** — anything dropped into `C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup` runs at the next logon, including an administrator's.
+* **Token privileges** — run `whoami /priv`. `SeImpersonatePrivilege` and `SeAssignPrimaryTokenPrivilege` in particular lead to the "potato" family of attacks, and service accounts frequently hold them.
+* **UAC bypass** using auto-elevating trusted binaries such as `fodhelper.exe` and `eventvwr.exe` — this is the technique demonstrated in the lecture.
+* **Unpatched kernel and third-party drivers** — `wmic qfe list` shows which patches are installed, `driverquery` shows what drivers are loaded.
+* **Stored credentials** — `cmdkey /list`, saved PuTTY sessions, browser password stores.
+
+**Linux**
+
+* **SUID/SGID binaries** — the classic Linux escalation, and the one most likely to come up. `find / -perm -u=s -type f 2>/dev/null` lists them; cross-reference anything unusual against GTFOBins.
+* **File capabilities** — a finer-grained modern alternative to the SUID bit, and one that enumeration often misses. `getcap -r / 2>/dev/null`.
+* **`LD_PRELOAD`** — look again at the `sudo -l` output from 4.3.1 and note the `env_keep+=LD_PRELOAD` entry in the defaults. That is an escalation in its own right.
+* **Cron jobs** — `cat /etc/crontab` and `ls -la /etc/cron.*`. A root-owned script that is world-writable, or one that invokes a program by relative path, is game over.
+* **`PATH` hijacking** — if a program running as root calls a helper without giving its full path, and you control any directory that comes earlier in its `PATH`, you decide which binary it actually runs.
+* **Kernel exploits** — `uname -a`, then look for a matching public exploit. This is the route demonstrated in the lecture against the Metasploitable VM.
+* **Weak and reused credentials** — as in 4.3.2, but also backups, and application config files with database passwords sitting in them.
+
+Two tools are worth running before you start guessing: **linPEAS** and **winPEAS**, which you installed earlier with `sudo apt install peass-ng`. They automate most of the enumeration above and flag anything that looks unusual. What they cannot do for you is decide which of their many findings is actually exploitable — that part is the skill.
+
+## 4.5 Summary
 
 We discovered a few different methods for escalating privilege when you have gained access as a user on a machine. Regardless of which OS you are on, there are always vulnerabilities that can be exploited to gain higher privileges. Therefore, having proper security policies and security reviews is important (for example, misconfigurations are not typically picked up by anti-malware products or firewalls). Using the techniques above, you could also review if you have any misconfigurations that would allow malicious users who may gain access to your machine to elevate the privilege.
 
 {% hint style="info" %}
-Credit for Sagi Shahar sagishahar@github, where much of the lab content has been adopted from.
+Credit to Sagi Shahar, whose [Local Privilege Escalation Workshop](https://github.com/sagishahar/lpeworkshop) much of the Windows lab content has been adapted from.
 {% endhint %}
 
 The next topic we will look at is **web security**.
