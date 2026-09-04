@@ -54,16 +54,17 @@ Note that materials are still being updated as noted below.
 
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
-
 ## Week 07
 
 * [07. Command and Control](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/07.c2_vertical.pdf)
 * Lab Quiz 2 scheduled test & demo in lab (covers weeks 4-6).
+
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
+
 
 
 ## Week 08
