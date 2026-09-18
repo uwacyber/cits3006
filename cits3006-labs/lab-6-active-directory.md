@@ -9,7 +9,15 @@ In this lab, we will build an Active Directory environment in a virtualized lab 
 ## 6.1. VM setup
 
 {% hint style="danger" %}
-This lab requires running 3 VMs (Windows server (1vCPU, 2GB Ram, 32GB Storage), Windows workstation (1vCPU, 1GB Ram, 20GB Storage), and Kali (1vCPU, 1GB Ram). If you have 4 cores, it leaves 1 core for your host computer, which usually isn't sufficient (likely to crash your computer). So if your computational power is lacking (less than 4 cores), you can do the lab with others in the lab (groups of 2 or 3 people). This cannot be done on UWA network as it doesn't allow multiple OSes to have separate network addresses (i.e., your VMs). To do this, you will need a separate router to connect to. We will try to provide an offline router in the F2F lab for you to connect and do the lab (run through all the lab content and preinstall anything you would need from the internet before connecting), then connect to the router as a bridged mode and do the lab. You could do it via hotspot as well, but mind the data usage.
+This lab requires running 3 VMs (Windows server (1vCPU, 2GB Ram, 32GB Storage), Windows workstation (1vCPU, 1GB Ram, 20GB Storage), and Kali (1vCPU, 1GB Ram). If you have 4 cores, it leaves 1 core for your host computer, which usually isn't sufficient (likely to crash your computer). So if your computational power is lacking (less than 4 cores), you can do the lab with others in the lab (groups of 2 or 3 people).
+
+The three VMs must sit on the same network and be able to see each other. Do **not** use bridged networking for this: bridged mode puts your VMs on whatever physical network your laptop is attached to, and the UWA network will not hand out separate addresses to them. Use your hypervisor's own virtual network instead. It runs entirely on your laptop, so it works on campus, at home, or with no internet at all, and you do not need a router of your own.
+
+* **UTM (Apple Silicon):** set every VM's network to **Shared Network**. UTM places all shared-mode VMs on one virtual subnet (192.168.64.0/24 by default), each with its own address, able to reach each other and to reach the internet through your Mac.
+* **VMware Workstation / Fusion:** set every VM's network adapter to **NAT**. VMs on the same NAT network can see each other.
+* **VirtualBox:** create a **NAT Network** in the VirtualBox Network Manager and attach each VM to it. Do *not* leave the VMs on the default **NAT** adapter - plain NAT deliberately isolates each VM so they cannot talk to each other, which will break every step of this lab.
+
+Whichever you use, all three VMs must be on the *same* virtual network. Your addresses will not match the `192.168.86.x` ones in the screenshots below, so use whatever `ipconfig` reports on your own machines. They are DHCP addresses, so if you shut the VMs down and return to the lab later, re-check the domain controller's address before relying on it.
 
 If you are an online student without sufficient computing power, you can read through the lab and ask our lab facilitators if you have any questions.
 {% endhint %}
