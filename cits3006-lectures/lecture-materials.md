@@ -75,7 +75,7 @@ The below has not been updated yet.
 
 ## Week 09
 
-* [9. Active Directory](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/09.Active_Directory_vertical.pdf)
+* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/10.Active_Directory_vertical.pdf)
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
 
 
@@ -83,18 +83,18 @@ The below has not been updated yet.
 ## Week 10 (King's Bday)
 
 * Lecture: no lecture
-* Lab Quiz 3 in-erson test & demo (covers weeks 7-9).
+* Lab Quiz 3 in-person test & demo (covers weeks 7-9).
 
 
 ## Week 11
 
-* [11. Pentesting with AI](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/11.Pentesting_with_ai.pdf)
-* Project: CTF
+* Lecture: **Project: Live CTF** - attend with your group to solve the other groups' CTF challenges live (project Task 2).
+* Complete the remaining CTF challenges and submit your Task 2 report; see the [project page](../cits3006-assessments/project.md).
 
 
 ## Week 12
 
-* Lecture: guest lecture?
+* [11. Pentesting and AI](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/11.Pentesting_with_ai.pdf)
 * Project: Demo during the scheduled labs
 
  
