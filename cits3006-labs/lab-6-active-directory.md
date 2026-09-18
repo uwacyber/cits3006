@@ -9,7 +9,7 @@ In this lab, we will build an Active Directory environment in a virtualized lab 
 ## 6.1. VM setup
 
 {% hint style="danger" %}
-This lab requires running 3 VMs (Windows server (1vCPU, 1GB Ram, 32GB Storage), Windows workstation (1vCPU, 1GB Ram, 20GB Storage), and Kali (1vCPU, 1GB Ram). If you have 4 cores, it leaves 1 core for your host computer, which usually isn't sufficient (likely to crash your computer). So if your computational power is lacking (less than 4 cores), you can do the lab with others in the lab (groups of 2 or 3 people). This cannot be done on UWA network as it doesn't allow multiple OSes to have separate network addresses (i.e., your VMs). To do this, you will need a separate router to connect to. We will try to provide an offline router in the F2F lab for you to connect and do the lab (run through all the lab content and preinstall anything you would need from the internet before connecting), then connect to the router as a bridged mode and do the lab. You could do it via hotspot as well, but mind the data usage.
+This lab requires running 3 VMs (Windows server (1vCPU, 2GB Ram, 32GB Storage), Windows workstation (1vCPU, 1GB Ram, 20GB Storage), and Kali (1vCPU, 1GB Ram). If you have 4 cores, it leaves 1 core for your host computer, which usually isn't sufficient (likely to crash your computer). So if your computational power is lacking (less than 4 cores), you can do the lab with others in the lab (groups of 2 or 3 people). This cannot be done on UWA network as it doesn't allow multiple OSes to have separate network addresses (i.e., your VMs). To do this, you will need a separate router to connect to. We will try to provide an offline router in the F2F lab for you to connect and do the lab (run through all the lab content and preinstall anything you would need from the internet before connecting), then connect to the router as a bridged mode and do the lab. You could do it via hotspot as well, but mind the data usage.
 
 If you are an online student without sufficient computing power, you can read through the lab and ask our lab facilitators if you have any questions.
 {% endhint %}
@@ -29,7 +29,7 @@ You will need to use 3 VMs for this lab, one for each of the following:
 * Windows 11 or Windows 7 (see lab 2 instructions)
 * Kali Linux
 
-You will already have Kali, so you can set up the Windows Server 2019. If you also need Windows 10 Enterprise, download the ISO from the link provided. You can type in junks in the required fields, it will still take you to the ISO downloads page.
+You will already have Kali, so you can set up the Windows Server 2019. If you also need a Windows workstation ISO, grab a Windows 10/11 Enterprise evaluation ISO from the [Microsoft Evaluation Center](https://www.microsoft.com/en-us/evalcenter/), or simply reuse the Windows VM from [lab 2](lab-2-malware.md). You can type in junks in the required fields, it will still take you to the ISO downloads page.
 
 {% hint style="info" %}
 M1/M2 users:
@@ -65,6 +65,10 @@ M1/M2 users, skip this part and scroll down.
 Start the installation. Click "Next", leaving all options as default. Continue clicking "Next" until you reach the "Easy Install Information" window. Give whatever "Full Name" you'd like. Select "Windows Server Standard Core". Leave the product key blank.
 
 ![](../.gitbook/assets/lab-5-assets/1.png)
+
+{% hint style="warning" %}
+The edition in this Easy Install dropdown only feeds VMware's unattended-install answer file. Because we leave the product key blank, Easy Install is skipped and you will pick the edition yourself in the Windows Setup screen a few steps below. Make sure you pick the **Desktop Experience** edition there - this lab uses Server Manager and other GUI tools throughout, and a Server *Core* install has no GUI.
+{% endhint %}
 
 Keep clicking "Next" until the "Finish" button becomes available, again leaving all options as default. If any, before you click "Finish", uncheck the "Power on this virtual machine after creation" option, as there are a few more settings that we need to edit before we run the VM.
 
@@ -166,7 +170,7 @@ In the Server Manager dashboard, click “Tools” then “Active Directory User
 
 ![](../.gitbook/assets/lab-5-assets/15.png)
 
-Let's create a basic user. Click the arrow next to dc.local”, click on “Users”, then right click in the white space in the Users menu, hover over “New”, then select “User”.
+Let's create a basic user. Click the arrow next to “dc.local”, click on “Users”, then right click in the white space in the Users menu, hover over “New”, then select “User”.
 
 ![](../.gitbook/assets/lab-5-assets/16.png)
 
@@ -186,7 +190,7 @@ Now let's create a domain admin to help us out on our network. Right-click the �
 
 Let's create a few more users. Copy our "test user1" user and repeat the previous steps for test users 2 and 3.
 
-Many Active Directory’s utilize file shares. Let's set up a file share to see how that common feature can be a vulnerability. Close out of the “Users and Computers” window, then click on “File and Storage Services”.
+Many Active Directory deployments utilise file shares. Let's set up a file share to see how that common feature can be a vulnerability. Close out of the “Users and Computers” window, then click on “File and Storage Services”.
 
 ![](../.gitbook/assets/lab-5-assets/24.png)
 
@@ -219,14 +223,14 @@ Click “Enabled”, “Apply”, “OK”. We are done configuring our (vulnera
 ### 6.4.1 On Windows 10/11 WS
 
 {% hint style="info" %}
-How to do this for Windows 7 WS is shown in section [6.4.2](lab-6-active-directory.md#5.4.2-windows-7-ws) below.
+How to do this for Windows 7 WS is shown in section [6.4.2](lab-6-active-directory.md#6.4.2-windows-7-ws) below.
 {% endhint %}
 
 {% hint style="info" %}
 The instructions are the same for Windows 10 and 11, but the location and how they look may differ a bit. You should still be able to find those and proceed, but do let the facilitator know if you are having troubles.
 {% endhint %}
 
-We will start with the Windows 10 workstation we created in [6.1.2](lab-6-active-directory.md#5.1.2-using-an-existing-windows-vm-for-a-workstation). Open up this VM and log in. Go to the C Drive and create a new folder (we'll call it "Shares" here). This folder will be acting as our share drive in our AD system, perform the following actions to set it up on the Windows Server 2019:
+We will start with the workstation VM you prepared in [6.1.2](lab-6-active-directory.md#6.1.2-using-an-existing-windows-vm-for-a-workstation) or [6.1.3](lab-6-active-directory.md#6.1.3-setting-up-a-new-windows-10-enterprise-vm-as-a-workstation). Open up this VM and log in. Go to the C Drive and create a new folder (we'll call it "Shares" here). This folder will be acting as our share drive in our AD system, so perform the following actions **on the workstation** to share it:
 
 * Right click → "Properties" → "Sharing" → "Share"
 * Select your user and click "Share"
@@ -268,7 +272,7 @@ Now we'll try to log into one of the users we configured on our domain controlle
 
 ![](../.gitbook/assets/lab-5-assets/38.png)
 
-Repeat these steps in [Connecting Users to Domain](lab-5-active-directory.md#5.4-connecting-users-to-the-domain) with any other Windows 10 workstations you want to hook up to your Active Directory.
+Repeat these steps in [Connecting Users to the Domain](lab-6-active-directory.md#6.4-connecting-users-to-the-domain) with any other Windows 10 workstations you want to hook up to your Active Directory.
 
 ### 6.4.2 Windows 7 WS
 
@@ -296,16 +300,13 @@ If you have setup your AD using VMWare, you must also setup Kali on VMWare to co
 
 ### 6.5.1 Exploiting a Windows Machine with Responder
 
-We’re going to exploit our Active Directory by capturing NTLMv2 Hashes with Responder from `Impacket`. NTLMv2 hashes are basically the scrambled version of Windows passwords. We’ll get to unscrambling them soon enough.
+We’re going to exploit our Active Directory by capturing NTLMv2 Hashes with `Responder`. NTLMv2 hashes are basically the scrambled version of Windows passwords. We’ll get to unscrambling them soon enough.
 
-`responder`, a tool from `Impacket`, should be installed, but if not, you can use pip to install the network exploitation toolkit `Impacket`. Download it to your Kali system and install as follows:
+`Responder` is its own tool - it is **not** part of `Impacket`. We will use both in this section: `Responder` to poison name resolution and capture the hash, and `Impacket` (a separate network exploitation toolkit) to get a remote shell afterwards. Both are preinstalled on Kali; if either is missing, install them from the Kali repositories:
 
 ```bash
-git clone https://github.com/SecureAuthCorp/impacket
-cd impacket/
-sudo pip install . --no-cache-dir
-sudo python setup.py install
-sudo pip install .
+sudo apt update
+sudo apt install -y responder impacket-scripts python3-impacket
 ```
 
 #### 6.5.1.1 Gather credentials using Responder
@@ -316,7 +317,7 @@ Begin running responder on your Kali machine with the following command:
 sudo responder -I eth0 -dwv
 ```
 
-`-I` to listen on your eth0 network interface, `-d` to enable answers for NetBIOS domain, `-w` to start WPAD rouge proxy server, `-v` for verbose output. These are the most common settings.
+`-I` to listen on your eth0 network interface, `-d` to enable answers for NetBIOS domain, `-w` to start WPAD rogue proxy server, `-v` for verbose output. These are the most common settings.
 
 ![](<../.gitbook/assets/image (17).png>)
 
@@ -332,10 +333,10 @@ The responder is acting as an authenticator, so the request to access this new s
 
 To turn this hash into a password, we can attempt hash cracking. The most popular tool to crack hashes of any kind is `hashcat`. You’ll find this preinstalled on your Kali machine. First, save the hash output to a text file.
 
-Then, to crack this hash, we’re going to use a word list to compare the hashes too. If we get a match then we’ve found the password. A popular word list `rockyou.txt` is already pre-installed on every Kali machine located at `/usr/share/wordlist`. If it is still zipped, unzip it with the command:
+Then, to crack this hash, we’re going to use a word list to compare the hashes too. If we get a match then we’ve found the password. A popular word list `rockyou.txt` is already pre-installed on every Kali machine, located in `/usr/share/wordlists/`. If it is still zipped, unzip it with the command:
 
 ```bash
-sudo gunzip /usr/share/wordlist/rock.txt.gz
+sudo gunzip /usr/share/wordlists/rockyou.txt.gz
 ```
 
 Then run `hashcat` with both your saved hash and the wordlist.
@@ -350,10 +351,16 @@ hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt --force
 
 #### 6.5.1.3 `psexec` for remote access
 
-`psexec` is a Microsoft-developed lightweight remote access program. Every Kali Linux is preinstalled with it. We can use it to remotely access `testadmin`’s computer with our newly found credentials. You need to enter the Root domain name (`dc.local`), the username (`testadmin`), the password (`password1!`), then the IP address of `testadmin` machine (e.g., 192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
+`psexec.py` is Impacket's Python reimplementation of Microsoft's Sysinternals PsExec, a lightweight remote access program. It comes with Impacket, which is preinstalled on Kali - note that on recent Kali builds the packaged command is named `impacket-psexec`. We can use it to remotely access `testadmin`’s computer with our newly found credentials. You need to enter the Root domain name (`dc.local`), the username (`testadmin`), the password (`password1!`), then the IP address of `testadmin` machine (e.g., 192.168.86.132). The password needs to be in quotes otherwise the exclamation marks will be interpreted by Bash as regular expressions.
 
 ```bash
 psexec.py dc.local/testadmin:'password1!'@192.168.86.132
+```
+
+If `psexec.py` is not found, use the Kali package's name instead:
+
+```bash
+impacket-psexec dc.local/testadmin:'password1!'@192.168.86.132
 ```
 
 {% hint style="info" %}
@@ -363,13 +370,15 @@ if you get an error:
 
 it means impacket isn't installed correctly. This is a good time to work in Python's virtual environment so let's do that:
 
-<pre class="language-shell"><code class="lang-shell"><strong>git clone https://github.com/SecureAuthCorp/impacket.git
-</strong><strong>virtualenv impacket-venv
+<pre class="language-shell"><code class="lang-shell"><strong>git clone https://github.com/fortra/impacket.git
+</strong><strong>cd impacket
+</strong><strong>python3 -m venv impacket-venv
 </strong><strong>source impacket-venv/bin/activate
-</strong><strong>cd ~/impacket
-</strong><strong>pip3 install .
+</strong><strong>pip install .
 </strong><strong>psexec.py
 </strong></code></pre>
+
+Note that recent Kali releases refuse a plain `pip install` outside a virtual environment (the "externally-managed-environment" error), so the venv above is not optional.
 
 At this point, you should not see an error but if you do, ask for help.
 {% endhint %}
@@ -441,6 +450,14 @@ crackmapexec smb 192.168.86.0/24
 
 ![](<../.gitbook/assets/image (19).png>)
 
+{% hint style="info" %}
+`crackmapexec` is no longer maintained upstream. Its actively maintained fork is **NetExec**, packaged on Kali as `netexec` with the short command `nxc`. The syntax is the same, so if `crackmapexec` is missing or misbehaving on your Kali build, run the equivalent:
+
+```bash
+nxc smb 192.168.86.0/24
+```
+{% endhint %}
+
 But as you can see, those tools provide different types of information about the target systems (e.g., IP, MAC, services, domain name etc.), but you will find that the speed of those scans differs. So you should use whichever is necessary for the job required at the time.
 
 ### 6.5.3 Kerbrute
@@ -459,13 +476,14 @@ sudo apt-get install golang-go
 
 ```bash
 git clone https://github.com/ropnop/kerbrute
+cd kerbrute
 make linux
 ```
 
 {% hint style="info" %}
 M1/M2 users: before you do `make`, you have to edit the Makefile:
 
-change `ARCHS=amd64` to `ARCHS=arm64`
+change the `ARCHS=amd64 386` line to `ARCHS=arm64`
 {% endhint %}
 
 ```bash
@@ -505,7 +523,7 @@ Now that we have discovered users on the domain `dc.local`, it's time to try and
 The Kerbrute tool has a password-spraying function, which we will use here.
 
 ```bash
-./kerbrute_linux_386 passwordspray -d dc.local --dc 192.168.86.134 users.txt password1!
+dist/kerbrute_linux_386 passwordspray -d dc.local --dc 192.168.86.134 users.txt 'password1!'
 ```
 
 {% hint style="info" %}
@@ -514,7 +532,13 @@ This also may fail, if the username you created doesn't exist in the username li
 
 ![](<../.gitbook/assets/image (24).png>)
 
-Obviously, trying password manually isn't ideal so we want to automate this, which can be done using `crackmapexec`. Obviously, in modern authentication, you will be locked out of your account after a certain number of failed attempts, and will also be flagged for the administrators to have a. look.
+Obviously, trying passwords manually isn't ideal so we want to automate this, which can also be done using `crackmapexec` (or `nxc`) by pointing it at a user list and a password:
+
+```bash
+crackmapexec smb 192.168.86.134 -d dc.local -u users.txt -p 'password1!'
+```
+
+Of course, in modern authentication, you will be locked out of your account after a certain number of failed attempts, and will also be flagged for the administrators to have a look.
 
 ![](<../.gitbook/assets/image (25).png>)
 
@@ -534,7 +558,7 @@ Usage: spray.sh -smb <targetIP> <usernameList> <passwordList> <AttemptsPerLockou
 
 Even then, if there is a cap on the number of attempts allowed, then such an approach cannot be used.
 
-### 6.6 Conclusion
+## 6.6 Conclusion
 
 This is just the beginning of exploiting AD, there are so many other ways to exploit AD and gain access to user accounts and sensitive data - exploiting misconfigurations, poisoning AD protocols, kerberoasting, pass the hash etc.
 
