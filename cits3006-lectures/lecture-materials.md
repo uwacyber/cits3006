@@ -61,12 +61,6 @@ Note that materials are still being updated as noted below.
 
 
 
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
-
 ## Week 08
 
 * [08. Web Security](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/08.Web_Security_vertical.pdf)
@@ -75,8 +69,14 @@ The below has not been updated yet.
 
 ## Week 09
 
-* [10. Active Directory](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/10.Active_Directory_vertical.pdf)
+* [09. Active Directory](https://github.com/uwacyber/cits3006/raw/live/cits3006-lectures/09.Active_Directory_vertical.pdf)
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
+
+
+
+{% hint style="warning" %}
+The below has not been updated yet.
+{% endhint %}
 
 
 

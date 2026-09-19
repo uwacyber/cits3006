@@ -30,8 +30,6 @@ Please note that the project contains an individual part, so you should keep cle
 
 Your contribution to the group is also assessed through peer evaluation: each member submits a contribution weight for the other members of their group. This weight is used as an indicator, not an automatic multiplier. If your weight is below 1, the coordinator will review your actual contribution — from your activity/commit records, the group report's contribution statement, and how you demonstrate and answer questions on your work during the live demos — before deciding whether and how it affects your marks on the group components. The benefit of the doubt is given. However, if you have no demonstrable contribution to the project, you may be awarded no marks — including for the group components — even if you are assigned to a group.
 
-{% hint style="info" %}
-
 ## Task 1: Create CTF Challenges (Weeks 4-10)
 
 Your group of renowned cybersecurity experts is developing security exercises for CTF events. This is done by building a vulnerable web/app/logs/containers/etc. (you can use any kind of theme you would like, so long as it's easily accessible to others (i.e., other students)). Then the CTF participants are tasked to find flags by exploiting the vulnerabilities you have “hidden” in the exercise you created. The following requirements are to be met with your CTF challenges:
@@ -63,8 +61,16 @@ Although individual members may lead different challenges, every member is expec
 ### Task 1 todo:
 
 1. By Wednesday 11:59pm of week 10, your group leader must submit the group report on LMS outlining the CTF challenges and their details, including the sample solution. It is a good idea to include an exploit map in your report. This report will be used during the live demo as a guideline for the marker, and any new vulnerabilities not in the report will not be counted toward the grade. Also, the report must explicitly and clearly state individual contributions (you can structure your report as you like, but it should be clear and concise). This will be used to assess the individual contribution to the project. Remember, unclear contributions may result in no marks for the individual component.
-2. The group leader must share the CTF challenge files in appropriate format via email to me (e.g., a link is sufficient). You are also to submit an instruction document (PDF) for any setup required to run your challenges (if any). Remember, no security implementations should be used to increase the difficulty of the vulnerability, unless it is part of how the vulnerability is exploited (e.g., omitting error messages from SQL database for blind-based SQLi).
+2. The group leader must share the CTF challenge files in appropriate format via email to me (e.g., a link is sufficient). You are also to submit an instruction document (PDF) for any setup required to run your challenges (if any), and the full list of flags in your challenges. See **Project delivery** below for what to hand in and how to package it. Remember, no security implementations should be used to increase the difficulty of the vulnerability, unless it is part of how the vulnerability is exploited (e.g., omitting error messages from SQL database for blind-based SQLi).
 3. The group leader must schedule your demo slot from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Project Demo booking (week 12). Both the implementation and the CTF solutions must be demonstrated.
+
+### Project delivery
+
+The delivery format is reasonably open, which means you can submit multiple files if needed. However, please note the following:
+
+* **Keep the number of deliverable items to as few as possible.** If some challenges can be combined into the same file (a VM box, a Dockerfile, etc.), then do that.
+* **Include the setup instructions for other groups.** I will be sharing your submission with the other groups, so it must contain everything they need to do the basic setup before they can start finding flags. You may also submit marker-only files and documents as necessary - just mark them clearly as marker-only so they are not handed out with the rest.
+* **Include a full list of the flags** that can be found in your challenges. I need this so that I can load them into the flagboard, so that groups can check their progress in Task 2.
 
 {% hint style="warning" %}
 DON'T do everything yourself. This is not a race among the group members. If you read the rubric on individual reports, the marks are based on your ability to demonstrate penetration testing skills, which means QUALITY over QUANTITY (i.e., you don't have to get full marks in other tasks to receive full marks for your individual report).
@@ -78,12 +84,12 @@ Of course, you will need to meet all requirements to receive marks for other tas
 
 ## Task 2: Solve CTF Challenges (Week 11)
 
-Your group, acting as pen testers, will now have access to all other CTF Challenges (access details TBC). Exploit as many vulnerabilities as you can in all available CTF challenges as a group. The CTF challenges will be available until Friday 11.59pm of week 11. However, 2 different rounds will be considered for marking: (1) Live in-person during the lecture CTF challenge, and (2) anytime before the deadline. Your submitted flags in (1) and (2) will have separate scores for your project mark.
+Your group, acting as pen testers, will now have access to all other CTF Challenges. Flags are submitted on the flagboard, which is being set up - access details will be announced. Exploit as many vulnerabilities as you can in all available CTF challenges as a group. The CTF challenges will be available until Friday 11.59pm of week 11. However, 2 different rounds will be considered for marking: (1) Live in-person during the lecture CTF challenge, and (2) anytime before the deadline. Your submitted flags in (1) and (2) will have separate scores for your project mark.
 
 ### Task 2 todo:
 
 1. Attend the Lecture with your group to solve CTF challenges live. 
-2. Complete the remaining CTF challenges before the deadline (Friday 11.59pm of week 11). You are expected to submit all flags found in the CTF portal (TBC) before the deadline. 
+2. Complete the remaining CTF challenges before the deadline (Friday 11.59pm of week 11). You are expected to submit all flags found on the flagboard before the deadline. 
 3. You are also expected to submit a report on your findings, including the flags found, the vulnerabilities exploited, and the techniques used to exploit them. The report should also include any challenges faced and how they were overcome. Even if you did not find the flag, you should still report about that experience, as that will also contribute in demonstrating your penetration testing skills. Remember to clearly outline the individual contributions in your report. Finally, indicate the most fun challenge you found and why you think it was fun. This will be used to assess the "fun" component of your CTF challenges.
 4. Ensure that your group leader has scheduled your group's demo from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Project Demo booking (week 12). Both the implementation and the CTF solutions must be demonstrated.
 
