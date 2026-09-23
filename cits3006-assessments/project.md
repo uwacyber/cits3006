@@ -112,9 +112,8 @@ Bonus marks are not added on top of your overall project mark. Each bonus is app
 
 **Most fun challenge — applied to Task 1 (Creating CTF Challenges).** Other groups vote for the most "fun" CTF challenge in their Task 2 report (see Task 2 todo). The group whose challenge receives the most votes gets +5% on their Task 1 mark, and the runner-up group gets +3% — capped at the Task 1 maximum.
 
-**Survey — applied to Individual contributions.** You can complete the survey to receive +5% on your Individual contributions mark (capped at that component's maximum). Make sure to enter your student ID correctly (on the first page). Link: TBC.
-<!-- [https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform](https://docs.google.com/forms/d/e/1FAIpQLSex3sFSr3HByvuVsHGqJ8C8L54lFkZ6fDn0DzDDFAw8CmlSNw/viewform) -->
-You must complete the survey by (insert date here) to receive the bonus.
+**Survey — applied to Individual contributions.** You can complete the survey to receive +5% on your Individual contributions mark (capped at that component's maximum). Make sure to enter your student ID correctly (on the first page). Link: [https://uwa.qualtrics.com/jfe/form/SV_51nJDY3mK3sOJaS](https://uwa.qualtrics.com/jfe/form/SV_51nJDY3mK3sOJaS)
+You must complete the survey by Friday 2 October, close of business, to receive the bonus.
 
 
 
