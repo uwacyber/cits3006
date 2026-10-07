@@ -96,13 +96,15 @@ Your group, acting as pen testers, will now have access to all other CTF Challen
 
 ## Task 3: Live Demo (Week 12)
 
-Your group will demonstrate live the development of your CTF challenges and the completion of CTF challenges. All members are expected to attend the scheduled session, and be able to demonstrate the contributed portion of the configurations as required. You won't have to demo all challenges created and/or completed, but be expected to demo any of the ones you presented in your report.
+Your group will demonstrate live the development of your CTF challenges and the completion of CTF challenges. All members are expected to attend the scheduled session. You won't have to demo every challenge created and/or completed, but you may be asked to demo any of the ones presented in your report.
+
+**Who is responsible for what.** You must know your own contributions **in depth** — able to demonstrate, explain and reproduce them on request. You must also be **aware of the contributions of your group members** and understand **broadly** the approaches and techniques they used. During the demo and Q&A, any member may be asked to explain or walk through **any** challenge the group created or solved, not only their own. Questions on your own work will go deeper than questions on your group members' work, but "I didn't do that part" is not an acceptable answer.
 
 ### Task 3 todo:
 1. Perform demonstration during the scheduled time (booking required).
 
 {% hint style="info" %}
-The live demo will be an hour, you should think about how the demo should be structured to ensure that all members have a chance to demonstrate their contributions, as well as highlighting key vulnerabilities and techniques used in the CTF challenges. You should also be prepared to answer questions from the marker about your contributions, the vulnerabilities you created, and the techniques you used to exploit them.
+The live demo will be an hour, you should think about how the demo should be structured to ensure that all members have a chance to demonstrate their contributions, as well as highlighting key vulnerabilities and techniques used in the CTF challenges. You should also be prepared to answer questions from the marker about your contributions, the vulnerabilities you created, and the techniques you used to exploit them — and, at a broad level, about the rest of your group's challenges. Walking each other through your work before the demo is the simplest way to prepare for this.
 {% endhint %}
 
 
