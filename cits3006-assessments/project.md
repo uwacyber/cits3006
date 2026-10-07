@@ -166,6 +166,8 @@ You must complete the survey by Friday 2 October, close of business, to receive 
 **D** — Many flags captured, including difficult challenges, with some challenge sets fully solved; report is detailed and documents techniques, tools, and reflection on unsolved challenges.
 
 **HD** — Most or all flags captured across the available challenges, including the most difficult; report is professional and thorough — advanced techniques, clear reasoning, and insightful reflection on both solved and unsolved challenges.
+
+**Note on flag counts (applies to T2-1 and T2-2).** "Few", "some", "a reasonable number", "many" and "most" are judged against the flags that are **available** — those with a working, verified sample solution that are reachable as deployed. Challenges that turn out to be broken, unreachable, or unsolvable as shipped are excluded from the count you are judged against. If the challenge set proves harder than intended, the number expected at each level is lowered accordingly; see Task 2. These counts are never compared against other groups' results. Flag counts are also not the whole criterion at any level: the range of vulnerability classes you cover, the sophistication of the techniques you use, and — for T2-2 — how well your report documents your reasoning, including on challenges you did not solve, carry weight alongside the count.
 ***
 ### 25%: Live Demo (T3)
 
