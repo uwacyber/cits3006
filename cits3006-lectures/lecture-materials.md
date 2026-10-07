@@ -73,13 +73,6 @@ Note that materials are still being updated as noted below.
 * Complete [lab 6: Active Directory](../cits3006-labs/lab-6-active-directory.md).
 
 
-
-{% hint style="warning" %}
-The below has not been updated yet.
-{% endhint %}
-
-
-
 ## Week 10 (King's Bday)
 
 * Lecture: no lecture
@@ -90,6 +83,8 @@ The below has not been updated yet.
 
 * Lecture: **Project: Live CTF** - attend with your group to solve the other groups' CTF challenges live (project Task 2).
 * Complete the remaining CTF challenges and submit your Task 2 report; see the [project page](../cits3006-assessments/project.md).
+
+
 
 
 ## Week 12
