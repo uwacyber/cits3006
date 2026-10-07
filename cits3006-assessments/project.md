@@ -86,6 +86,14 @@ Of course, you will need to meet all requirements to receive marks for other tas
 
 Your group, acting as pen testers, will now have access to all other CTF Challenges. Flags are submitted on the flagboard, which is being set up - access details will be announced. Exploit as many vulnerabilities as you can in all available CTF challenges as a group. The CTF challenges will be available until Friday 11.59pm of week 11. However, 2 different rounds will be considered for marking: (1) Live in-person during the lecture CTF challenge, and (2) anytime before the deadline. Your submitted flags in (1) and (2) will have separate scores for your project mark.
 
+**How many flags do you need to capture?** There is no fixed number, and your mark is not a ranking against other groups. Tasks 2-1 and 2-2 are marked against the rubrics below, which judge how much of the available challenge set you exploited, the range of vulnerability classes you worked across, the sophistication of the techniques you used, and the quality of your reporting — including your reflection on what you could not solve.
+
+"Available" means the flags genuinely obtainable in the set as released: a challenge counts only if it has a working, verified sample solution and is reachable as deployed. Challenges that turn out to be broken, unreachable, or unsolvable as shipped are excluded from what you are judged against.
+
+**If the challenge set proves harder than intended, the solve rate expected for each grade is lowered accordingly.** That review happens after the deadline and is based on evidence about the challenges themselves — whether each flag was obtainable using the skills and tools covered in this unit, in the time available. How the cohort as a whole fared is part of that evidence. The adjustment can only work in your favour: it never raises the standard expected of you, and no other group's result can reduce your mark.
+
+The flagboard is there to show your own progress and keep the CTF competitive. It is not the basis of your mark — another group solving more than you does not cost you marks.
+
 ### Task 2 todo:
 
 1. Attend the Lecture with your group to solve CTF challenges live. 
