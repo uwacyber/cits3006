@@ -10,7 +10,7 @@ More details are as follows.
 {% endhint %}
 
 {% hint style="warning" %}
-The standard UWA late penalty applies to ALL members if you defer your group deliverable/demo (i.e., -5% per day from raw marks for 7 days, then 0).
+**Late submission.** The standard UWA late penalty applies to ALL members of the group. Reports and other group deliverables submitted within two days (48 hours) of the deadline are not penalised. After that, 5% of the available marks is deducted per day from your raw mark, counted from the original deadline (e.g., 3 days late = -15%), and deliverables more than 7 days late are not accepted (mark of 0). If you defer your demo, the penalty is -5% per day from raw marks for 7 days, then 0.
 {% endhint %}
 
 ## Task 0: Group forming (Week 3)
@@ -98,7 +98,7 @@ The flagboard is there to show your own progress and keep the CTF competitive. I
 
 1. Attend the Lecture with your group to solve CTF challenges live. 
 2. Complete the remaining CTF challenges before the deadline (Friday 11.59pm of week 11). You are expected to submit all flags found on the flagboard before the deadline. 
-3. You are also expected to submit a report on your findings, including the flags found, the vulnerabilities exploited, and the techniques used to exploit them. The report should also include any challenges faced and how they were overcome. Even if you did not find the flag, you should still report about that experience, as that will also contribute in demonstrating your penetration testing skills. Remember to clearly outline the individual contributions in your report. Finally, indicate the most fun challenge you found and why you think it was fun. This will be used to assess the "fun" component of your CTF challenges.
+3. You are also expected to submit a report on your findings via LMS by the same deadline (Friday 11.59pm of week 11), including the flags found, the vulnerabilities exploited, and the techniques used to exploit them. The report should also include any challenges faced and how they were overcome. Even if you did not find the flag, you should still report about that experience, as that will also contribute in demonstrating your penetration testing skills. Remember to clearly outline the individual contributions in your report. Finally, indicate the most fun challenge you found and why you think it was fun. This will be used to assess the "fun" component of your CTF challenges.
 4. Ensure that your group leader has scheduled your group's demo from the available slots provided on MS Teams -> Project Discussion -> CITS3006 Project Groups -> Project Demo booking (week 12). Both the implementation and the CTF solutions must be demonstrated.
 
 
