@@ -5,3 +5,5 @@ All details on how to attempt lab quizzes are provided via the announcements, pl
 There are usually 3 lab quizzes, scheduled in weeks 4, 7 and 11 (TBC, check the announcement for full details). The topics covered do not overlap, and usually covers the topics from lectures and labs scheduled up to the lab quiz week (i.e., weeks 1-3 for lab quiz 1, weeks 4-6 for lab quiz 2 etc.). More details about the covered topics will be described in the announcement.
 
 Rubrics for each lab quiz are provided in the lab quiz sheet.
+
+If you have an approved Exceptional Variation of Assessment (EVA) for a lab quiz, the deferred sitting is a 1-hour, closed-book test on the same topics, unless you are told otherwise in writing.
